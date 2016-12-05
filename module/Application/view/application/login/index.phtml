@@ -1,0 +1,46 @@
+<form class="form-signin" method="post">
+        <h2 class="form-signin-heading"><?php echo $this->translate("Entrar agora")?></h2>
+        <div class="login-wrap">
+            <input name="user" type="email" class="form-control" placeholder="<?php echo $this->translate("e-mail")?>" autofocus>
+            <input name="password" type="password" class="form-control" placeholder="<?php echo $this->translate("senha")?>">
+            <label class="checkbox">
+                <input type="checkbox" value="1" name="rememberme"> <?php echo $this->translate("Lembre-se de mim")?>
+                <span class="pull-right">
+                    <a data-toggle="modal" href="#myModal"> <?php echo $this->translate("Esqueceu a senha?")?></a>
+
+                </span>
+            </label>
+            <button class="btn btn-lg btn-login btn-block" type="submit"><?php echo $this->translate("Login")?></button>
+            
+            <div class="registration">
+                <?php echo $this->translate("Não tem uma conta ainda?")?>
+                <a class="" href="registration.html">
+                    <?php echo $this->translate("Solicite o acesso")?>
+                </a>
+            </div>
+
+        </div>
+
+          <!-- Modal -->
+          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                          <h4 class="modal-title"><?php echo $this->translate("Esqueceu a senha?")?></h4>
+                      </div>
+                      <div class="modal-body">
+                          <p><?php echo $this->translate("Digite seu email abaixo que enviaremos uma nova senha")?></p>
+                          <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+
+                      </div>
+                      <div class="modal-footer">
+                          <button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Cancelar")?></button>
+                          <button class="btn btn-success" type="button"><?php echo $this->translate("Enviar")?></button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- modal -->
+
+      </form>

@@ -1,0 +1,93 @@
+<!-- page start-->
+<section class="panel">
+	<header class="panel-heading"> <?php echo $this->translate("Banco de Imagens")?> </header>
+	<div class="panel-body">
+		<h4><?php echo $this->translate("Filtrar por módulos")?></h4>
+		<a class="btn btn-primary" href="<?php echo $this->url("images-database/new")?>"><i class="fa fa-plus"></i> <?php echo $this->translate("Adicionar imagens") ?></a>
+		
+		<button class="btn btn-primary">
+			<i class="fa fa-television"></i> <?php echo $this->translate("Páginas") ?></button>
+		<hr>
+		<ul class="grid cs-style-3">
+			<?php 
+			$imageCont = 0;
+			foreach($images as $image){ 
+			     $imageCont++;
+			?>
+			<li>
+				<figure>
+					<a class="fancybox" rel="group"
+							href="<?php echo $this->basepath("files_database/".$image->website_id."/".$image->name.".".$image->extension);?>"><img src="<?php echo $this->basepath("files_database/".$image->website_id."/".$image->name.".".$image->extension);?>" alt="img04"></a>
+					<figcaption>
+						<h3>
+						<?php 
+						if($image->label){
+							echo $image->label;
+						}else{
+						  echo $image->name.".".$image->extension;
+						} ?>
+						</h3>
+						
+						<a class="btn btn-default" data-toggle="modal" href="#info-<?php echo $imageCont; ?>"><?php echo $this->translate("Informações")?></a>
+					</figcaption>
+				</figure>
+				<div class="modal fade " id="info-<?php echo $imageCont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title"><?php echo $this->translate("Alterar Informações da Imagem")?></h4>
+                          </div>
+                          <form class="form-horizontal tasi-form" method="post"  name="image-<?php echo $imageCont; ?>">
+                          <div class="modal-body">
+                          		  <input type="hidden" value="<?php echo $image->idImage; ?>" name="idImage">
+                              	  <div class="form-group">
+                              	  	<div class="col-sm-12">
+                              	  		<img src="<?php echo $this->basepath("files_database/".$image->website_id."/".$image->name.".".$image->extension);?>" width="300">
+                              	  	</div>
+                              	  </div>
+                                  <div class="form-group">
+                						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Etiqueta")?></label>
+                						<div class="col-sm-10">
+                                        	<input type="text" class="form-control" name="label" id="label" maxlength="150" value="<?php echo $image->label; ?>" >
+                						</div>
+            					  </div>
+                                  <div class="form-group">
+                						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Alt (texto alternativo)")?></label>
+                						<div class="col-sm-10">
+                                        	<input type="text" class="form-control" name="alt" id="alt" maxlength="300" value="<?php echo $image->alt; ?>" >
+                						</div>
+                			      </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Fechar")?></button>
+                              <a class="btn btn-danger" type="button" data-toggle="modal" href="#delete-<?php echo $imageCont; ?>"><?php echo $this->translate("Excluir")?></a>
+                              <button class="btn btn-success" type="submit"><?php echo $this->translate("Salvar Mudanças")?></button>
+                          </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal fade" id="delete-<?php echo $imageCont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title"><?php echo $this->translate("Deseja realmente excluir essa imagem?")?></h4>
+                          </div>
+                          <div class="modal-body">
+                              <?php echo $this->translate("Você tem certeza de que deseja remover essa imagem? Ela desaparecerá de todos os locais em que ela aparece atualmente.")?>
+                          </div>
+                          <div class="modal-footer">
+                              <button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Cancelar")?></button>
+                              <a href="<?php echo $this->url("images-database/delete", array("id"=>$image->idImage))?>" class="btn btn-danger" type="button"><?php echo $this->translate("Remover")?></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+			</li>
+			<?php } ?>
+		</ul>
+
+	</div>
+</section>

@@ -1,0 +1,20 @@
+<ul class="grid cs-style-3">
+	<?php 
+	$imageCont = 0;
+	foreach($images as $image){ 
+	     $imageCont++;
+	?>
+	<li>
+		<figure>
+			<img src="<?php echo $this->basepath("files_database/".$image->website_id."/".$image->name.".".$image->extension);?>" alt="img04">
+		</figure>
+		<h5><?php 
+				if($image->label){
+					echo $image->label;
+				}else{
+				  echo $image->name.".".$image->extension;
+				} ?></h5>
+		<label><input type="checkbox" name="image" value="<?php echo $image->idImage." | ".$image->name.".".$image->extension." | ".$image->label; ?>">&nbsp;Selecionar</label>
+	</li>
+	<?php } ?>
+</ul>

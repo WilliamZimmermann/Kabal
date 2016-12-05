@@ -1,0 +1,97 @@
+<?php
+$this->headtitle($this->translate("Websites"));
+?>
+<div class="row">
+    <div class="col-lg-12">
+        <!--breadcrumbs start -->
+        <ul class="breadcrumb">
+            <li><a href="<?php echo $this->url("application"); ?>"><i
+                        class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+            <li class="active"><?php echo $this->translate("Websites") ?></li>
+        </ul>
+        <!--breadcrumbs end -->
+    </div>
+</div>
+<?php 
+if($logedUser["idCompany"]==1){ ?>
+<div class="row">
+    <div class="col-lg-10"></div>
+    <div class="col-lg-2">
+        <a href="<?php echo $this->url("website/new") ?>"
+           class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo $this->translate("Novo Website") ?></a>
+    </div>
+</div>
+<?php } ?>
+<br>
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading"> <?php echo $this->translate("Websites") ?></header>
+            <table class="table table-striped table-advance table-hover">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-user"></i> <?php echo $this->translate("Website") ?></th>
+                        <th><i class="fa fa-building"></i> <?php echo $this->translate("Empresa") ?></th>
+                        <th><i class="fa fa-check-circle"></i> <?php echo $this->translate("Status") ?></th>
+                        <th><i class="fa fa-edit"></i> <?php echo $this->translate("Ações") ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($websites as $website) {
+                        if ($website->status) {
+                            $status = $this->translate("Ativo");
+                            $statusClass = "success";
+                        } else {
+                            $status = $this->translate("Inativo");
+                            $statusClass = "danger";
+                        }
+                        ?>
+                        <tr>
+                            <td><a href="#"><?php echo $website->name; ?></a></td>
+                            <td><a href="<?php echo $this->url("company/edit", array("id" => $website->company_id)); ?>"><?php echo $website->company; ?></a></td>
+                            <td><span
+                                    class="label label-<?php echo $statusClass; ?> label-mini"><?php echo $status; ?></span></td>
+                            <td>
+                                <a href="<?php echo $this->url("website/edit-users", array("id"=>$website->idWebsite))?>" class="btn btn-warning btn-xs">
+                                    <i class="fa fa-users"></i>
+                                </a> <a
+                                    href="<?php echo $this->url("website/edit", array("id" => $website->idWebsite)) ?>"
+                                    class="btn btn-primary btn-xs"> <i class="fa fa-pencil"></i>
+                                </a>
+                                <?php if($logedUser["idCompany"]==1){ ?>
+                                <button data-toggle="modal" href="#delete-<?php echo $website->idWebsite; ?>"
+                                        class="btn btn-danger btn-xs">
+                                    <i class="fa fa-trash-o "></i>
+                                </button>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                        <!-- EXCLUSION MODAL -->
+                        <?php if($logedUser["idCompany"]==1){ ?>
+                    <div class="modal fade" id="delete-<?php echo $website->idWebsite; ?>" tabindex="-1" role="dialog"
+                         aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title"><?php echo $this->translate("Desejas realmente excluir?") ?></h4>
+                                </div>
+                                <div class="modal-body"><?php echo $this->translate("Você realmente deseja excluir <strong>" . $website->name . "</strong> e todo o conteúdo relacionado com este website?") ?></div>
+                                <div class="modal-footer">
+                                    <button data-dismiss="modal" class="btn btn-default"
+                                            type="button"><?php echo $this->translate("Cancelar") ?></button>
+                                    <a href="<?php echo $this->url("website/delete", array("id" => $website->idWebsite)); ?>" class="btn btn-danger" type="button"><?php echo $this->translate("Excluir") ?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <!-- END OF EXCLUSION MODAL -->
+                <?php } ?>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>

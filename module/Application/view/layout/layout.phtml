@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="William Zimmermann - TekSul">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <?php echo $this->headTitle('TekManager '. $this->translate(''))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+	<?php 
+	echo $this->headLink()
+	->prependStylesheet($this->basePath('css/style-responsive.css'))
+	->prependStylesheet($this->basePath('css/style.css'))
+	->prependStylesheet($this->basePath('css/slidebars.css'))
+	->prependStylesheet($this->basePath('css/owl.carousel.css'))
+	->prependStylesheet($this->basePath('assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css'))
+	->prependStylesheet($this->basePath('css/gallery.css'))
+	->prependStylesheet($this->basePath('assets/fancybox/source/jquery.fancybox.css'))
+	->prependStylesheet($this->basePath('css/bootstrap-reset.css'))
+    ->prependStylesheet($this->basePath('css/bootstrap.min.css'));  
+    ?>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+  <section id="container" >
+      <!--header start-->
+      <header class="header white-bg">
+              <div class="sidebar-toggle-box">
+                  <i class="fa fa-bars"></i>
+              </div>
+            <!--logo start-->
+            <a href="index.html" class="logo"><span>Tek</span>Manager</a>
+            <!--logo end-->
+            <?php echo $this->partial("layout/partials/tool-box")?>
+            <?php echo $this->partial("layout/partials/top")?>
+        </header>
+      <!--header end-->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <?php echo $this->partial("layout/partials/menu")?>
+          </div>
+      </aside>
+      <!--sidebar end-->
+      <!--main content start-->
+      <section id="main-content">
+        <section class="wrapper site-min-height">
+          <?php echo $this->content;?>
+          </section>
+      </section>
+      <!--main content end-->
+
+      <!-- Right Slidebar start -->
+      <?php echo $this->partial("layout/partials/right-bar")?>
+      <!-- Right Slidebar end -->
+
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2016 &copy; TekManager. <?php echo $this->translate("Desenvolvido por ")?><a href="http://www.teksul.com.br">TekSul</a>
+              <a href="#" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
+  <div class="modal fade" id="websites" tabindex="-1" role="dialog" hidden="false"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title"><?php echo $this->translate("Escolha um website")?></h4>
+			</div>
+			<div class="modal-body">
+			<?php echo $this->translate("Para começar a editar o conteúdo, você precisa primeiro escolher um website: ")?>
+			<p>
+			<?php foreach ($this->layout()->userWebsites as $website){ ?>
+			<hr>
+			<a href="<?php echo $this->url("website-change", array("idWebsite"=>$website->company_website_idWebsite))?>" class="btn btn-default btn-block"><?php echo $website->websiteName; ?></a>
+			<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>
+  
+   	<?php echo $this->headScript()
+   	        ->prependFile($this->basePath('js/toucheffects.js'))
+   	        ->prependFile($this->basePath('js/modernizr.custom.js'))
+   	        ->prependFile('https://use.fontawesome.com/fa657d5a4c.js')
+            ->prependFile($this->basePath('js/count.js'))
+            ->prependFile($this->basePath('js/easy-pie-chart.js'))
+            ->prependFile($this->basePath('js/respond.min.js'))
+            ->prependFile($this->basePath('js/sparkline-chart.js'))
+            ->prependFile($this->basePath('js/common-scripts.js'))
+            ->prependFile($this->basePath('js/slidebars.min.js'))
+            ->prependFile($this->basePath('js/jquery.validate.min.js'))
+            ->prependFile($this->basePath('js/respond.min.js'))
+            ->prependFile($this->basePath('js/jquery.customSelect.min.js'))
+            ->prependFile($this->basePath('js/owl.carousel.js'))
+            ->prependFile($this->basePath('assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js'))
+            ->prependFile($this->basePath('js/jquery.sparkline.js'))
+            ->prependFile($this->basePath('js/jquery.nicescroll.js'))
+            ->prependFile($this->basePath('js/jquery.scrollTo.min.js'))
+            ->prependFile($this->basePath('assets/fancybox/source/jquery.fancybox.js'))
+            ->prependFile($this->basePath('js/jquery.dcjqaccordion.2.7.js'))
+            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery.js'))
+    ; 
+   	echo $this->inlinescript();
+            ?>
+
+  <script>
+
+      //owl carousel
+
+      $(document).ready(function() {
+          $("#owl-demo").owlCarousel({
+              navigation : true,
+              slideSpeed : 300,
+              paginationSpeed : 400,
+              singleItem : true,
+			  autoPlay:true
+
+          });
+      });
+
+      //custom select box
+
+      $(function(){
+          $('select.styled').customSelect();
+      });
+
+      $(window).on("resize",function(){
+          var owl = $("#owl-demo").data("owlCarousel");
+          owl.reinit();
+      });
+
+      $(function() {
+        //    fancybox
+          jQuery(".fancybox").fancybox();
+      });
+
+  </script>
+
+  </body>
+</html>

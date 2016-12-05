@@ -1,0 +1,75 @@
+<?php 
+use Zend\Session\Container;
+
+$session = new Container('Auth');
+$name = $session->__get('userName');
+$idUser = $session->__get('idUser');
+$idCompany = $session->__get('idCompany');
+$websiteName = $session->__get('websiteName');
+$websiteId = $session->__get('websiteId');
+?>
+<ul class="sidebar-menu" id="nav-accordion">
+
+	<li><a class="active" href="<?php echo $this->url("home"); ?>"> <i class="fa fa-dashboard"></i>
+			<span><?php echo $this->translate("Dashboard")?></span>
+	</a></li>
+
+	<?php 
+	//Just users from the Comapny 1, TekSul, can access this module
+	if($idCompany==1){ ?>
+	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-building"></i>
+			<span><?php echo $this->translate("Empresas")?></span>
+	</a>
+		<ul class="sub">
+			<li><a href="<?php echo $this->url("company")?>"><?php echo $this->translate("Listar")?></a></li>
+			<li><a href="<?php echo $this->url("company/new")?>"><?php echo $this->translate("Cadastrar")?></a></li>
+		</ul>
+	</li>
+	<?php } ?>
+	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-laptop"></i>
+			<span><?php echo $this->translate("Websites")?></span>
+	</a>
+		<ul class="sub">
+			<li><a href="<?php echo $this->url("website")?>"><?php echo $this->translate("Listar")?></a></li>
+        	<?php 
+        	//Just users from the Comapny 1, TekSul, can access this module
+        	if($idCompany==1){ ?>
+			<li><a href="<?php echo $this->url("website/new")?>"><?php echo $this->translate("Cadastrar")?></a></li>		
+			<?php } ?>		
+		</ul>
+	</li>
+	
+	<?php if($idCompany==1 || $websiteId>0){ ?>
+	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-users"></i>
+			<span><?php echo $this->translate("Usuários")?></span>
+	</a>
+		<ul class="sub">
+			<li><a href="<?php echo $this->url("user")?>"><?php echo $this->translate("Listar")?></a></li>
+			<li><a href="<?php echo $this->url("user/new")?>"><?php echo $this->translate("Cadastrar")?></a></li>
+		</ul></li>
+	<?php } ?>
+	<?php if($websiteId>0){ //Check if the user already selected a website?>
+	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-picture-o"></i>
+			<span><?php echo $this->translate("Banco de Imagens")?></span>
+	</a>
+		<ul class="sub">
+			<li><a href="<?php echo $this->url("images-database"); ?>"><?php echo $this->translate("Listar"); ?></a></li>
+			<li><a href="calendar.html"><?php echo $this->translate("Cadastrar")?></a></li>
+		</ul></li>
+	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-file-text"></i>
+			<span><?php echo $this->translate("Páginas")?></span>
+	</a>
+		<ul class="sub">
+			<li><a href="<?php echo $this->url("page"); ?>"><?php echo $this->translate("Listar") ?></a></li>
+			<li><a href="advanced_form_components.html"><?php echo $this->translate("Nova") ?></a></li>
+		</ul></li>
+	<li class="sub-menu"><a href="<?php echo $this->url("conversor"); ?>"> <i class="fa fa-th"></i> <span>Conversor</span>
+	</a></li>
+	<!--multi level menu end-->
+	<?php }else{ //End permissions check ?>
+	<li class="sub-menu"><a href="javascript:;">
+	<span><?php echo $this->translate("Nenhum website selecionado.")?></span></a>
+	</li>
+	<?php } ?>
+</ul>
+<!-- sidebar menu end-->

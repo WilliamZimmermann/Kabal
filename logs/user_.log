@@ -1,0 +1,92 @@
+2016-10-24T15:39:18+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-10-24T15:40:24+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-24T15:40:24+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-25T16:05:19+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-10-25T16:05:35+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-25T16:05:35+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-25T19:06:00+00:00 INFO (6): USER ID: . MESSAGE: The user 2 made login.
+2016-10-25T19:06:00+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-25T19:07:02+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-25T19:07:02+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-26T15:37:12+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-10-26T15:37:34+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-26T15:37:34+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-26T18:13:48+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-26T18:13:48+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-26T18:32:04+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-26T18:32:04+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-26T18:40:59+00:00 INFO (6): USER ID: . MESSAGE: The user 4 made login.
+2016-10-26T18:40:59+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-26T18:48:02+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-26T18:48:02+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-26T19:26:13+00:00 INFO (6): USER ID: . MESSAGE: The user 5 made login.
+2016-10-26T19:26:13+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-26T19:45:04+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-26T19:45:04+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-26T19:49:35+00:00 INFO (6): USER ID: . MESSAGE: The user 6 made login.
+2016-10-26T19:49:35+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-27T16:02:29+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com.br ou a senha estão corretos.
+2016-10-27T16:03:07+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com.br ou a senha estão corretos.
+2016-10-27T16:03:18+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com.br ou a senha estão corretos.
+2016-10-27T16:21:40+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-27T16:21:40+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-27T17:55:34+00:00 INFO (6): USER ID: . MESSAGE: The user 6 made login.
+2016-10-27T17:55:34+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-27T18:50:12+00:00 INFO (6): USER ID: . MESSAGE: The user 7 made login.
+2016-10-27T18:50:12+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-27T19:46:30+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com.br ou a senha estão corretos.
+2016-10-27T19:46:42+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-27T19:46:42+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-28T15:38:54+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-28T15:38:54+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-10-31T15:31:51+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-10-31T15:32:09+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-10-31T15:32:09+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-01T16:08:24+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-01T16:08:24+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-04T15:39:36+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-11-04T15:39:43+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-11-04T15:39:49+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-11-04T15:40:00+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-11-04T15:40:10+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-04T15:40:10+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-07T15:42:29+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-11-07T15:42:40+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-11-07T15:42:50+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-07T15:42:50+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-08T15:43:25+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-11-08T15:43:34+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-08T15:43:34+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-09T16:01:20+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-09T16:01:20+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-10T15:37:27+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-10T15:37:27+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-11T15:35:14+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com ou a senha estão corretos.
+2016-11-11T15:43:12+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zemmer@teksul.com.br ou a senha estão corretos.
+2016-11-11T15:43:20+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zemmer@teksul.com.br ou a senha estão corretos.
+2016-11-11T15:43:33+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zemmer@teksul.com.br ou a senha estão corretos.
+2016-11-11T15:43:41+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-11T15:43:41+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-14T18:08:12+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-14T18:08:12+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-16T17:37:12+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-16T17:37:12+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-25T16:31:42+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-11-25T16:31:58+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-25T16:31:58+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-28T19:05:57+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-28T19:05:57+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-29T16:27:34+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-29T16:27:34+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-11-30T15:59:46+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-11-30T16:00:03+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com.br ou a senha estão corretos.
+2016-11-30T16:00:20+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com.br ou a senha estão corretos.
+2016-11-30T16:00:33+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-11-30T16:00:33+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-12-01T16:24:22+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com.br ou a senha estão corretos.
+2016-12-01T16:24:40+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-12-01T16:24:40+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-12-02T19:57:05+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-12-02T19:57:05+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-12-05T16:25:53+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-12-05T16:25:53+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.

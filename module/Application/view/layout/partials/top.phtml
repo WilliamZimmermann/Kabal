@@ -1,0 +1,59 @@
+<?php 
+use Zend\Session\Container;
+
+$session = new Container('Auth');
+$name = $session->__get('userName');
+$idUser = $session->__get('idUser');
+$websiteName = $session->__get('websiteName');
+$websiteId = $session->__get('websiteId');
+?>
+
+<div class="top-nav ">
+                <!--search & user info start-->
+                <ul class="nav pull-right top-menu">
+                	<!--  
+                    <li>
+                        <input type="text" class="form-control search" placeholder="Search">
+                    </li>
+                    -->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="fa fa-globe"></i>
+                            <span class="username">
+                            <?php 
+                            if($websiteId){
+                                echo $websiteName;
+                            }else{
+                                echo $this->translate("Escolha um website");
+                            }
+                            ?>
+							</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                			<li><a data-toggle="modal" href="#websites"><?php echo $this->translate("Trocar de Website")?></a></li>
+            			</ul>
+                    </li>
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <img alt="" src="<?php echo $this->basepath("img/avatar1_small.jpg")?>">
+                            <span class="username"><?php echo $name; ?></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <!--  <li><a href="#"><i class=" fa fa-suitcase"></i><--?php echo $this->translate("Perfil")?></a></li>-->
+                            <li><a href="<?php echo $this->url("user/edit-password", array("id"=>$idUser))?>"><i class="fa fa-key"></i> <?php echo $this->translate("Alterar Senha")?></a></li>
+                            <!--  <li><a href="#"><i class="fa fa-bell-o"></i> <--?php echo $this->translate("Notificações")?></a></li>-->
+                            <li><a href="<?php echo $this->url("logout"); ?>"><i class="fa fa-key"></i> <?php echo $this->translate("Log out")?></a></li>
+                        </ul>
+                    </li>
+                    <li class="sb-toggle-right">
+                        <i class="fa  fa-align-right"></i>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!--search & user info end-->
+            </div>

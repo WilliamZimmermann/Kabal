@@ -1,0 +1,115 @@
+<?php
+$this->headtitle($this->translate("Alterar Website"));
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("website")?>"><?php echo $this->translate("Websites") ?></a></li>
+			<li class="active"><?php echo $this->translate("Alterar") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+<?php
+if ($message["flag"] > 0) {
+    if ($message["flag"] == 1) {
+        $class = "success";
+    } else {
+        $class = "danger";
+    }
+    ?>
+<div class="alert alert-<?php echo $class; ?> alert-block fade in">
+	<button data-dismiss="alert" class="close close-sm" type="button">
+		<i class="fa fa-times"></i>
+	</button>
+	<p><?php echo $message["message"]?></p>
+</div>
+<?php
+}
+?>
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading tab-bg-dark-navy-blue ">
+				<ul class="nav nav-tabs">
+					<li><a
+						href="<?php echo $this->url("website/edit", array("id"=>$website->idWebsite))?>"><?php echo $this->translate("Editar Website")?></a>
+					</li>
+					<?php if($logedUser["idCompany"]==1){ ?>
+					<li><a
+						href="<?php echo $this->url("website/edit-modules", array("id"=>$website->idWebsite))?>"><?php echo $this->translate("Módulos")?></a>
+					</li>
+					<?php } ?>
+					<li><a href="<?php echo $this->url("website/edit-users", array("id"=>$website->idWebsite))?>"><?php echo $this->translate("Usuários")?></a>
+					</li>
+					<li class="active"><a href="#"><?php echo $this->translate("Configurações")?></a>
+					</li>
+				</ul>
+			</header>
+			<div class="panel-body">
+				<form class="form-horizontal tasi-form" method="post" id="languages">
+				<div class="form-group">
+					<div class="col-sm-2">
+						<label class="col-sm-4 col-sm-4 control-label"><?php echo $this->translate("Idiomas")?></label>
+					</div>
+					<div class="col-sm-10">
+        				<?php 
+        				foreach($languages as $language){
+    				    ?>
+            			
+            			<label><input type="checkbox" name="language[]" value="<?php echo $language->idLanguage; ?>" 
+            			<?php if(array_search($language->idLanguage, $languagesSelected)){ ?>checked<?php } ?>
+            			 /> <?php echo $language->name." (".$language->code.")"; ?></label><br>		
+        				<?php } ?>
+    				</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2">
+						<label class="col-sm-12 col-sm-12 control-label"><?php echo $this->translate("Chave da API")?></label>
+					</div>
+					<div class="col-sm-6">
+						<input type="text" name="apiKey" id="apiKey" size="35" readonly="readonly" value="<?php echo ($website->apiKey) ? $website->apiKey : ""?>">
+						<button class="btn btn-warning" id="keyGenerator" type="button"><?php echo $this->translate("Gerar chave de API")?></button>
+					</div>
+					<div class="col-sm-4">
+						<?php echo $this->translate("Evite disponibilizar o seu token publicamente. Por exemplo, em formulários de contato ou chamadas Ajax.")?>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-2">
+						<label class="col-sm-12 col-sm-12 control-label"><?php echo $this->translate("IP para API")?></label>
+					</div>
+					<div class="col-sm-10">
+						<input type="text" name="apiIp" value="<?php echo ($website->apiIp) ? $website->apiIp : ""?>">
+					</div>
+				</div>
+				<div class="form-group">
+					&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Salvar Configurações")?></button>
+				</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</div>
+<?php 
+$id = $idWebsite;
+$url = $this->url("website/generateApiKey");
+$this->inlineScript()->captureStart();
+echo <<<JS
+$("#keyGenerator").click(function(){
+    $.post('$url',
+    {
+      id: $id 
+    },
+    function(data, status){
+        $('#apiKey').val(data);
+    });
+});
+JS;
+$this->inlineScript()->captureEnd();
