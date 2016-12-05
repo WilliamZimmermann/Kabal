@@ -14,6 +14,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 class PageController extends AbstractActionController
 {
     protected $pageLanguageTable;
+    protected $websiteTable;
     
     public function indexAction()
     {
@@ -23,18 +24,12 @@ class PageController extends AbstractActionController
     public function getAction(){
         $request = $this->getRequest();
         if($request->isGet()){
-            $apiKey = $this->params()->fromRoute('apiKey', 0);
-            /*
-             * TODO
-             * Adicionar verificação da chave da API
-             */
-            if($apiKey){
-                /*
-                 * TODO
-                 * Adicionar verificação de IP
-                 */
+            $apiKey = strip_tags($this->params()->fromRoute('apiKey', 0));
+            $website = $this->getWebsiteTable()->getWebsite(null, $apiKey);
+            if($website){
                 $ip =  $request->getServer('REMOTE_ADDR');
-                if($ip){
+                
+                if($ip == $website->apiIp){
                     $language = strip_tags($this->params()->fromRoute('language', 0));
                     $param = strip_tags($this->params()->fromRoute('param', 0));
                     $value = strip_tags($this->params()->fromRoute('value', 0));
@@ -45,10 +40,14 @@ class PageController extends AbstractActionController
                     echo json_encode($pageData);
                     
                     die();
+                }else{
+                    die("forbiden IP");
                 }
+            }else{
+                die("forbiden API key");
             }
         }else{
-            die("Método inválido");
+            die("forbiden method");
         }
     }
     
@@ -68,4 +67,14 @@ class PageController extends AbstractActionController
         }
         return $this->pageLanguageTable;
     }
+    
+    public function getWebsiteTable()
+    {
+        if (! $this->websiteTable) {
+            $sm = $this->getServiceLocator();
+            $this->websiteTable = $sm->get('Website\Model\WebsiteTable');
+        }
+        return $this->websiteTable;
+    }
+    
 }

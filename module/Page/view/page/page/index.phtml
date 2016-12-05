@@ -52,6 +52,10 @@ $this->headtitle($this->translate("Páginas"));
 						<td><span
 							class="label label-<?php echo $statusClass; ?> label-mini"><?php echo $status; ?></span></td>
 						<td>
+						<a
+							href="<?php echo $this->url("webservices/page-get", array("apiKey"=>"ZsvXrKOzOyDQh4kCQc3V7TAnpfoOJBrf", "language"=>"pt", "param"=>"slug", "value"=>"home"))?>" target="_blank"
+							class="btn btn-warning btn-xs"> <i class="fa fa-file-code-o"></i>
+						</a>
 							<a
 							href="<?php echo $this->url("page/edit", array("id"=>$page->idPage))?>"
 							class="btn btn-primary btn-xs"> <i class="fa fa-pencil"></i>
