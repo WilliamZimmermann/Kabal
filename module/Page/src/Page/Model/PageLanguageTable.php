@@ -13,7 +13,7 @@ class PageLanguageTable
     
     /**
      * This function returns all pages in all languages that are in our records
-     * @param $websiteId - Page Id to filter
+     * @param $pageId - Page Id to filter
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function fetchAll($pageId=null){
@@ -27,6 +27,21 @@ class PageLanguageTable
     }
     
     /**
+     * This function returns all pages for a specific website and language
+     * @param $language - Language ID to filter
+     * @param $websiteId - Website Id to filter
+     * @return \Zend\Db\ResultSet\ResultSet
+     */
+    public function fetchAllPages($language, $websiteId){
+        $sqlSelect = $this->tableGateway->getSql()->select();
+        $sqlSelect->join('website_page', 'website_page.idPage = page_has_language.page_id', array());
+        $sqlSelect->where(array("website_id"=>$websiteId, "language_id"=>$language));
+        $resultSet = $this->tableGateway->selectWith($sqlSelect);
+        //die(var_dump($resultSet));
+        return $resultSet;
+    }
+    
+    /**
      * This function get a specific page registred in our data base
      * @param int $id
      * @param int $language
@@ -34,10 +49,9 @@ class PageLanguageTable
      * @throws \Exception
      * @return ArrayObject|NULL
      */
-    public function getPage($id, $language, $param='page_id'){
-        $id  = (int) $id;
+    public function getPage($value, $language, $param='page_id'){
         $langauge = (int) $language;
-        $data = array('language_id'=>$langauge, $param => $id);
+        $data = array('language_id'=>$langauge, $param => $value);
         $rowset = $this->tableGateway->select($data);
         $row = $rowset->current();
         if (!$row) {
