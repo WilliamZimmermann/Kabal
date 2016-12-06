@@ -26,13 +26,20 @@ class LanguageTable {
 
     /**
      * This function get a specific language registred in our data base
-     * @param int $id
+     * @param int $id - null
+     * @param string $code - null
      * @throws \Exception
      * @return ArrayObject|NULL
      */
-    public function getLanguage($id) {
-        $id = (int) $id;
-        $rowset = $this->tableGateway->select(array('idLanguage' => $id));
+    public function getLanguage($id=null, $code=null) {
+        if($id!=null){
+            $id = (int) $id;
+            $where = array("idLanguage"=>$id);
+        }else{
+            $code = (string)strip_tags($code);
+            $where = array("code"=>$code);
+        }
+        $rowset = $this->tableGateway->select($where);
         
         $row = $rowset->current();
         if (!$row) {

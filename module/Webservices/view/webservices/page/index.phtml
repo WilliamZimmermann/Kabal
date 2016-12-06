@@ -1,3 +1,52 @@
-<strong>Module:</strong>        Webservices &raquo;
-<strong>Controller:</strong>    Page &raquo;
-<strong>Action:</strong>        index
+<?php
+$this->headtitle($this->translate("Webservices - REST"));
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li class="active"><?php echo $this->translate("Webservices") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-10"></div>
+	<div class="col-lg-2">
+		<a href="#"
+			class="btn btn-primary"><i class="fa fa-file-o"></i> <?php echo $this->translate("Ler documentação")?></a>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading"> <?php echo $this->translate("API - REST")?></header>
+			<br>
+			<div class="col-lg-6"><strong><?php echo $this->translate("Website: ")?></strong><? echo $website->name; ?>
+			</div>
+			<div class="col-lg-6"><strong><?php echo $this->translate("Chave da API: ")?></strong><? echo $website->apiKey; ?>
+			</div>
+			<hr>
+			<table class="table table-striped table-advance table-hover">
+				<thead>
+					<tr>
+						<th><i class="fa fa-cube"></i> <?php echo $this->translate("Módulo")?></th>
+						<th><i class="fa fa-code"></i> <?php echo $this->translate("Método")?></th>
+						<th><i class="fa fa-external-link"></i> <?php echo $this->translate("URL")?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><a href="#"><?php echo $this->translate("Páginas"); ?></a></td>
+						<td>GET</td>
+						<td><?php echo $this->url("webservices", array("apiKey"=>$website->apiKey))?>/page/get/[langauge]/[param]/[value]</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</div>
+</div>

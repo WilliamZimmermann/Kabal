@@ -11,7 +11,7 @@ return array(
                 'type'    => 'Segment',
                 'options' => array(
                     // Change this to something specific to your module
-                    'route'    => '/webservice/:apiKey',
+                    'route'    => '/webservice/[:apiKey]',
                     'defaults' => array(
                         // Change this value to reflect the namespace in which
                         // the controllers for your module are found
@@ -28,9 +28,9 @@ return array(
                     'page-get' => array(
                         'type'    => 'Segment',
                         'options' => array(
-                            'route'    => '/page/get[/:language/:param/:value]',
+                            'route'    => '/page/get[/:language[/:param/:value]]',
                             'constraints' => array(
-                                'language' => '[a-zA-Z]*',
+                                'language' => '[a-zA-Z0-9_-]*',
                                 'param' => '[a-zA-Z0-9_-]*',
                                 'value' => '[a-zA-Z0-9_-]*',
                             ),
