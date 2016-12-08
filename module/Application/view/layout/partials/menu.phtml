@@ -56,13 +56,22 @@ $websiteId = $session->__get('websiteId');
 			<li><a href="<?php echo $this->url("images-database"); ?>"><?php echo $this->translate("Listar"); ?></a></li>
 			<li><a href="calendar.html"><?php echo $this->translate("Cadastrar")?></a></li>
 		</ul></li>
-	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-file-text"></i>
+	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-file-text-o"></i>
 			<span><?php echo $this->translate("Páginas")?></span>
 	</a>
 		<ul class="sub">
 			<li><a href="<?php echo $this->url("page"); ?>"><?php echo $this->translate("Listar") ?></a></li>
 			<li><a href="advanced_form_components.html"><?php echo $this->translate("Nova") ?></a></li>
 		</ul></li>
+	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-file-text"></i>
+			<span><?php echo $this->translate("Artigos")?></span>
+	</a>
+	<ul class="sub">
+		<li><a href="<?php echo $this->url("article"); ?>"><?php echo $this->translate("Artigos") ?></a></li>
+		<li><a href="<?php echo $this->url("article/new"); ?>"><?php echo $this->translate("Novo Artigo") ?></a></li>
+		<li><a href="<?php echo $this->url("category"); ?>"><?php echo $this->translate("Categorias") ?></a></li>
+		<li><a href="<?php echo $this->url("category/new"); ?>"><?php echo $this->translate("Nova Categoria") ?></a></li>
+	</ul></li>
 	<li class="sub-menu"><a href="<?php echo $this->url("conversor"); ?>"> <i class="fa fa-th"></i> <span>Conversor</span>
 	<li class="sub-menu"><a href="<?php echo $this->url("webservices"); ?>"> <i class="fa fa-cube"></i> <span>Webservices</span>
 	

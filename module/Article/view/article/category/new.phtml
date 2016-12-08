@@ -1,0 +1,72 @@
+<?php 
+$this->headtitle($this->translate("Nova Categoria"));
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("article")?>"><?php echo $this->translate("Artigos") ?></a></li>
+			<li><a href="<?php echo $this->url("category")?>"><?php echo $this->translate("Categorias") ?></a></li>
+			<li class="active"><?php echo $this->translate("Nova") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+<?php 
+if($message["flag"]>0){
+    if($message["flag"]==1){
+        $class = "success";
+    }else{
+        $class = "danger";
+    }
+    ?>
+    <div class="alert alert-<?php echo $class; ?> alert-block fade in">
+    	<button data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>
+    	<p><?php echo $message["message"]?></p>
+    </div>
+    <?php
+}
+?>
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading tab-bg-dark-navy-blue ">
+                              <ul class="nav nav-tabs">
+                                  <li class="active">
+                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Nova Categoria")?></a>
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Adicionar Idioma")?></a>
+                                  </li>
+                              </ul>
+                          </header>
+			<div class="panel-body">
+				<form class="form-horizontal tasi-form" method="post" id="category">
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Título*")?></label>
+						<div class="col-sm-10">
+                        	<input type="text" class="form-control" name="title" id="title" maxlength="60" value="<?php echo $category->title; ?>" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Ativo")?></label>
+						<div class="col-sm-10">
+								<input type="checkbox" name="active" value="1" <?php if($category->active){ ?>checked<?php } ?> data-toggle="switch" /> 
+						</div>
+					</div>
+					<div class="form-group">
+						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Cadastrar")?></button>
+						&nbsp;<a href="<?php echo $this->url("category")?>" class="btn btn-danger"><?php echo $this->translate("Cancelar")?></a>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</div>
+<?php 
+$this->headScript()->prependFile($this->basePath("js/validators/category.js"));
+?>
