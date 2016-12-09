@@ -12,13 +12,13 @@ class CategoryLanguageTable
     }
     
     /**
-     * This function returns all pages in all languages that are in our records
-     * @param $pageId - Page Id to filter
+     * This function returns all categories in all languages that are in our records
+     * @param $categoryId - Page Id to filter
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function fetchAll($pageId=null){
-        if($pageId){
-            $where = array("page_id"=>$pageId);
+    public function fetchAll($categoryId=null){
+        if($categoryId){
+            $where = array("category_id"=>$categoryId);
         }else{
             $where = array();
         }
@@ -27,14 +27,14 @@ class CategoryLanguageTable
     }
     
     /**
-     * This function returns all pages for a specific website and language
+     * This function returns all categories for a specific website and language
      * @param $language - Language ID to filter
      * @param $websiteId - Website Id to filter
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function fetchAllPages($language, $websiteId){
+    public function fetchAllCategories($language, $websiteId){
         $sqlSelect = $this->tableGateway->getSql()->select();
-        $sqlSelect->join('website_page', 'website_page.idPage = page_has_language.page_id', array());
+        $sqlSelect->join('article_category', 'article_category.idCategory = article_category_has_language.category_id', array());
         $sqlSelect->where(array("website_id"=>$websiteId, "language_id"=>$language));
         $resultSet = $this->tableGateway->selectWith($sqlSelect);
         //die(var_dump($resultSet));
@@ -42,14 +42,14 @@ class CategoryLanguageTable
     }
     
     /**
-     * This function get a specific page registred in our data base
+     * This function get a specific category registred in our data base
      * @param int $id
      * @param int $language
-     * @param string $param ('page_id' by default)
+     * @param string $param ('category_id' by default)
      * @throws \Exception
      * @return ArrayObject|NULL
      */
-    public function getPage($value, $language, $param='page_id'){
+    public function getCategory($value, $language, $param='category_id'){
         $langauge = (int) $language;
         $data = array('language_id'=>$langauge, $param => $value);
         $rowset = $this->tableGateway->select($data);
@@ -61,57 +61,52 @@ class CategoryLanguageTable
     }
 
     /**
-     * This function insert or edit a page language at the database
-     * @param Page $page (if $page->page_id and $page->language_id have valid id's, will update, not insert)
+     * This function insert or edit a category language at the database
+     * @param Page $category (if $category->category_id and $category->language_id have valid id's, will update, not insert)
      * @throws \Exception
      */
-    public function savePage(PageLanguage $page){
+    public function saveCategory(CategoryLanguage $category){
         $data = array(
-            'language_id'=>$page->language_id, 
-            'page_id'=>$page->page_id, 
-            'title'=>$page->title, 
-            'description'=>$page->description,
-            'slug'=>$page->slug,
-            'section_title'=>$page->section_title,
-            'section_description'=>$page->section_description,
-            'content'=>$page->content,
-            'active'=>$page->active,
-            'creationDate'=>$page->creationDate
+            'language_id'=>$category->language_id, 
+            'category_id'=>$category->category_id, 
+            'title'=>$category->title, 
+            'slug'=>$category->slug,
+            'active'=>$category->active,
         );
         
-        $results = $this->getPage($page->page_id, $page->language_id);
-        //If there is no result, so, it's a new language page
+        $results = $this->getCategory($category->category_id, $category->language_id);
+        //If there is no result, so, it's a new language category
         if(!$results){
             if($this->tableGateway->insert($data)){
-                return "PAGEL001";
+                return "ACATL001";
             }else{
-                return "PAGEL002";
+                return "ACATL002";
             }
         }else{
-            //If this page already exists
-            if($this->tableGateway->update($data, array('language_id'=>$page->language_id, 'page_id'=>$page->page_id))){
-                return "PAGEL004";
+            //If this category already exists
+            if($this->tableGateway->update($data, array('language_id'=>$category->language_id, 'category_id'=>$category->category_id))){
+                return "ACATL004";
             }else{
-                return "PAGEL005";
+                return "ACATL005";
             }
         }
     }
     
     
     /**
-     * This function will delete a specific language page
+     * This function will delete a specific language category
      * @param int $languageId
-     * @param int $pageId
+     * @param int $categoryId
      * @return number
      */
-    public function deletePage($languageId=null, $pageId){
+    public function deleteCategory($languageId=null, $categoryId){
         //Here we must to put the recursive functions to delete all future content
-        $where = ($languageId==null) ? array('page_id'=>$pageId) : array('language_id'=>$languageId, 'page_id'=>$pageId);
+        $where = ($languageId==null) ? array('category_id'=>$categoryId) : array('language_id'=>$languageId, 'category_id'=>$categoryId);
         
         if($this->tableGateway->delete($where)){
-            return "PAGE007";
+            return "ACATL007";
         }else{
-            return "PAGE008";
+            return "ACATL008";
         }
     }
 }

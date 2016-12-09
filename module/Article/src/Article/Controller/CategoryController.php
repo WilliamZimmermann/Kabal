@@ -10,10 +10,8 @@
 namespace Article\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Page\Model\Page;
-use Page\Model\PageLanguage;
-use ImagesDatabase\Model\ModuleImage;
 use Article\Model\Category;
+use Article\Model\CategoryLanguage;
 
 class CategoryController extends AbstractActionController
 {
@@ -123,7 +121,7 @@ class CategoryController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "new") || $logedUser["idCompany"]==1){
-            $category = new PageLanguage();
+            $category = new CategoryLanguage();
             $message = $this->getServiceLocator()->get('systemMessages');
     
             //Get the Language and page id
@@ -141,51 +139,31 @@ class CategoryController extends AbstractActionController
                 if($request->isPost()){
                     $data = $request->getPost();
                     $category->exchangeArray($request->getPost());
-                    $category->page_id = $id;
+                    $category->category_id = $id;
                     $category->language_id = $idLanguage;
                     if($category->validation()){
-                        $result = $this->getCategoryLanguageTable()->savePage($category);
-                        //Delete all relationships
-                        $this->getServiceLocator()->get('moduleImages')->deleteImage(5, null, $id);
-                        if($data->imageLabel){
-                            $images = array_keys($data->imageLabel);
-                            $labels = $data->imageLabel;
-                            $alts = $data->imageAlt;
-                            $imageModule = new ModuleImage();
-                            foreach($images as $image){
-                                $data["system_module_idModule"] = 5; //Id do módulo de Páginas
-                                $data["image_idImage"] = $image;
-                                $data["id_item"] = $id;
-                                $data["label"] = $labels[$image];
-                                $data["alt"] = $alts[$image];
-                                $imageModule->exchangeArray($data);
-                                $this->getServiceLocator()->get('moduleImages')->saveImage($imageModule);
-                            }
-                        }
+                        $result = $this->getCategoryLanguageTable()->saveCategory($category);                        
                         $message->setCode($result);
                         //Get again the data, now updated
-                        $categoryData = $this->getCategoryTable()->getPage($id);
+                        $categoryData = $this->getCategoryTable()->getCategory($id);
                     }else{
-                        $message->setCode("PAGEL003");
+                        $message->setCode("ACATL003");
                     }
                     //Save log
                     $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
                 }
                 $websiteLanguages = $this->getServiceLocator()->get("website_language")->fetchAll($logedUser["idWebsite"]);
                 
-                $langaugePageData = $this->getCategoryLanguageTable()->getPage($id, $idLanguage);
-                
-                $imagesSelected = $this->getServiceLocator()->get('moduleImages')->fetchAll(5, $id);
-                
+                $languageCategoryData = $this->getCategoryLanguageTable()->getCategory($id, $idLanguage);
+                                
                 return array(
                     "message"=>$message->getMessage(), 
-                    "page"=>$categoryData, 
-                    "pageLanguage"=>$langaugePageData,
+                    "category"=>$categoryData, 
+                    "categoryLanguage"=>$languageCategoryData,
                     "websiteLanguages"=>$websiteLanguages, 
                     "idLanguage"=>$idLanguage, 
                     "languageData"=>$languageData,
                     "websiteId" => $logedUser["idWebsite"],
-                    "images" => $imagesSelected
                 );
             }else{
                 return $this->redirect()->toRoute("noPermission");
@@ -211,11 +189,12 @@ class CategoryController extends AbstractActionController
             }
     
             $message = $this->getServiceLocator()->get('systemMessages');
-            //Before to delete a category, if exist, will delete langauge pages associated
-            //TODO
-            //$this->getCategoryLanguageTable()->deletePage(null, $id);
-            //$message->setCode("ACATL009", array("id"=>$id));
+            //Before to delete a category, if exist, will delete langauge categories associated
+            $this->getCategoryLanguageTable()->deleteCategory(null, $id);
+            $message->setCode("ACATL009", array("id"=>$id));
+            $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
             
+            //Delete category
             $result = $this->getCategoryTable()->deleteCategory($id);
             $message->setCode($result, array("id"=>$id));
     
