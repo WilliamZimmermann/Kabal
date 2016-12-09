@@ -17,8 +17,8 @@ use ImagesDatabase\Model\ModuleImage;
 class ArticleController extends AbstractActionController
 {
     protected $moduleId = 8;
-    protected $pageTable;
-    protected $pageLanguageTable;
+    protected $articleTable;
+    protected $articleLanguageTable;
     
     public function indexAction()
     {
@@ -26,8 +26,8 @@ class ArticleController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
-            $pages = $this->getPageTable()->fetchAll($logedUser["idWebsite"]);
-            return array("pages"=>$pages);
+            $articles = $this->getArticleTable()->fetchAll($logedUser["idWebsite"]);
+            return array("articles"=>$articles);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -51,10 +51,10 @@ class ArticleController extends AbstractActionController
                 $page->exchangeArray($request->getPost());
                 $page->website_id = $logedUser["idWebsite"];
                 if($page->validation()){
-                    $result = $this->getPageTable()->savePage($page);
+                    $result = $this->getArticleTable()->savePage($page);
                     $message->setCode($result);
                 }else{
-                    $message->setCode("COMPANY003");
+                    $message->setCode("ART003");
                 }
                 //Save log
                 $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
@@ -81,7 +81,7 @@ class ArticleController extends AbstractActionController
             //Get the Company ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First, will check if this page exist
-            $pageData = $this->getPageTable()->getPage($id);
+            $pageData = $this->getArticleTable()->getPage($id);
             if($pageData->website_id==$logedUser["idWebsite"]){
     
                 //If was a POST
@@ -91,10 +91,10 @@ class ArticleController extends AbstractActionController
                     $page->idPage = $id;
                     $page->website_id = $logedUser["idWebsite"];
                     if($page->validation()){
-                        $result = $this->getPageTable()->savePage($page);
+                        $result = $this->getArticleTable()->savePage($page);
                         $message->setCode($result);
                         //Get again the data, now updated
-                        $pageData = $this->getPageTable()->getPage($id);
+                        $pageData = $this->getArticleTable()->getPage($id);
                     }else{
                         $message->setCode("PAGE003");
                     }
@@ -132,7 +132,7 @@ class ArticleController extends AbstractActionController
             $languageData = $this->getServiceLocator()->get('language')->getLanguage($idLanguage);
             
             //First, will check if this page exist
-            $pageData = $this->getPageTable()->getPage($id);
+            $pageData = $this->getArticleTable()->getPage($id);
             if($pageData->website_id==$logedUser["idWebsite"]){
     
                 //If was a POST
@@ -143,7 +143,7 @@ class ArticleController extends AbstractActionController
                     $page->page_id = $id;
                     $page->language_id = $idLanguage;
                     if($page->validation()){
-                        $result = $this->getPageLanguageTable()->savePage($page);
+                        $result = $this->getArticleLanguageTable()->savePage($page);
                         //Delete all relationships
                         $this->getServiceLocator()->get('moduleImages')->deleteImage(5, null, $id);
                         if($data->imageLabel){
@@ -163,7 +163,7 @@ class ArticleController extends AbstractActionController
                         }
                         $message->setCode($result);
                         //Get again the data, now updated
-                        $pageData = $this->getPageTable()->getPage($id);
+                        $pageData = $this->getArticleTable()->getPage($id);
                     }else{
                         $message->setCode("PAGEL003");
                     }
@@ -172,7 +172,7 @@ class ArticleController extends AbstractActionController
                 }
                 $websiteLanguages = $this->getServiceLocator()->get("website_language")->fetchAll($logedUser["idWebsite"]);
                 
-                $langaugePageData = $this->getPageLanguageTable()->getPage($id, $idLanguage);
+                $langaugePageData = $this->getArticleLanguageTable()->getPage($id, $idLanguage);
                 
                 $imagesSelected = $this->getServiceLocator()->get('moduleImages')->fetchAll(5, $id);
                 
@@ -211,10 +211,10 @@ class ArticleController extends AbstractActionController
     
             $message = $this->getServiceLocator()->get('systemMessages');
             //Before to delete a page, if exist, will delete langauge pages associated
-            $this->getPageLanguageTable()->deletePage(null, $id);
+            $this->getArticleLanguageTable()->deletePage(null, $id);
             $message->setCode("PAGEL009", array("id"=>$id));
             
-            $result = $this->getPageTable()->deletePage($id);
+            $result = $this->getArticleTable()->deletePage($id);
             $message->setCode($result, array("id"=>$id));
     
             //Save log
@@ -226,19 +226,19 @@ class ArticleController extends AbstractActionController
         }
     }
     
-    public function getPageTable(){
-        if(!$this->pageTable){
+    public function getArticleTable(){
+        if(!$this->articleTable){
             $sm = $this->getServiceLocator();
-            $this->pageTable = $sm->get('Page\Model\PageTable');
+            $this->articleTable = $sm->get('Article\Model\ArticleTable');
         }
-        return $this->pageTable;
+        return $this->articleTable;
     }
     
-    public function getPageLanguageTable(){
-        if(!$this->pageLanguageTable){
+    public function getArticleLanguageTable(){
+        if(!$this->articleLanguageTable){
             $sm = $this->getServiceLocator();
-            $this->pageLanguageTable = $sm->get('Page\Model\PageLanguageTable');
+            $this->articleLanguageTable = $sm->get('Article\Model\ArticleLanguageTable');
         }
-        return $this->pageLanguageTable;
+        return $this->articleLanguageTable;
     }
 }

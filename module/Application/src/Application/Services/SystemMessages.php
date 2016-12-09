@@ -194,7 +194,7 @@ class SystemMessages
                     $this->logPriority = 5;
                     break;
                 // ARTICLES MODULE
-                //-- CATEGORIES
+                // -- CATEGORIES
                 case "ACAT001":
                     $message["flag"] = 1;
                     $message["message"] = "Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACAT001]";
@@ -278,6 +278,92 @@ class SystemMessages
                 case "ACATL009":
                     $message["flag"] = 1;
                     $message["message"] = "O conteúdo em todos os idiomas relacionados à Categoria (" . $this->params["id"] . ") foi excluído com sucesso. [ACATL009]";
+                    $this->logPriority = 5;
+                    break;
+                // --ARTICLES
+                case "ART001":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ART001]";
+                    $this->logPriority = 5;
+                    break;
+                case "ART002":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar artigo. Por favor, tente novamente. [ART002]";
+                    $this->logPriority = 3;
+                    break;
+                case "ART003":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao cadastrar/alterar artigo. Um ou mais campos possuem dados inválidos. Tente novamente. [ART003]";
+                    $this->logPriority = 5;
+                    break;
+                case "ART004":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo alterado com sucesso. [ART004]";
+                    $this->logPriority = 5;
+                    break;
+                case "ART005":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar o artigo. Tente novamente. [ART005]";
+                    $this->logPriority = 3;
+                    break;
+                case "ART006":
+                    $message["flag"] = 2;
+                    $message["message"] = "Não encontramos esse artigo no sistema. [ART006]";
+                    $this->logPriority = 3;
+                    break;
+                case "ART007":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo (" . $this->params["id"] . ") excluído com sucesso. [ART007]";
+                    $this->logPriority = 5;
+                    break;
+                case "ART008":
+                    $message["flag"] = 2;
+                    $message["message"] = "Houve um erro ao tentar excluir o artigo (" . $this->params["id"] . "). [ART008]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL001":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]";
+                    $this->logPriority = 5;
+                    break;
+                case "ARTL002":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar artigo. Por favor, tente novamente. [ARTL002]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL003":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao cadastrar/alterar artigo. Um ou mais campos possuem dados inválidos. Tente novamente. [ARTL003]";
+                    $this->logPriority = 5;
+                    break;
+                case "ARTL004":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo alterado com sucesso. [ARTL004]";
+                    $this->logPriority = 5;
+                    break;
+                case "ARTL005":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar o artigo. Tente novamente. [ARTL005]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL006":
+                    $message["flag"] = 2;
+                    $message["message"] = "Não encontramos esse artigo no sistema. [ARTL006]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL007":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo (" . $this->params["id"] . ") excluído com sucesso. [ARTL007]";
+                    $this->logPriority = 5;
+                    break;
+                case "ARTL008":
+                    $message["flag"] = 2;
+                    $message["message"] = "Houve um erro ao tentar excluir o artigo (" . $this->params["id"] . "). [ARTL008]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL009":
+                    $message["flag"] = 1;
+                    $message["message"] = "O conteúdo em todos os idiomas relacionados ao Artigo (" . $this->params["id"] . ") foi excluído com sucesso. [ARTL009]";
                     $this->logPriority = 5;
                     break;
                 // USERS MODULE
