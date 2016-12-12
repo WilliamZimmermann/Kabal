@@ -11,8 +11,8 @@ class ArticleLanguage
     public $section_title;
     public $section_description;
     public $content;
+    public $lastUpdateDate;
     public $active;
-    public $creationDate;
     
     public function exchangeArray($data){
         $this->language_id = (!empty($data['language_id'])) ? $data['language_id'] : null;
@@ -24,8 +24,8 @@ class ArticleLanguage
         $this->section_title = (!empty($data['section_title'])) ? strip_tags($data['section_title']) : null;
         $this->section_description = (!empty($data['section_description'])) ? strip_tags($data['section_description']) : null;
         $this->content = (!empty($data['content'])) ? strip_tags($data['content']) : null;
+        $this->lastUpdateDate = (!empty($data['lastUpdateDate'])) ? $data['lastUpdateDate'] : date('Y-m-d H:i:s');
         $this->active = (!empty($data['active'])) ? 1 : 0;
-        $this->creationDate = (!empty($data['creationDate'])) ? $data['creationDate'] : date('Y-m-d H:i:s');
     }
     
     public function validation(){

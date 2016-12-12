@@ -1,5 +1,5 @@
 <?php 
-$this->headtitle($this->translate("Nova Página"));
+$this->headtitle($this->translate("Novo Artigo"));
 ?>
 <div class="row">
 	<div class="col-lg-12">
@@ -7,8 +7,8 @@ $this->headtitle($this->translate("Nova Página"));
 		<ul class="breadcrumb">
 			<li><a href="<?php echo $this->url("application"); ?>"><i
 					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
-			<li><a href="<?php echo $this->url("page")?>"><?php echo $this->translate("Páginas") ?></a></li>
-			<li class="active"><?php echo $this->translate("Nova") ?></li>
+			<li><a href="<?php echo $this->url("article")?>"><?php echo $this->translate("Artigos") ?></a></li>
+			<li class="active"><?php echo $this->translate("Novo Artigo") ?></li>
 		</ul>
 		<!--breadcrumbs end -->
 	</div>
@@ -36,7 +36,7 @@ if($message["flag"]>0){
 			<header class="panel-heading tab-bg-dark-navy-blue ">
                               <ul class="nav nav-tabs">
                                   <li class="active">
-                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Nova Página")?></a>
+                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Novo Artigo")?></a>
                                   </li>
                                   <li class="">
                                       <a><?php echo $this->translate("Adicionar Idioma")?></a>
@@ -44,28 +44,62 @@ if($message["flag"]>0){
                               </ul>
                           </header>
 			<div class="panel-body">
-				<form class="form-horizontal tasi-form" method="post" id="page">
+				<form class="form-horizontal tasi-form" method="post" id="article">
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Título*")?></label>
 						<div class="col-sm-10">
-                        	<input type="text" class="form-control" name="title" id="title" maxlength="85" value="<?php echo $page->title; ?>" >
+                        	<input type="text" class="form-control" name="title" id="title" maxlength="85" value="<?php echo $article->title; ?>" >
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição*")?></label>
 						<div class="col-sm-10">
-                        	<textarea rows="2" class="form-control" name="description" id="description"><?php echO $page->description; ?></textarea>
+                        	<textarea rows="2" class="form-control" name="description" id="description"><?php echo $article->description; ?></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Autor*")?></label>
+						<div class="col-sm-10">
+                        	<input type="text" class="form-control" name="author" id="author" maxlength="60" value="<?php echo $article->author; ?>" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Data de Publicação*")?></label>
+						<div class="col-sm-10">
+                          	<input size="16" name="publicationDate" type="text" value="" readonly class="form_datetime form-control">
+						</div>
+						<div class="col-sm-2"></div>
+						<div class="col-sm-10">
+						<?php echo $this->translate("O artigo será exibido somente na data de publicação ou após ela.")?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Mídias Sociais*")?></label>
+						<div class="col-sm-2">
+								<input type="checkbox" name="socialMedias" value="1" <?php if($article->socialMedias){ ?>checked<?php } ?> data-toggle="switch" /> 
+						</div>
+						<div class="col-sm-8">
+							<?php echo $this->translate("Permitir que usuários comentem e compartilhem esse artigo usando mídias sociais? ")?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Comentários*")?></label>
+						<div class="col-sm-2">
+								<input type="checkbox" name="comments" value="1" <?php if($article->comments){ ?>checked<?php } ?> data-toggle="switch" /> 
+						</div>
+						<div class="col-sm-8">
+							<?php echo $this->translate("Deseja liberar comentários para esse artigo?")?>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Ativo")?></label>
 						<div class="col-sm-10">
-								<input type="checkbox" name="active" value="1" <?php if($page->active){ ?>checked<?php } ?> data-toggle="switch" /> 
+								<input type="checkbox" name="active" value="1" <?php if($article->active){ ?>checked<?php } ?> data-toggle="switch" /> 
 						</div>
 					</div>
 					<div class="form-group">
-						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Cadastrar")?></button>
-						&nbsp;<a href="<?php echo $this->url("page")?>" class="btn btn-danger"><?php echo $this->translate("Cancelar")?></a>
+						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Publicar/Salvar")?></button>
+						&nbsp;<a href="<?php echo $this->url("article")?>" class="btn btn-danger"><?php echo $this->translate("Cancelar")?></a>
 					</div>
 				</form>
 			</div>
@@ -73,6 +107,9 @@ if($message["flag"]>0){
 	</div>
 </div>
 <?php 
-//$this->headlink()->prependStylesheet($this->basePath('css/style-responsive.css'));
-$this->headScript()->prependFile($this->basePath("js/validators/page.js"));
+$this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-datetimepicker/css/datetimepicker.css'));
+
+$this->headScript()->prependFile($this->basePath("js/validators/article.js"));
+$this->headScript()->prependFile($this->basePath('js/advanced-component-datetime.js'));
+$this->headScript()->prependFile($this->basePath('assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'));
 ?>

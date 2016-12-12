@@ -13,7 +13,7 @@ class Article
     public $publicationDate;
     public $lastUpdateDate;
     public $socialMedias;
-    public $coments;
+    public $comments;
     public $active;
     
     public function exchangeArray($data){
@@ -22,10 +22,10 @@ class Article
         $this->title = (!empty($data['title'])) ? strip_tags($data['title']) : null;
         $this->description = (!empty($data['description'])) ? strip_tags($data['description']) : null;
         $this->author = (!empty($data['author'])) ? strip_tags($data['author']) : null;
-        $this->publicationDate = (!empty($data['publicationDate'])) ? strip_tags($data['publicationDate']) : date("Y-m-d H:i:s");
-        $this->lastUpdateDate = (!empty($data['lastUpdateDate'])) ? strip_tags($data['lastUpdateDate']) : date("Y-m-d H:i:s");
+        $this->publicationDate = (!empty($data['publicationDate'])) ? $data['publicationDate'] : date("Y-m-d H:i:s");
+        $this->lastUpdateDate = (!empty($data['lastUpdateDate'])) ? $data['lastUpdateDate'] : date("Y-m-d H:i:s");
         $this->socialMedias = (!empty($data['socialMedias'])) ? 1 : 0;
-        $this->coments = (!empty($data['coments'])) ? 1 : 0;
+        $this->comments = (!empty($data['comments'])) ? 1 : 0;
         $this->active = (!empty($data['active'])) ? 1 : 0;
     }
     
@@ -59,10 +59,8 @@ class Article
         
         //Will validate the publication date
         $dateValidator = new Date();
+        $dateValidator->setFormat("d/m/Y H:i");
         if(!$dateValidator->isValid($this->publicationDate)) {
-            return false;
-        }
-        if(!$dateValidator->isValid($this->lastUpdateDate)) {
             return false;
         }
         

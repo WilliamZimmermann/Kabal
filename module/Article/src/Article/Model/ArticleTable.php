@@ -2,6 +2,7 @@
 namespace Article\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Application\Services\SystemFunctions;
 
 class ArticleTable
 {
@@ -55,11 +56,12 @@ class ArticleTable
             'title'=>$article->title, 
             'description'=>$article->description, 
             'author'=>$article->author,
-            'publicationDate'=>$article->publicationDate,
-            'lastUpdateDate'=>$article->lastUpdateDate,
+            'publicationDate'=>SystemFunctions::dateInvert($article->publicationDate, "american"),
+            'lastUpdateDate'=>date('Y-m-d H:i:s'),
             'socialMedias'=>$article->socialMedias,
             'comments'=>$article->comments,
             'active'=>$article->active);
+        
         
         $id = (int)$article->idArticle;
         //If there is no Id, so, it's a new article
