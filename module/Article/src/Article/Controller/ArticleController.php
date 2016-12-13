@@ -103,7 +103,7 @@ class ArticleController extends AbstractActionController
                         //Get again the data, now updated
                         $articleData = $this->getArticleTable()->getArticle($id);
                     }else{
-                        $message->setCode("PAGE003");
+                        $message->setCode("ART003");
                     }
                     //Save log
                     $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
@@ -151,17 +151,19 @@ class ArticleController extends AbstractActionController
                     $article->language_id = $idLanguage;
                     if($article->validation()){
                         $result = $this->getArticleLanguageTable()->saveArticle($article);
+                        $langaugeArticleData = $this->getArticleLanguageTable()->getArticle($id, $idLanguage);
+                        
                         //Delete all relationships
-                        $this->getServiceLocator()->get('moduleImages')->deleteImage(5, null, $id);
+                        $this->getServiceLocator()->get('moduleImages')->deleteImage($this->moduleId, null, $langaugeArticleData->idArticleLanguage);
                         if($data->imageLabel){
                             $images = array_keys($data->imageLabel);
                             $labels = $data->imageLabel;
                             $alts = $data->imageAlt;
                             $imageModule = new ModuleImage();
                             foreach($images as $image){
-                                $data["system_module_idModule"] = 5; //Id do módulo de Páginas
+                                $data["system_module_idModule"] = $this->moduleId; //Id do módulo de Páginas
                                 $data["image_idImage"] = $image;
-                                $data["id_item"] = $id;
+                                $data["id_item"] = $langaugeArticleData->idArticleLanguage;
                                 $data["label"] = $labels[$image];
                                 $data["alt"] = $alts[$image];
                                 $imageModule->exchangeArray($data);
@@ -172,7 +174,7 @@ class ArticleController extends AbstractActionController
                         //Get again the data, now updated
                         $articleData = $this->getArticleTable()->getArticle($id);
                     }else{
-                        $message->setCode("PAGEL003");
+                        $message->setCode("ARTL003");
                     }
                     //Save log
                     $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
@@ -181,7 +183,7 @@ class ArticleController extends AbstractActionController
                 
                 $langaugeArticleData = $this->getArticleLanguageTable()->getArticle($id, $idLanguage);
                 
-                $imagesSelected = $this->getServiceLocator()->get('moduleImages')->fetchAll(5, $id);
+                $imagesSelected = $this->getServiceLocator()->get('moduleImages')->fetchAll($this->moduleId, $langaugeArticleData->idArticleLanguage);
                 
                 return array(
                     "message"=>$message->getMessage(), 
@@ -219,7 +221,7 @@ class ArticleController extends AbstractActionController
             $message = $this->getServiceLocator()->get('systemMessages');
             //Before to delete a article, if exist, will delete langauge articles associated
             $this->getArticleLanguageTable()->deleteArticle(null, $id);
-            $message->setCode("PAGEL009", array("id"=>$id));
+            $message->setCode("ARTL009", array("id"=>$id));
             
             $result = $this->getArticleTable()->deleteArticle($id);
             $message->setCode($result, array("id"=>$id));
