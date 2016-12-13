@@ -283,7 +283,7 @@ class SystemMessages
                 // --ARTICLES
                 case "ART001":
                     $message["flag"] = 1;
-                    $message["message"] = "Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ART001]";
+                    $message["message"] = "Artigo cadastrado com sucesso. [ART001]";
                     $this->logPriority = 5;
                     break;
                 case "ART002":

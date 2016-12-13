@@ -67,7 +67,8 @@ class ArticleTable
         //If there is no Id, so, it's a new article
         if($id  == 0){
             if($this->tableGateway->insert($data)){
-                return "ART001";
+                $id = $this->tableGateway->getLastInsertValue();
+                return array("code"=>"ART001", "id"=>$id);
             }else{
                 return "ART002";
             }
@@ -80,7 +81,6 @@ class ArticleTable
                     return "ART005";
                 }
             }else{ //This id was not found at the system, article does not exist
-                throw new \Exception('Image does not exist');
                 return "ART007";
             }
         }

@@ -52,6 +52,10 @@ class ArticleController extends AbstractActionController
                 $article->website_id = $logedUser["idWebsite"];
                 if($article->validation()){
                     $result = $this->getArticleTable()->saveArticle($article);
+                    if(is_array($result)){
+                        $this->redirect()->toRoute("article/edit", array("id"=>$result["id"], "code"=>$result["code"]));
+                        $message->setCode($result["code"]);
+                    }
                     $message->setCode($result);
                 }else{
                     $message->setCode("ART003");
@@ -77,7 +81,10 @@ class ArticleController extends AbstractActionController
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
             $article = new Article();
             $message = $this->getServiceLocator()->get('systemMessages');
-            
+
+            if($this->params()->fromRoute('code')){
+                $message->setCode($this->params()->fromRoute('code'));
+            }
             //Get the Company ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First, will check if this article exist

@@ -8,12 +8,12 @@ class SystemFunctions
             $hour = substr($date, 10, 6);
             $date = substr($date, 0, 10);
             $date = implode('/', array_reverse(explode('-', $date)));
-            return $date." ".$hour;
+            return $date."".$hour;
         }else{
             $hour = substr($date, 10, 6);
             $date = substr($date, 0, 10);
             $date = implode('-', array_reverse(explode('/', $date)));
-            return $date." ".$hour;
+            return $date."".$hour;
         }
     }
 }
