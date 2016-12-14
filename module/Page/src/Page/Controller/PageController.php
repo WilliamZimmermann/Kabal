@@ -54,7 +54,7 @@ class PageController extends AbstractActionController
                     $result = $this->getPageTable()->savePage($page);
                     $message->setCode($result);
                 }else{
-                    $message->setCode("COMPANY003");
+                    $message->setCode("PAGE003");
                 }
                 //Save log
                 $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
