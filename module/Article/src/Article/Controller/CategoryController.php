@@ -12,12 +12,14 @@ namespace Article\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Article\Model\Category;
 use Article\Model\CategoryLanguage;
+use Article\Model\ArticleHasCategory;
 
 class CategoryController extends AbstractActionController
 {
     protected $moduleId = 8;
     protected $categoryTable;
     protected $categoryLanguageTable;
+    protected $articleHasCategoryTable;
     
     public function indexAction()
     {
@@ -189,7 +191,17 @@ class CategoryController extends AbstractActionController
             }
     
             $message = $this->getServiceLocator()->get('systemMessages');
-            //Before to delete a category, if exist, will delete langauge categories associated
+            
+            //Before to delete language categories associated must to delete relationships between articles
+            $categoriesLanguages = $this->getCategoryLanguageTable()->fetchAll($id);
+            $articleCategory = new ArticleHasCategory();
+            foreach($categoriesLanguages as $categoryLanguage){
+                //Delete any relationships that can exists between a category and an article
+                $articleCategory->language_idCategory = $categoryLanguage->idCategoryLanguage;
+                $this->getArticleHasCategoryTable()->deleteCategory($articleCategory);
+            }
+            
+            //Before to delete a category, if exist, will delete language categories associated
             $this->getCategoryLanguageTable()->deleteCategory(null, $id);
             $message->setCode("ACATL009", array("id"=>$id));
             $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
@@ -221,5 +233,13 @@ class CategoryController extends AbstractActionController
             $this->categoryLanguageTable = $sm->get('Article\Model\CategoryLanguageTable');
         }
         return $this->categoryLanguageTable;
+    }
+    
+    public function getArticleHasCategoryTable(){
+        if(!$this->articleHasCategoryTable){
+            $sm = $this->getServiceLocator();
+            $this->articleHasCategoryTable = $sm->get('Article\Model\ArticleHasCategoryTable');
+        }
+        return $this->articleHasCategoryTable;
     }
 }

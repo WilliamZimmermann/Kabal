@@ -22,6 +22,8 @@ use Article\Model\ArticleTable;
 use Article\Model\Article;
 use Article\Model\ArticleLanguageTable;
 use Article\Model\ArticleLanguage;
+use Article\Model\ArticleHasCategoryTable;
+use Article\Model\ArticleHasCategory;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -101,6 +103,17 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ArticleLanguage());
                     return new TableGateway('article_has_language', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Article\Model\ArticleHasCategoryTable' => function ($sm) {
+                    $tableGateway = $sm->get('ArticleHasCategoryTableGateway');
+                    $table = new ArticleHasCategoryTable($tableGateway);
+                    return $table;
+                },
+                'ArticleHasCategoryTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ArticleHasCategory());
+                    return new TableGateway('article_has_category', $dbAdapter, null, $resultSetPrototype);
                 }
             )
         );

@@ -36,6 +36,7 @@ class CategoryLanguageTable
         $sqlSelect = $this->tableGateway->getSql()->select();
         $sqlSelect->join('article_category', 'article_category.idCategory = article_category_has_language.category_id', array());
         $sqlSelect->where(array("website_id"=>$websiteId, "language_id"=>$language));
+        $sqlSelect->order("title");
         $resultSet = $this->tableGateway->selectWith($sqlSelect);
         //die(var_dump($resultSet));
         return $resultSet;

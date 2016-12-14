@@ -460,3 +460,99 @@
 2016-12-13T20:15:16+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
 2016-12-13T20:16:23+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]
 2016-12-13T20:17:24+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T17:09:51+00:00 NOTICE (5): USER ID: 1. MESSAGE: O conteúdo em todos os idiomas relacionados à Categoria (1) foi excluído com sucesso. [ACATL009]
+2016-12-14T17:09:51+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria (1) excluída com sucesso. [ACAT007]
+2016-12-14T17:09:51+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria (1) excluída com sucesso. [ACAT007]
+2016-12-14T17:22:28+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACAT001]
+2016-12-14T17:22:49+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T17:23:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T17:23:23+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACAT001]
+2016-12-14T17:23:43+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T17:23:57+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T17:24:09+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACAT001]
+2016-12-14T17:32:39+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACAT001]
+2016-12-14T17:33:08+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T17:33:26+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T18:18:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T18:18:24+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T18:18:35+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T18:18:58+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T18:19:06+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T18:19:25+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:24:02+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:24:47+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:24:48+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:24:48+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:24:48+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:24:48+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:24:48+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:25:12+00:00 NOTICE (5): USER ID: 1. MESSAGE: Falha ao cadastrar/alterar artigo. Um ou mais campos possuem dados inválidos. Tente novamente. [ARTL003]
+2016-12-14T19:25:29+00:00 NOTICE (5): USER ID: 1. MESSAGE: Falha ao cadastrar/alterar artigo. Um ou mais campos possuem dados inválidos. Tente novamente. [ARTL003]
+2016-12-14T19:25:47+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:25:47+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:25:47+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:25:47+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]
+2016-12-14T19:25:47+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]
+2016-12-14T19:25:47+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]
+2016-12-14T19:32:32+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:32:32+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:32:32+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:32:32+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:32:32+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:32:32+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:32:43+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:32:44+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:32:44+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:32:44+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:32:44+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:32:44+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:30+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:30+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:30+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:35+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:35+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:35+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:33:35+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:35+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:33:35+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo alterado com sucesso. [ARTL004]
+2016-12-14T19:45:43+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:45:43+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:45:43+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:45:44+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]
+2016-12-14T19:45:44+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]
+2016-12-14T19:45:44+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]
+2016-12-14T19:46:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: A category was related with an Article
+2016-12-14T19:46:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]
+2016-12-14T19:46:13+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]
+2016-12-14T19:46:32+00:00 NOTICE (5): USER ID: 1. MESSAGE: Artigo (3) excluído com sucesso. [ART007]
+2016-12-14T19:53:03+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]
+2016-12-14T19:56:46+00:00 NOTICE (5): USER ID: 1. MESSAGE: O conteúdo em todos os idiomas relacionados à Categoria (5) foi excluído com sucesso. [ACATL009]
+2016-12-14T19:56:46+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria (5) excluída com sucesso. [ACAT007]
+2016-12-14T19:56:46+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria (5) excluída com sucesso. [ACAT007]
+2016-12-14T19:57:00+00:00 NOTICE (5): USER ID: 1. MESSAGE: O conteúdo em todos os idiomas relacionados à Categoria (2) foi excluído com sucesso. [ACATL009]
+2016-12-14T19:57:00+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria (2) excluída com sucesso. [ACAT007]
+2016-12-14T19:57:00+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria (2) excluída com sucesso. [ACAT007]

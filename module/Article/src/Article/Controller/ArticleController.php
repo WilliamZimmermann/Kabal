@@ -13,12 +13,17 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Article\Model\Article;
 use Article\Model\ArticleLanguage;
 use ImagesDatabase\Model\ModuleImage;
+use Article\Model\ArticleHasCategory;
 
 class ArticleController extends AbstractActionController
 {
     protected $moduleId = 8;
     protected $articleTable;
     protected $articleLanguageTable;
+    protected $categoryTable;
+    protected $categoryLanguageTable;
+    protected $articleHasCategoryTable;
+    
     
     public function indexAction()
     {
@@ -137,6 +142,7 @@ class ArticleController extends AbstractActionController
             $idLanguage = (int) $this->params()->fromRoute('idLanguage', 0);
             
             $languageData = $this->getServiceLocator()->get('language')->getLanguage($idLanguage);
+            $categories = $this->getCategoryLanguageTable()->fetchAllCategories($idLanguage, $logedUser["idWebsite"]);
             
             //First, will check if this article exist
             $articleData = $this->getArticleTable()->getArticle($id);
@@ -153,7 +159,23 @@ class ArticleController extends AbstractActionController
                         $result = $this->getArticleLanguageTable()->saveArticle($article);
                         $langaugeArticleData = $this->getArticleLanguageTable()->getArticle($id, $idLanguage);
                         
-                        //Delete all relationships
+                        //Insert categories
+                        if($data->categories){
+                            //Delete all categories relationships
+                            $articleCategory = new ArticleHasCategory();
+                            $articleCategory->language_idArticle = $langaugeArticleData->idArticleLanguage;
+                            $this->getArticleHasCategoryTable()->deleteCategory($articleCategory);
+                            foreach($data->categories as $category){
+                                $articleCategory->language_idCategory = $category;
+                                if($this->getArticleHasCategoryTable()->saveCategory($articleCategory)){
+                                    $this->getServiceLocator()->get('systemLog')->addLog(0, "A category was related with an Article", 5);
+                                }else{
+                                    $this->getServiceLocator()->get('systemLog')->addLog(0, "A problem happened when tried relate a category with an article", 3);
+                                }
+                            }
+                        }
+                        
+                        //Delete all images relationships
                         $this->getServiceLocator()->get('moduleImages')->deleteImage($this->moduleId, null, $langaugeArticleData->idArticleLanguage);
                         if($data->imageLabel){
                             $images = array_keys($data->imageLabel);
@@ -184,7 +206,11 @@ class ArticleController extends AbstractActionController
                 $langaugeArticleData = $this->getArticleLanguageTable()->getArticle($id, $idLanguage);
                 
                 $imagesSelected = $this->getServiceLocator()->get('moduleImages')->fetchAll($this->moduleId, $langaugeArticleData->idArticleLanguage);
-                
+                $categoriesSelectedData = $this->getArticleHasCategoryTable()->fetchAll($langaugeArticleData->idArticleLanguage, "language_idArticle");
+                $categoriesSelected = array();
+                foreach($categoriesSelectedData as $selected){
+                    $categoriesSelected[] = $selected->language_idCategory;
+                }
                 return array(
                     "message"=>$message->getMessage(), 
                     "article"=>$articleData, 
@@ -193,7 +219,9 @@ class ArticleController extends AbstractActionController
                     "idLanguage"=>$idLanguage, 
                     "languageData"=>$languageData,
                     "websiteId" => $logedUser["idWebsite"],
-                    "images" => $imagesSelected
+                    "images" => $imagesSelected,
+                    "categories"=>$categories,
+                    "categoriesSelected"=>$categoriesSelected
                 );
             }else{
                 return $this->redirect()->toRoute("noPermission");
@@ -219,7 +247,20 @@ class ArticleController extends AbstractActionController
             }
     
             $message = $this->getServiceLocator()->get('systemMessages');
-            //Before to delete a article, if exist, will delete langauge articles associated
+            /*Before to delete a article, if exist, will delete language articles associated
+            * But, before to delete language articles associated, must to delete associated categories
+            */
+            $articleCategory = new ArticleHasCategory();
+            $articleLanguages = $this->getArticleLanguageTable()->fetchAll($id);
+            foreach($articleLanguages as $articleLanguage){
+                $articleCategory->language_idArticle = $articleLanguage->idArticleLanguage;
+                //Delete the category Relationship
+                $this->getArticleHasCategoryTable()->deleteCategory($articleCategory);  
+                //Delete image relationships also
+                $this->getServiceLocator()->get('moduleImages')->deleteImage($this->moduleId, null, $articleLanguage->idArticleLanguage);
+            }
+            
+            //Now it can delete the language article
             $this->getArticleLanguageTable()->deleteArticle(null, $id);
             $message->setCode("ARTL009", array("id"=>$id));
             
@@ -249,5 +290,29 @@ class ArticleController extends AbstractActionController
             $this->articleLanguageTable = $sm->get('Article\Model\ArticleLanguageTable');
         }
         return $this->articleLanguageTable;
+    }
+    
+    public function getCategoryTable(){
+        if(!$this->categoryTable){
+            $sm = $this->getServiceLocator();
+            $this->categoryTable = $sm->get('Article\Model\CategoryTable');
+        }
+        return $this->categoryTable;
+    }
+    
+    public function getCategoryLanguageTable(){
+        if(!$this->categoryLanguageTable){
+            $sm = $this->getServiceLocator();
+            $this->categoryLanguageTable = $sm->get('Article\Model\CategoryLanguageTable');
+        }
+        return $this->categoryLanguageTable;
+    }
+    
+    public function getArticleHasCategoryTable(){
+        if(!$this->articleHasCategoryTable){
+            $sm = $this->getServiceLocator();
+            $this->articleHasCategoryTable = $sm->get('Article\Model\ArticleHasCategoryTable');
+        }
+        return $this->articleHasCategoryTable;
     }
 }

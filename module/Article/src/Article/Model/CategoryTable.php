@@ -22,8 +22,10 @@ class CategoryTable
         }else{
             $where = array();
         }
-        $resultSet = $this->tableGateway->select($where);
-        return $resultSet;
+        $sqlSelect = $this->tableGateway->getSql()->select();
+        $sqlSelect->where($where);
+        $sqlSelect->order('title');
+        return $this->tableGateway->selectWith($sqlSelect);
     }
     
     /**
