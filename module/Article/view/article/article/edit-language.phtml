@@ -1,0 +1,265 @@
+<?php
+use Application\Services\SystemFunctions;
+
+$this->headtitle($this->translate("Editar Artigo"));
+$url = $this->url("images-database/images");
+$urlField = $this->basepath("files_database/" . $websiteId);
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("article")?>"><?php echo $this->translate("Artigos") ?></a></li>
+			<li><a
+				href="<?php echo $this->url("article/edit", array("id"=>$article->idArticle))?>"><?php echo $this->translate("Editar") ?></a></li>
+			<li class="active"><?php echo $languageData->name; ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+<?php
+if ($message["flag"] > 0) {
+    if ($message["flag"] == 1) {
+        $class = "success";
+    } else {
+        $class = "danger";
+    }
+    ?>
+<div class="alert alert-<?php echo $class; ?> alert-block fade in">
+	<button data-dismiss="alert" class="close close-sm" type="button">
+		<i class="fa fa-times"></i>
+	</button>
+	<p><?php echo $message["message"]?></p>
+</div>
+<?php
+}
+?>
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading tab-bg-dark-navy-blue ">
+				<ul class="nav nav-tabs">
+					<li><a href="<?php echo $this->url("article/edit", array("id"=>$article->idArticle))?>"><?php echo $this->translate("Editar Artigo")?></a>
+					</li>
+                      <?php foreach ($websiteLanguages as $language){                                      ?>
+                      <li
+						<?php if($language->language_id==$idLanguage){?> class="active"
+						<?php } ?>><a
+						href="<?php echo $this->url("article/edit-language", array("id"=>$article->idArticle, "idLanguage"=>$language->language_id))?>"><?php echo $language->name; ?></a>
+					</li>
+                      <?php } ?>
+                  </ul>
+			</header>
+			<div class="panel-body">
+				<form class="form-horizontal tasi-form" method="post" id="page">
+					<div class="form-group">
+						<label class="col-sm-12 col-sm-12 control-label"><?php echo $this->translate("Última atualização realizada em: ").SystemFunctions::dateInvert($articleLanguage->lastUpdateDate, "brazilian", true); ?></label>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Título*")?></label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="title" id="title"
+								maxlength="85"
+								value="<?php echo ($articleLanguage->title) ? $articleLanguage->title : $article->title; ?>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição (SEO) *")?></label>
+						<div class="col-sm-10">
+							<textarea rows="2" class="form-control" name="description"
+								id="description"><?php echo ($articleLanguage->description) ? $articleLanguage->description : $article->description; ?></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Slug*")?></label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="slug" id="slug"
+								maxlength="150"
+								value="<?php echo ($articleLanguage->slug) ? $articleLanguage->slug : ""; ?>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Título de Seção")?></label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="section_title"
+								id="section_title" maxlength="150"
+								value="<?php echo ($articleLanguage->slug) ? $articleLanguage->section_title : ""; ?>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição da Seção")?></label>
+						<div class="col-sm-10">
+							<textarea rows="2" class="form-control"
+								name="section_description" id="section_description"><?php echo ($articleLanguage->section_description) ? $articleLanguage->section_description : ""; ?></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Resumo*")?></label>
+						<div class="col-sm-10">
+							<textarea rows="5" class="wysihtml5 form-control" name="resume"
+								id="resume"><?php echo ($articleLanguage->resume) ? $articleLanguage->resume : ""; ?></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Conteúdo*")?></label>
+						<div class="col-sm-10">
+							<textarea rows="10" class="form-control ckeditor" name="content"
+								id="content"><?php echo ($articleLanguage->content) ? $articleLanguage->content : ""; ?></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Imagens")?></label>
+						<div class="col-sm-10">
+							<a data-toggle="modal" href="#images" class="btn btn-warning"><?php echo $this->translate("Adicionar Imagens")?></a>
+							<hr>
+							<div class="col-sm-12" id="imagesSelected">
+                    			<?php
+                                if (count($images)>0) {
+                                    foreach($images as $image){
+                                ?>
+                    			<div class="col-lg-12">
+									<div class="row">
+										<div class="col-lg-12">
+											<img width="100" src="<?php echo $urlField."/".$image->name.".".$image->extension; ?>">
+										</div>
+									</div>
+									<br>
+									<div class="row">
+										<div class="col-lg-2">Legenda</div>
+										<div class="col-lg-10">
+											<input type="text" class="form-control input-sm m-bot15"
+												name="imageLabel[<?php echo $image->image_idImage; ?>]" value="<?php echo $image->label; ?>" />
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-2">Texto alternativo</div>
+										<div class="col-lg-10">
+											<input type="text" class="form-control input-sm m-bot15"
+												name="imageAlt[<?php echo $image->image_idImage; ?>]" value="<?php echo $image->alt; ?>" />
+										</div>
+									</div>
+									&nbsp;
+									<button class="btn btn-danger remove_field">Excluir</button>
+									<hr>
+								</div>
+                    			<?php
+                                    }
+                                }
+                                ?>
+                    		</div>
+						</div>
+
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Categoria(s)")?></label>
+						<div class="col-sm-10">
+							<?php 
+							if(count($categories)>0){
+    							foreach ($categories as $category){
+    							    $selected = (in_array($category->idCategoryLanguage, $categoriesSelected)) ? true : false; 
+    							    ?>
+    							<div class="col-sm-2"><label><input type="checkbox" name="categories[]" value="<?php echo $category->idCategoryLanguage; ?>" <?php if($selected){?>checked<?php } ?>>&nbsp;<?php echo $category->title; ?></label></div>
+							<?php 
+    							} 
+							}else{
+							     echo $this->translate("Nenhuma categoria cadastrada.");
+							}?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Ativo")?></label>
+						<div class="col-sm-10">
+							<input type="checkbox" name="active" value="1"
+								<?php if($articleLanguage->active){ ?> checked <?php } ?>
+								data-toggle="switch" />
+						</div>
+					</div>
+					<div class="form-group">
+						&nbsp;&nbsp;
+						<button type="submit" class="btn btn-info"><?php echo $this->translate("Salvar")?></button>
+						&nbsp;<a href="<?php echo $this->url("page")?>"
+							class="btn btn-danger"><?php echo $this->translate("Cancelar")?></a>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</div>
+<div class="modal fade" id="images" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title"><?php echo $this->translate("Selecione as imagens desejadas")?></h4>
+			</div>
+			<div class="modal-body" id="images-content"></div>
+			<div class="modal-footer">
+				<button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Cancelar")?></button>
+				<button id="addImage" class="btn btn-danger" type="button"><?php echo $this->translate("Adicionar")?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<?php
+$this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-datetimepicker/css/datetimepicker.css'));
+$this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css'));
+
+$this->headScript()->prependFile($this->basePath("js/validators/article.js"));
+$this->headScript()->prependFile($this->basePath('js/advanced-component-datetime.js'));
+$this->headScript()->prependFile($this->basePath('assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'));
+$this->headScript()->prependFile($this->basePath("assets/ckeditor/ckeditor.js"));
+$this->headScript()->prependFile($this->basePath("assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js"));
+$this->headScript()->prependFile($this->basePath("assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js"));
+
+
+$this->inlinescript()->captureStart();
+echo <<<JS
+
+$("#title").keyup(function(){
+    var Text = $(this).val();
+    Text = Text.toLowerCase();
+    Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
+    $("#slug").val(Text);        
+});
+
+$("#images-content").load('$url');
+			    
+var wrapper = $("#imagesSelected"); //Fields wrapper
+			    
+$("#addImage").click(function() {	
+    var imagesSelected = [];
+			    
+    $("input:checkbox[name=image]:checked").each(function(){
+        imagesSelected.push($(this).val());
+	    var image = $(this).val();
+	    var dataImage = image.split(' | ');
+	    $(wrapper).append('<div class="col-lg-12"><div class="row"><div class="col-lg-12"><img width="100" src="$urlField/'+dataImage[1]+'"></div></div><br><div class="row"><div class="col-lg-2">Legenda</div><div class="col-lg-10"><input type="text" class="form-control input-sm m-bot15" name="imageLabel['+dataImage[0]+']" value="'+dataImage[2]+'"/></div></div><div class="row"><div class="col-lg-2">Texto alternativo</div><div class="col-lg-10"><input type="text" class="form-control input-sm m-bot15" name="imageAlt['+dataImage[0]+']" value="'+dataImage[2]+'"/></div></div>&nbsp;<button class="btn btn-danger remove_field">Excluir</button><hr></div>');
+    });
+    $('#images').modal('toggle');
+});
+			    
+$(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+    e.preventDefault(); $(this).parent('div').remove(); x--;
+});
+
+$('.wysihtml5').wysihtml5({
+	"font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
+	"emphasis": true, //Italics, bold, etc. Default true
+	"lists": false, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+	"html": false, //Button which allows you to edit the generated HTML. Default false
+	"link": true, //Button to insert a link. Default true
+	"image": false, //Button to insert an image. Default true,
+	"color": false //Button to change color of font  
+});
+
+JS;
+$this->inlinescript()->captureEnd();
+?>

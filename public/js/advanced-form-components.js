@@ -6,7 +6,7 @@
     $(function(){
         window.prettyPrint && prettyPrint();
         $('.default-date-picker').datepicker({
-            format: 'mm-dd-yyyy',
+            format: 'dd-mm-yyyy',
             autoclose: true
         });
         $('.dpYears').datepicker({

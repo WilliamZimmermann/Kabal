@@ -647,7 +647,7 @@ control's state.
        
        // Loop over each instance of the pager
        var an = oSettings.aanFeatures.p;
-       for ( var i=0, iLen=an.length ; i<iLen ; i++ ) {
+       for ( var i=0, iLen=an.length ; i < iLen ; i++ ) {
          var buttons = an[i].getElementsByTagName('span');
          if ( oSettings._iDisplayStart === 0 ) {
            buttons[0].className = "paginate_disabled_previous";

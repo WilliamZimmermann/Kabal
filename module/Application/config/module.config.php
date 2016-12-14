@@ -1,6 +1,7 @@
 <?php
 use Application\Services\SystemMessages;
 use Application\Services\SystemLog;
+use Application\Services\SystemFunctions;
 
 /**
  * Zend Framework (http://framework.zend.com/)
@@ -103,7 +104,9 @@ return array(
         ),
         'invokables'=>[
             'systemMessages'=>SystemMessages::class,
-            'systemLog'=>SystemLog::class
+            'systemLog'=>SystemLog::class,
+            'systemFunctions'=>SystemFunctions::class
+            
         ],
         'aliases' => array(
             'translator' => 'MvcTranslator',

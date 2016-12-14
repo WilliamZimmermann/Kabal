@@ -3,6 +3,4 @@
 return array(
     'Page\Module'                        => __DIR__ . '/Module.php',
     'Page\Controller\PageController' => __DIR__ . '/src/Page/Controller/PageController.php',
-    'PageTest\Framework\TestCase'        => __DIR__ . '/tests/Page/Framework/TestCase.php',
-    'PageTest\SampleTest'                => __DIR__ . '/tests/Page/SampleTest.php',
 );

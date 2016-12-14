@@ -10,7 +10,6 @@
  */
 var wysihtml5 = {
   version: "0.3.0",
-  
   // namespaces
   commands:   {},
   dom:        {},

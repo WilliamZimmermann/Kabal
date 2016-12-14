@@ -5,9 +5,9 @@ class ModuleImage
 {
     public $system_module_idModule;
     public $image_idImage;
+    public $id_item;
     public $name; //Come from a inner join with images table
     public $extension; //Come from a inner join with images table
-    public $id_item;
     public $label;
     public $alt;
     public $active;

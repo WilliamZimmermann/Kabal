@@ -99,12 +99,12 @@ class SystemMessages
                     break;
                 case "DBIMAGE006":
                     $message["flag"] = 1;
-                    $message["message"] = "Imagem .".$this->params["id"]." removida com sucesso do banco de dados. [DBIMAGE006]";
+                    $message["message"] = "Imagem ." . $this->params["id"] . " removida com sucesso do banco de dados. [DBIMAGE006]";
                     $this->logPriority = 5;
                     break;
                 case "DBIMAGE007":
                     $message["flag"] = 1;
-                    $message["message"] = "Falha ao tentar remover a imagem .".$this->params["id"]." do banco de dados [DBIMAGE007]";
+                    $message["message"] = "Falha ao tentar remover a imagem ." . $this->params["id"] . " do banco de dados [DBIMAGE007]";
                     $this->logPriority = 2;
                     break;
                 // PAGE MODULE
@@ -140,59 +140,232 @@ class SystemMessages
                     break;
                 case "PAGE007":
                     $message["flag"] = 1;
-                    $message["message"] = "Página (".$this->params["id"].") excluída com sucesso. [PAGE007]";
+                    $message["message"] = "Página (" . $this->params["id"] . ") excluída com sucesso. [PAGE007]";
                     $this->logPriority = 5;
                     break;
                 case "PAGE008":
                     $message["flag"] = 2;
-                    $message["message"] = "Houve um erro ao tentar excluir a página (".$this->params["id"]."). [PAGE008]";
+                    $message["message"] = "Houve um erro ao tentar excluir a página (" . $this->params["id"] . "). [PAGE008]";
                     $this->logPriority = 3;
                     break;
-                    case "PAGEL001":
-                        $message["flag"] = 1;
-                        $message["message"] = "Página cadastrada com sucesso. Deseja cadastrar outra página? [PAGEL001]";
-                        $this->logPriority = 5;
-                        break;
-                    case "PAGEL002":
-                        $message["flag"] = 2;
-                        $message["message"] = "Falha ao tentar cadastrar página. Por favor, tente novamente. [PAGEL002]";
-                        $this->logPriority = 3;
-                        break;
-                    case "PAGEL003":
-                        $message["flag"] = 2;
-                        $message["message"] = "Falha ao cadastrar/alterar página. Um ou mais campos possuem dados inválidos. Tente novamente. [PAGEL003]";
-                        $this->logPriority = 5;
-                        break;
-                    case "PAGEL004":
-                        $message["flag"] = 1;
-                        $message["message"] = "Página alterada com sucesso. [PAGEL004]";
-                        $this->logPriority = 5;
-                        break;
-                    case "PAGEL005":
-                        $message["flag"] = 2;
-                        $message["message"] = "Falha ao tentar alterar a página. Tente novamente. [PAGEL005]";
-                        $this->logPriority = 3;
-                        break;
-                    case "PAGEL006":
-                        $message["flag"] = 2;
-                        $message["message"] = "Não encontramos essa página no sistema. [PAGEL006]";
-                        $this->logPriority = 3;
-                        break;
-                    case "PAGEL007":
-                        $message["flag"] = 1;
-                        $message["message"] = "Página (".$this->params["id"].") excluída com sucesso. [PAGEL007]";
-                        $this->logPriority = 5;
-                        break;
-                    case "PAGEL008":
-                        $message["flag"] = 2;
-                        $message["message"] = "Houve um erro ao tentar excluir a página (".$this->params["id"]."). [PAGEL008]";
-                        $this->logPriority = 3;
-                        break;
-                    case "PAGEL009":
-                        $message["flag"] = 1;
-                        $message["message"] = "O conteúdo em todos os idiomas relacionados à Página (".$this->params["id"].") foram excluídos com sucesso. [PAGEL009]";
-                        $this->logPriority = 5;
-                        break;
+                case "PAGEL001":
+                    $message["flag"] = 1;
+                    $message["message"] = "Página cadastrada com sucesso. Deseja cadastrar outra página? [PAGEL001]";
+                    $this->logPriority = 5;
+                    break;
+                case "PAGEL002":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar página. Por favor, tente novamente. [PAGEL002]";
+                    $this->logPriority = 3;
+                    break;
+                case "PAGEL003":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao cadastrar/alterar página. Um ou mais campos possuem dados inválidos. Tente novamente. [PAGEL003]";
+                    $this->logPriority = 5;
+                    break;
+                case "PAGEL004":
+                    $message["flag"] = 1;
+                    $message["message"] = "Página alterada com sucesso. [PAGEL004]";
+                    $this->logPriority = 5;
+                    break;
+                case "PAGEL005":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar a página. Tente novamente. [PAGEL005]";
+                    $this->logPriority = 3;
+                    break;
+                case "PAGEL006":
+                    $message["flag"] = 2;
+                    $message["message"] = "Não encontramos essa página no sistema. [PAGEL006]";
+                    $this->logPriority = 3;
+                    break;
+                case "PAGEL007":
+                    $message["flag"] = 1;
+                    $message["message"] = "Página (" . $this->params["id"] . ") excluída com sucesso. [PAGEL007]";
+                    $this->logPriority = 5;
+                    break;
+                case "PAGEL008":
+                    $message["flag"] = 2;
+                    $message["message"] = "Houve um erro ao tentar excluir a página (" . $this->params["id"] . "). [PAGEL008]";
+                    $this->logPriority = 3;
+                    break;
+                case "PAGEL009":
+                    $message["flag"] = 1;
+                    $message["message"] = "O conteúdo em todos os idiomas relacionados à Página (" . $this->params["id"] . ") foram excluídos com sucesso. [PAGEL009]";
+                    $this->logPriority = 5;
+                    break;
+                // ARTICLES MODULE
+                // -- CATEGORIES
+                case "ACAT001":
+                    $message["flag"] = 1;
+                    $message["message"] = "Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACAT001]";
+                    $this->logPriority = 5;
+                    break;
+                case "ACAT002":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar a categoria. Por favor, tente novamente. [ACAT002]";
+                    $this->logPriority = 3;
+                    break;
+                case "ACAT003":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao cadastrar/alterar categoria. Um ou mais campos possuem dados inválidos. Tente novamente. [ACAT003]";
+                    $this->logPriority = 5;
+                    break;
+                case "ACAT004":
+                    $message["flag"] = 1;
+                    $message["message"] = "Categoria alterada com sucesso. [ACAT004]";
+                    $this->logPriority = 5;
+                    break;
+                case "ACAT005":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar a categoria. Tente novamente. [ACAT005]";
+                    $this->logPriority = 3;
+                    break;
+                case "ACAT006":
+                    $message["flag"] = 2;
+                    $message["message"] = "Não encontramos essa categoria no sistema. [ACAT006]";
+                    $this->logPriority = 3;
+                    break;
+                case "ACAT007":
+                    $message["flag"] = 1;
+                    $message["message"] = "Categoria (" . $this->params["id"] . ") excluída com sucesso. [ACAT007]";
+                    $this->logPriority = 5;
+                    break;
+                case "ACAT008":
+                    $message["flag"] = 2;
+                    $message["message"] = "Houve um erro ao tentar excluir a categoria (" . $this->params["id"] . "). [ACAT008]";
+                    $this->logPriority = 3;
+                    break;
+                case "ACATL001":
+                    $message["flag"] = 1;
+                    $message["message"] = "Categoria cadastrada com sucesso. Deseja cadastrar outra categoria? [ACATL001]";
+                    $this->logPriority = 5;
+                    break;
+                case "ACATL002":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar categoria. Por favor, tente novamente. [ACATL002]";
+                    $this->logPriority = 3;
+                    break;
+                case "ACATL003":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao cadastrar/alterar categoria. Um ou mais campos possuem dados inválidos. Tente novamente. [ACATL003]";
+                    $this->logPriority = 5;
+                    break;
+                case "ACATL004":
+                    $message["flag"] = 1;
+                    $message["message"] = "Categoria alterada com sucesso. [ACATL004]";
+                    $this->logPriority = 5;
+                    break;
+                case "ACATL005":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar a categoria. Tente novamente. [ACATL005]";
+                    $this->logPriority = 3;
+                    break;
+                case "ACATL006":
+                    $message["flag"] = 2;
+                    $message["message"] = "Não encontramos essa categoria no sistema. [ACATL006]";
+                    $this->logPriority = 3;
+                    break;
+                case "ACATL007":
+                    $message["flag"] = 1;
+                    $message["message"] = "Categoria (" . $this->params["id"] . ") excluída com sucesso. [ACATL007]";
+                    $this->logPriority = 5;
+                    break;
+                case "ACATL008":
+                    $message["flag"] = 2;
+                    $message["message"] = "Houve um erro ao tentar excluir a categoria (" . $this->params["id"] . "). [ACATL008]";
+                    $this->logPriority = 3;
+                    break;
+                case "ACATL009":
+                    $message["flag"] = 1;
+                    $message["message"] = "O conteúdo em todos os idiomas relacionados à Categoria (" . $this->params["id"] . ") foi excluído com sucesso. [ACATL009]";
+                    $this->logPriority = 5;
+                    break;
+                // --ARTICLES
+                case "ART001":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo cadastrado com sucesso. [ART001]";
+                    $this->logPriority = 5;
+                    break;
+                case "ART002":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar artigo. Por favor, tente novamente. [ART002]";
+                    $this->logPriority = 3;
+                    break;
+                case "ART003":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao cadastrar/alterar artigo. Um ou mais campos possuem dados inválidos. Tente novamente. [ART003]";
+                    $this->logPriority = 5;
+                    break;
+                case "ART004":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo alterado com sucesso. [ART004]";
+                    $this->logPriority = 5;
+                    break;
+                case "ART005":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar o artigo. Tente novamente. [ART005]";
+                    $this->logPriority = 3;
+                    break;
+                case "ART006":
+                    $message["flag"] = 2;
+                    $message["message"] = "Não encontramos esse artigo no sistema. [ART006]";
+                    $this->logPriority = 3;
+                    break;
+                case "ART007":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo (" . $this->params["id"] . ") excluído com sucesso. [ART007]";
+                    $this->logPriority = 5;
+                    break;
+                case "ART008":
+                    $message["flag"] = 2;
+                    $message["message"] = "Houve um erro ao tentar excluir o artigo (" . $this->params["id"] . "). [ART008]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL001":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo cadastrado com sucesso. Deseja cadastrar outro artigo? [ARTL001]";
+                    $this->logPriority = 5;
+                    break;
+                case "ARTL002":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar artigo. Por favor, tente novamente. [ARTL002]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL003":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao cadastrar/alterar artigo. Um ou mais campos possuem dados inválidos. Tente novamente. [ARTL003]";
+                    $this->logPriority = 5;
+                    break;
+                case "ARTL004":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo alterado com sucesso. [ARTL004]";
+                    $this->logPriority = 5;
+                    break;
+                case "ARTL005":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar o artigo. Tente novamente. [ARTL005]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL006":
+                    $message["flag"] = 2;
+                    $message["message"] = "Não encontramos esse artigo no sistema. [ARTL006]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL007":
+                    $message["flag"] = 1;
+                    $message["message"] = "Artigo (" . $this->params["id"] . ") excluído com sucesso. [ARTL007]";
+                    $this->logPriority = 5;
+                    break;
+                case "ARTL008":
+                    $message["flag"] = 2;
+                    $message["message"] = "Houve um erro ao tentar excluir o artigo (" . $this->params["id"] . "). [ARTL008]";
+                    $this->logPriority = 3;
+                    break;
+                case "ARTL009":
+                    $message["flag"] = 1;
+                    $message["message"] = "O conteúdo em todos os idiomas relacionados ao Artigo (" . $this->params["id"] . ") foi excluído com sucesso. [ARTL009]";
+                    $this->logPriority = 5;
+                    break;
                 // USERS MODULE
                 case "USER001":
                     $message["flag"] = 1;
@@ -271,17 +444,17 @@ class SystemMessages
                     break;
                 case "USER016":
                     $message["flag"] = 2;
-                    $message["message"] = "Falha ao tentar alterar as permissões do usuário " . $this->params["id"] ." Houve uma falha ao tentar remover as permissões anteriores. [USER016]";
+                    $message["message"] = "Falha ao tentar alterar as permissões do usuário " . $this->params["id"] . " Houve uma falha ao tentar remover as permissões anteriores. [USER016]";
                     $this->logPriority = 3;
                     break;
                 case "USER017":
                     $message["flag"] = 2;
-                    $message["message"] = "Falha ao tentar remover o usuário " . $this->params["id"] ." Houve uma falha ao tentar remover as permissões dele. [USER017]";
+                    $message["message"] = "Falha ao tentar remover o usuário " . $this->params["id"] . " Houve uma falha ao tentar remover as permissões dele. [USER017]";
                     $this->logPriority = 2;
                     break;
                 case "USER018":
                     $message["flag"] = 2;
-                    $message["message"] = "Falha ao tentar remover o usuário " . $this->params["id"] ." Houve uma falha ao tentar remover o relacionamento dele com outros websites. [USER018]";
+                    $message["message"] = "Falha ao tentar remover o usuário " . $this->params["id"] . " Houve uma falha ao tentar remover o relacionamento dele com outros websites. [USER018]";
                     $this->logPriority = 2;
                     break;
                 // WEBSITE MODULE

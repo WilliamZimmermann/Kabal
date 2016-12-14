@@ -7,18 +7,19 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Page\Controller;
+namespace Article\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Page\Model\Page;
-use Page\Model\PageLanguage;
-use ImagesDatabase\Model\ModuleImage;
+use Article\Model\Category;
+use Article\Model\CategoryLanguage;
+use Article\Model\ArticleHasCategory;
 
-class PageController extends AbstractActionController
+class CategoryController extends AbstractActionController
 {
-    protected $moduleId = 5;
-    protected $pageTable;
-    protected $pageLanguageTable;
+    protected $moduleId = 8;
+    protected $categoryTable;
+    protected $categoryLanguageTable;
+    protected $articleHasCategoryTable;
     
     public function indexAction()
     {
@@ -26,8 +27,8 @@ class PageController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
-            $pages = $this->getPageTable()->fetchAll($logedUser["idWebsite"]);
-            return array("pages"=>$pages);
+            $categories = $this->getCategoryTable()->fetchAll($logedUser["idWebsite"]);
+            return array("categories"=>$categories);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -43,30 +44,30 @@ class PageController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $logedUser["idCompany"]==1){
-            $page = new Page();
+            $category = new Category();
             //If was a POST
             $message = $this->getServiceLocator()->get('systemMessages');
             $request = $this->getRequest();
             if($request->isPost()){
-                $page->exchangeArray($request->getPost());
-                $page->website_id = $logedUser["idWebsite"];
-                if($page->validation()){
-                    $result = $this->getPageTable()->savePage($page);
+                $category->exchangeArray($request->getPost());
+                $category->website_id = $logedUser["idWebsite"];
+                if($category->validation()){
+                    $result = $this->getCategoryTable()->saveCategory($category);
                     $message->setCode($result);
                 }else{
-                    $message->setCode("PAGE003");
+                    $message->setCode("ACAT003");
                 }
                 //Save log
                 $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
             }
-            return array("message"=>$message->getMessage(), "page"=>$page);
+            return array("message"=>$message->getMessage(), "category"=>$category);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
     }
     
     /**
-     * Function to edit a page
+     * Function to edit a category
      * @return systemMessages[]|\Zend\Http\Response
      */
     public function editAction()
@@ -75,35 +76,35 @@ class PageController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
-            $page = new Page();
+            $category = new Category();
             $message = $this->getServiceLocator()->get('systemMessages');
             
             //Get the Company ID
             $id = (int) $this->params()->fromRoute('id', 0);
-            //First, will check if this page exist
-            $pageData = $this->getPageTable()->getPage($id);
-            if($pageData->website_id==$logedUser["idWebsite"]){
+            //First, will check if this category exist
+            $categoryData = $this->getCategoryTable()->getCategory($id);
+            if($categoryData->website_id==$logedUser["idWebsite"]){
     
                 //If was a POST
                 $request = $this->getRequest();
                 if($request->isPost()){
-                    $page->exchangeArray($request->getPost());
-                    $page->idPage = $id;
-                    $page->website_id = $logedUser["idWebsite"];
-                    if($page->validation()){
-                        $result = $this->getPageTable()->savePage($page);
+                    $category->exchangeArray($request->getPost());
+                    $category->idCategory = $id;
+                    $category->website_id = $logedUser["idWebsite"];
+                    if($category->validation()){
+                        $result = $this->getCategoryTable()->saveCategory($category);
                         $message->setCode($result);
                         //Get again the data, now updated
-                        $pageData = $this->getPageTable()->getPage($id);
+                        $categoryData = $this->getCategoryTable()->getCategory($id);
                     }else{
-                        $message->setCode("PAGE003");
+                        $message->setCode("ACAT003");
                     }
                     //Save log
                     $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
                 }
                 $websiteLanguages = $this->getServiceLocator()->get("website_language")->fetchAll($logedUser["idWebsite"]);
                 
-                return array("message"=>$message->getMessage(), "page"=>$pageData, "websiteLanguages"=>$websiteLanguages);
+                return array("message"=>$message->getMessage(), "category"=>$categoryData, "websiteLanguages"=>$websiteLanguages);
             }else{
                 return $this->redirect()->toRoute("noPermission");
             }
@@ -122,7 +123,7 @@ class PageController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "new") || $logedUser["idCompany"]==1){
-            $page = new PageLanguage();
+            $category = new CategoryLanguage();
             $message = $this->getServiceLocator()->get('systemMessages');
     
             //Get the Language and page id
@@ -132,59 +133,39 @@ class PageController extends AbstractActionController
             $languageData = $this->getServiceLocator()->get('language')->getLanguage($idLanguage);
             
             //First, will check if this page exist
-            $pageData = $this->getPageTable()->getPage($id);
-            if($pageData->website_id==$logedUser["idWebsite"]){
+            $categoryData = $this->getCategoryTable()->getCategory($id);
+            if($categoryData->website_id==$logedUser["idWebsite"]){
     
                 //If was a POST
                 $request = $this->getRequest();
                 if($request->isPost()){
                     $data = $request->getPost();
-                    $page->exchangeArray($request->getPost());
-                    $page->page_id = $id;
-                    $page->language_id = $idLanguage;
-                    if($page->validation()){
-                        $result = $this->getPageLanguageTable()->savePage($page);
-                        //Delete all relationships
-                        $this->getServiceLocator()->get('moduleImages')->deleteImage(5, null, $id);
-                        if($data->imageLabel){
-                            $images = array_keys($data->imageLabel);
-                            $labels = $data->imageLabel;
-                            $alts = $data->imageAlt;
-                            $imageModule = new ModuleImage();
-                            foreach($images as $image){
-                                $data["system_module_idModule"] = 5; //Id do módulo de Páginas
-                                $data["image_idImage"] = $image;
-                                $data["id_item"] = $id;
-                                $data["label"] = $labels[$image];
-                                $data["alt"] = $alts[$image];
-                                $imageModule->exchangeArray($data);
-                                $this->getServiceLocator()->get('moduleImages')->saveImage($imageModule);
-                            }
-                        }
+                    $category->exchangeArray($request->getPost());
+                    $category->category_id = $id;
+                    $category->language_id = $idLanguage;
+                    if($category->validation()){
+                        $result = $this->getCategoryLanguageTable()->saveCategory($category);                        
                         $message->setCode($result);
                         //Get again the data, now updated
-                        $pageData = $this->getPageTable()->getPage($id);
+                        $categoryData = $this->getCategoryTable()->getCategory($id);
                     }else{
-                        $message->setCode("PAGEL003");
+                        $message->setCode("ACATL003");
                     }
                     //Save log
                     $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
                 }
                 $websiteLanguages = $this->getServiceLocator()->get("website_language")->fetchAll($logedUser["idWebsite"]);
                 
-                $langaugePageData = $this->getPageLanguageTable()->getPage($id, $idLanguage);
-                
-                $imagesSelected = $this->getServiceLocator()->get('moduleImages')->fetchAll(5, $id);
-                
+                $languageCategoryData = $this->getCategoryLanguageTable()->getCategory($id, $idLanguage);
+                                
                 return array(
                     "message"=>$message->getMessage(), 
-                    "page"=>$pageData, 
-                    "pageLanguage"=>$langaugePageData,
+                    "category"=>$categoryData, 
+                    "categoryLanguage"=>$languageCategoryData,
                     "websiteLanguages"=>$websiteLanguages, 
                     "idLanguage"=>$idLanguage, 
                     "languageData"=>$languageData,
                     "websiteId" => $logedUser["idWebsite"],
-                    "images" => $imagesSelected
                 );
             }else{
                 return $this->redirect()->toRoute("noPermission");
@@ -205,16 +186,28 @@ class PageController extends AbstractActionController
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
             $id = (int) $this->params()->fromRoute('id', 0);
             if (!$id) { //If there is no ID
-                $this->getServiceLocator()->get('systemLog')->addLog(0, "Page ".$id." not found to delete.", 5);
-                return $this->redirect()->toRoute('page');
+                $this->getServiceLocator()->get('systemLog')->addLog(0, "Category ".$id." not found to delete.", 5);
+                return $this->redirect()->toRoute('category');
             }
     
             $message = $this->getServiceLocator()->get('systemMessages');
-            //Before to delete a page, if exist, will delete langauge pages associated
-            $this->getPageLanguageTable()->deletePage(null, $id);
-            $message->setCode("PAGEL009", array("id"=>$id));
             
-            $result = $this->getPageTable()->deletePage($id);
+            //Before to delete language categories associated must to delete relationships between articles
+            $categoriesLanguages = $this->getCategoryLanguageTable()->fetchAll($id);
+            $articleCategory = new ArticleHasCategory();
+            foreach($categoriesLanguages as $categoryLanguage){
+                //Delete any relationships that can exists between a category and an article
+                $articleCategory->language_idCategory = $categoryLanguage->idCategoryLanguage;
+                $this->getArticleHasCategoryTable()->deleteCategory($articleCategory);
+            }
+            
+            //Before to delete a category, if exist, will delete language categories associated
+            $this->getCategoryLanguageTable()->deleteCategory(null, $id);
+            $message->setCode("ACATL009", array("id"=>$id));
+            $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+            
+            //Delete category
+            $result = $this->getCategoryTable()->deleteCategory($id);
             $message->setCode($result, array("id"=>$id));
     
             //Save log
@@ -226,19 +219,27 @@ class PageController extends AbstractActionController
         }
     }
     
-    public function getPageTable(){
-        if(!$this->pageTable){
+    public function getCategoryTable(){
+        if(!$this->categoryTable){
             $sm = $this->getServiceLocator();
-            $this->pageTable = $sm->get('Page\Model\PageTable');
+            $this->categoryTable = $sm->get('Article\Model\CategoryTable');
         }
-        return $this->pageTable;
+        return $this->categoryTable;
     }
     
-    public function getPageLanguageTable(){
-        if(!$this->pageLanguageTable){
+    public function getCategoryLanguageTable(){
+        if(!$this->categoryLanguageTable){
             $sm = $this->getServiceLocator();
-            $this->pageLanguageTable = $sm->get('Page\Model\PageLanguageTable');
+            $this->categoryLanguageTable = $sm->get('Article\Model\CategoryLanguageTable');
         }
-        return $this->pageLanguageTable;
+        return $this->categoryLanguageTable;
+    }
+    
+    public function getArticleHasCategoryTable(){
+        if(!$this->articleHasCategoryTable){
+            $sm = $this->getServiceLocator();
+            $this->articleHasCategoryTable = $sm->get('Article\Model\ArticleHasCategoryTable');
+        }
+        return $this->articleHasCategoryTable;
     }
 }
