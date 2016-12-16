@@ -556,3 +556,6 @@
 2016-12-14T19:57:00+00:00 NOTICE (5): USER ID: 1. MESSAGE: O conteúdo em todos os idiomas relacionados à Categoria (2) foi excluído com sucesso. [ACATL009]
 2016-12-14T19:57:00+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria (2) excluída com sucesso. [ACAT007]
 2016-12-14T19:57:00+00:00 NOTICE (5): USER ID: 1. MESSAGE: Categoria (2) excluída com sucesso. [ACAT007]
+2016-12-16T17:23:57+00:00 NOTICE (5): USER ID: 1. MESSAGE: Empresa alterada com sucesso. [COMPANY004]
+2016-12-16T17:24:10+00:00 NOTICE (5): USER ID: 1. MESSAGE: Empresa alterada com sucesso. [COMPANY004]
+2016-12-16T17:26:10+00:00 NOTICE (5): USER ID: 1. MESSAGE: Empresa cadastrada com sucesso. Deseja cadastrar outra empresa? [COMPANY001]

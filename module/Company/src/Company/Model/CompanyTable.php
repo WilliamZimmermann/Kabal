@@ -42,7 +42,7 @@ class CompanyTable
      * @throws \Exception
      */
     public function saveCompany(Company $company){
-        $data = array('name'=>$company->name, 'status'=>$company->status, 'creationDate'=>$company->creationDate);
+        $data = array('name'=>$company->name, 'max_users'=>$company->max_users, 'status'=>$company->status, 'creationDate'=>$company->creationDate);
         
         $id = (int)$company->idCompany;
         //If there is no Id, so, it's a new company
