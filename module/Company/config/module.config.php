@@ -1,5 +1,6 @@
 <?php
 use Company\Factories\CompanyFactory;
+use Company\Factories\CompanyTableFactory;
 
 return array(
     'controllers' => array(
@@ -75,7 +76,8 @@ return array(
     ),
     'service_manager'=>[
         'factories'=>[
-            'companies' => CompanyFactory::class
+            'companies' => CompanyFactory::class,
+            'companyTable' => CompanyTableFactory::class
         ]
     ]
 );

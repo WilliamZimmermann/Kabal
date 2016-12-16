@@ -50,7 +50,6 @@ if($message["flag"]>0){
                               </ul>
                           </header>
 			<div class="panel-body">
-				<form class="form-horizontal tasi-form" method="post" id="website_modules">
 	                <input type="hidden" name="idWebsite" value="<?php echo $website->idWebsite; ?>">
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Módulos")?></label>
@@ -72,7 +71,17 @@ if($message["flag"]>0){
 							
 							foreach($modules as $module){ ?>
 							<tr>
-								<td><input type="checkbox" name="modules[]" <?php if(in_array($module->idModule, $modulesAlreadySelected)){ echo "checked"; } ?> value="<?php echo $module->idModule; ?>" /></td>
+								<td><?php 
+								if(in_array($module->idModule, $modulesAlreadySelected)){ 
+								    ?>
+								    <a href="<?php echo $this->url("website/edit-modules", array("id"=>$website->idWebsite, "idModule"=>$module->idModule ))?>" class="btn btn-danger btn-xs"><?php echo $this->translate("Remover")?></a>
+									<?php
+								}else{ 
+								    ?>
+								    <a href="<?php echo $this->url("website")?>" class="btn btn-warning btn-xs"><?php echo $this->translate("Adicionar")?></a>
+									<?php
+								} 
+								?></td>
 								<td><?php echo $module->name; ?></td>
 								<td><?php echo $module->description; ?></td>
 							</tr>
@@ -85,7 +94,6 @@ if($message["flag"]>0){
 						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Alterar")?></button>
 						&nbsp;<a href="<?php echo $this->url("website")?>" class="btn btn-danger"><?php echo $this->translate("Voltar")?></a>
 					</div>
-				</form>
 			</div>
 		</section>
 	</div>

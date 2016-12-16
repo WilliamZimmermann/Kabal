@@ -94,6 +94,7 @@ if ($message["flag"] > 0) {
 							            break;
 							        }
 							    }
+							    if($module->user_type==3 || ($module->user_type == 2 && $user->type==2) || $user->type==1){
 							?>
 							<tr>
 								<td><?php echo $module->moduleName; ?></td>
@@ -101,7 +102,9 @@ if ($message["flag"] > 0) {
 								<td><input type="checkbox" name="edit[<?php echo $websiteData->company_website_idWebsite; ?>-<?php echo $module->system_module_idModule; ?>]" value="1" <?php echo ($edit) ? "checked" : ""?>></td>
 								<td><input type="checkbox" name="delete[<?php echo $websiteData->company_website_idWebsite; ?>-<?php echo $module->system_module_idModule; ?>]" value="1" <?php echo ($delete) ? "checked" : ""?>></td>
 							</tr>
-							<?php } ?>
+							<?php 
+							     }
+							} ?>
 							</tbody>
 							</table>
                         </div>

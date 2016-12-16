@@ -56,9 +56,10 @@ return array(
                     'edit-modules' => array(
                         'type'    => 'Segment',
                         'options' => array(
-                            'route'    => '/edit/modules/:id',
+                            'route'    => '/edit/modules/:id[/:idModule]',
                             'constraints' => array(
                                 'id'     => '[0-9_-]*',
+                                'idModule'     => '[0-9_-]*',
                             ),
                             'defaults' => array(
                                 'action'=>'modules',

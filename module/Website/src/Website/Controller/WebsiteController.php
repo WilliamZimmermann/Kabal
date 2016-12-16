@@ -191,7 +191,7 @@ class WebsiteController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") && $logedUser["idCompany"]==1){
-            // Get the Company ID
+            // Get the Website ID
             $id = (int) $this->params()->fromRoute('id', 0);
             // Will check if this id exists at the database
             $website = $this->getWebsiteTable()->getWebsite($id);
@@ -205,12 +205,14 @@ class WebsiteController extends AbstractActionController
                 // If is a POST
                 $message = $this->getServiceLocator()->get('systemMessages');
                 $request = $this->getRequest();
-                if ($request->isPost()) {
+                if ($this->params()->fromRoute('idModule', 0)) {
+                    $idModule = $this->params()->fromRoute('idModule', 0);
+                    die("OPS");
+                    //TODO - funções já criadas, é só implantar
                     // Get the data from the post
                     $data = $request->getPost();
-                    $modules = $data["modules"];
                     // Save selcted modules
-                    $result = $this->getWebsiteTable()->saveModules($modules, $id);
+                    $result = $this->getWebsiteTable()->saveModule($idModule, $id);
                     // Log
                     $message->setCode($result);
                     $this->getServiceLocator()

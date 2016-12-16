@@ -104,3 +104,9 @@
 2016-12-13T15:41:47+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
 2016-12-14T16:18:15+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
 2016-12-14T16:18:15+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-12-16T19:55:42+00:00 INFO (6): USER ID: . MESSAGE: The user 8 made login.
+2016-12-16T19:55:42+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-12-16T20:02:00+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-12-16T20:02:06+00:00 INFO (6): USER ID: . MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-12-16T20:02:25+00:00 INFO (6): USER ID: . MESSAGE: The user 1 made login.
+2016-12-16T20:02:25+00:00 INFO (6): USER ID: 0. MESSAGE: User made login.
