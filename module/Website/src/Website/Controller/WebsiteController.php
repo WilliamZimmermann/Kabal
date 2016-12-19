@@ -207,13 +207,15 @@ class WebsiteController extends AbstractActionController
                 $request = $this->getRequest();
                 if ($this->params()->fromRoute('idModule', 0)) {
                     $idModule = $this->params()->fromRoute('idModule', 0);
-                    die("OPS");
+                    
                     //TODO - funções já criadas, é só implantar
-                    // Get the data from the post
-                    $data = $request->getPost();
-                    // Save selcted modules
-                    $result = $this->getWebsiteTable()->saveModule($idModule, $id);
-                    // Log
+                    //Check if the module is already associated with this website
+                    if($this->getWebsiteTable()->moduleWebsiteExist($idModule, $id)){
+                        //If it exists, just remove relationship
+                        $result = $this->getWebsiteTable()->deleteModule($id, $idModule);
+                    }else{
+                        $result = $this->getWebsiteTable()->saveModule($idModule, $id);
+                    }
                     $message->setCode($result);
                     $this->getServiceLocator()
                         ->get('systemLog')

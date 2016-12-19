@@ -78,7 +78,7 @@ if($message["flag"]>0){
 									<?php
 								}else{ 
 								    ?>
-								    <a href="<?php echo $this->url("website")?>" class="btn btn-warning btn-xs"><?php echo $this->translate("Adicionar")?></a>
+								    <a href="<?php echo $this->url("website/edit-modules", array("id"=>$website->idWebsite, "idModule"=>$module->idModule ))?>" class="btn btn-warning btn-xs"><?php echo $this->translate("Adicionar")?></a>
 									<?php
 								} 
 								?></td>

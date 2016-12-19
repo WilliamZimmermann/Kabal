@@ -510,12 +510,12 @@ class SystemMessages
                     break;
                 case "WEBSITE011":
                     $message["flag"] = 1;
-                    $message["message"] = "Módulos do website alterados com sucesso. [WEBSITE011]";
+                    $message["message"] = "Módulo adicionado com sucesso ao Website. [WEBSITE011]";
                     $this->logPriority = 5;
                     break;
                 case "WEBSITE012":
                     $message["flag"] = 2;
-                    $message["message"] = "Falha ao tentar alterar os módulos do website. [WEBSITE012]";
+                    $message["message"] = "Falha ao tentar remover o(s) módulo(s) do website. [WEBSITE012]";
                     $this->logPriority = 5;
                     break;
                 case "WEBSITE013":
