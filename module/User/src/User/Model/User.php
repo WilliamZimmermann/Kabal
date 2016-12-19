@@ -7,6 +7,7 @@ class User {
     public $idUser;
     public $company_id;
     public $company;
+    public $type;
     public $name;
     public $email;
     public $password;
@@ -17,6 +18,7 @@ class User {
         $this->idUser = (!empty($data['idUser'])) ? $data['idUser'] : null;
         $this->company_id = (!empty($data['company_id'])) ? $data['company_id'] : null;
         $this->company = (!empty($data['company'])) ? $data['company'] : null;
+        $this->type = (!empty($data['type'])) ? $data['type'] : null;
         $this->name = (!empty($data['name'])) ? $data['name'] : null;
         $this->email = (!empty($data['email'])) ? $data['email'] : null;
         $this->password = (!empty($data['password'])) ? $data['password'] : null;

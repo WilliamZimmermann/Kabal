@@ -23,7 +23,7 @@ class UserTable {
      */
     public function fetchAll($companyId=null) {
         $sqlSelect = $this->tableGateway->getSql()->select();
-        $sqlSelect->columns(array('idUser', 'company_id', 'name', 'email', 'status'));
+        $sqlSelect->columns(array('idUser', 'company_id', 'type', 'name', 'email', 'status'));
         $sqlSelect->join('company', 'company.idCompany = company_user.company_id', array("company"=>"name"), 'left');
         if($companyId){
             $sqlSelect->where(array('company_id'=>$companyId));
@@ -93,7 +93,7 @@ class UserTable {
      */
     public function saveUser(User $user) {
         
-        $data = array('company_id' => $user->company_id, 'name' => $user->name, 'email' => $user->email, 'status' => $user->status);
+        $data = array('company_id' => $user->company_id, 'type'=>$user->type, 'name' => $user->name, 'email' => $user->email, 'status' => $user->status);
         if($user->password){
             $data['password'] = $user->password;
         }

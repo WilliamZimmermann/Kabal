@@ -2,19 +2,16 @@
 namespace Company\Factories;
 
 use Zend\ServiceManager\FactoryInterface;
-use Zend\Db\TableGateway\TableGateway;
 
-class CompanyFactory implements FactoryInterface{
+class CompanyTableFactory implements FactoryInterface{
     /**
      * {@inheritDoc}
      * @see \Zend\ServiceManager\FactoryInterface::createService()
      */
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
     {
-        $adapter = $serviceLocator->get("Zend\Db\Adapter\Adapter");
-        $companyTable = new TableGateway('company', $adapter);
+        return $serviceLocator->get('Company\Model\CompanyTable');
         
-        return $companyTable;
     }
 
     

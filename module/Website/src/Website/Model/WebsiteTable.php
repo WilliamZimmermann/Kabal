@@ -132,6 +132,34 @@ class WebsiteTable {
         }
         return "WEBSITE011";
     }
+    
+    /**
+     * Save a specific relationship between one module and one website 
+     * @param int $module
+     * @param int $website
+     * @return string
+     */
+    public function saveModule($module, $website){
+        $moduleTable = new TableGateway("company_website_has_system_module", $this->tableGateway->getAdapter());
+        $moduleTable->insert(array('company_website_idWebsite'=>$website, 'system_module_idModule'=>$module));
+        return "WEBSITE011";
+    }
+    
+    /**
+     * Check if this specific module and website are related
+     * @param int $module
+     * @param int $website
+     * @return boolean
+     */
+    public function moduleWebsiteExist($module, $website){
+        $moduleTable = new TableGateway("company_website_has_system_module", $this->tableGateway->getAdapter());
+        $data = $moduleTable->select(array('company_website_idWebsite'=>$website, 'system_module_idModule'=>$module));
+        if($data->count()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     /**
      * This function will delete a specific Website and his records
@@ -160,6 +188,30 @@ class WebsiteTable {
         $moduleTable = new TableGateway("company_website_has_system_module", $this->tableGateway->getAdapter());
         $result = $moduleTable->delete(array("company_website_idWebsite"=>$idWebsite));
         return true;
+    }
+    
+    /**
+     * Delete a specific relationship between one module and one website
+     * @param int $website
+     * @param int $module
+     * @return string
+     */
+    public function deleteModule($website, $module){
+        //Before to delete it, delete all user permissions for this website and module
+        $permissionTable = new TableGateway("company_user_permissions", $this->tableGateway->getAdapter());
+        $permissionTable = $permissionTable->delete(array("website_module_idWebsite"=>$website, "website_module_idModule"=>$module));
+        if($permissionTable){
+            //If permissions delete are ok, delete module relationship
+            $moduleTable = new TableGateway("company_website_has_system_module", $this->tableGateway->getAdapter());
+            $result = $moduleTable->delete(array("company_website_idWebsite"=>$website, "system_module_idModule"=>$module));
+            if($result){    
+                return "WEBSITE011";
+            }else{
+                return "WEBSITE012";
+            }
+        }else{
+            return "WEBSITE012";
+        }
     }
 
 }

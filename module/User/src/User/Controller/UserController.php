@@ -29,11 +29,22 @@ class UserController extends AbstractActionController {
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete")){
             if($logedUser["idCompany"]==1){
                 $companyId = null;
+                $ableToInsert = true;
+                $companyData = $this->getServiceLocator()->get('companyTable')->getCompany(1);
             }else{
                 $companyId = $logedUser["idCompany"];
+                //Check if this company can insert more users
+                $companyData = $this->getServiceLocator()->get('companyTable')->getCompany($companyId);
+                $users = $this->getUserTable()->fetchAll($companyId);
+                if($companyData->max_users<=count($users)){
+                    //This company already arrived to the users limit, can't insert more
+                    $ableToInsert = false;
+                }else{
+                    $ableToInsert = true;
+                }
             }
             
-            return array("users" => $this->getUserTable()->fetchAll($companyId), "logedUserPermission"=>$permission);
+            return array("users" => $this->getUserTable()->fetchAll($companyId), "logedUserPermission"=>$permission, "ableToInsert"=>$ableToInsert, "companyData"=>$companyData);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -52,16 +63,33 @@ class UserController extends AbstractActionController {
             if($logedUser["idCompany"]==1){
                 $companies = $this->getServiceLocator()->get('companies')->select();
             }else{
+                //Check if this company can insert more users
+                $companyData = $this->getServiceLocator()->get('companyTable')->getCompany($logedUser["idCompany"]);
+                $users = $this->getUserTable()->fetchAll($logedUser["idCompany"]);
+                if($companyData->max_users<=count($users)){
+                    //This company already arrived to the users limit, can't insert more
+                    $this->redirect()->toRoute("user");
+                }
                 $companies = null;
             }
                     
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $user->exchangeArray($request->getPost());
-                if ($user->validation()) { //Validate all data is ok
+                if ($user->validation()) { //Validate all data if are ok
                     //After populate the object, will save in Database
                     if($logedUser["idCompany"]!=1){
                         $user->company_id = $logedUser["idCompany"];
+                    }
+                    if($user->type==1){
+                        /* For security reasons, if type is 1 (tecnician), 
+                        * check if the user that is inserting is also a tecnician
+                        * */
+                        $userLogedData = $this->getServiceLocator()->get('userDb')->getUser($logedUser["logedUser"]);
+                        if($userLogedData->type!=1){
+                           //If he is not a tecnician, so, put the new user type 2 - Administrator.
+                            $user->type = 2;
+                        }
                     }
                     $result = $this->getUserTable()->saveUser($user);
                     $message->setCode($result);
@@ -111,6 +139,17 @@ class UserController extends AbstractActionController {
                         //Before to save, will check again if this user is from this company
                         if($logedUser["idCompany"]!=1){
                             $user->company_id = $logedUser["idCompany"];
+                        }
+                        if($user->type==1){
+                            /* For security reasons, if type is 1 (tecnician),
+                             * check if the user that is inserting is also a tecnician
+                             * */
+                            $userLogedData = $this->getServiceLocator()->get('userDb')->getUser($logedUser["idUser"]);
+                            
+                            if($userLogedData->type!=1){
+                                //If he is not a tecnician, so, put the new user type 2 - Administrator.
+                                $user->type = 2;
+                            }
                         }
                         
                         //After populate the object, will save in Database

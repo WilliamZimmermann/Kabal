@@ -16,10 +16,12 @@ $this->headtitle($this->translate("Usuários"));
 <div class="row">
     <div class="col-lg-10"></div>
     <div class="col-lg-2">
-    	<?php if($logedUserPermission->insertP){ ?>
+    	<?php if($logedUserPermission->insertP && $ableToInsert){ ?>
         <a href="<?php echo $this->url("user/new") ?>"
            class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo $this->translate("Novo Usuário") ?></a>
-       <?php } ?>
+       <?php }else if($ableToInsert==false){
+           echo $this->translate("Para adquirir licenças para novos usuários, entre em contato conosco.");
+       }?>
     </div>
 </div>
 <br>
@@ -27,12 +29,15 @@ $this->headtitle($this->translate("Usuários"));
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading"> <?php echo $this->translate("Usuários") ?></header>
+            <div class="col-sm-12"> <?php 
+            echo count($users).$this->translate(" de ").$companyData->max_users.$this->translate(" licenças de usuários.")?></div>
             <table class="table table-striped table-advance table-hover">
                 <thead>
                     <tr>
                         <th><i class="fa fa-user"></i> <?php echo $this->translate("Usuário") ?></th>
                         <th><i class="fa fa-building"></i> <?php echo $this->translate("Empresa") ?></th>
                         <th><i class="fa fa-envelope"></i> <?php echo $this->translate("E-mail") ?></th>
+                        <th><i class="fa fa-check-circle"></i> <?php echo $this->translate("Tipo") ?></th>
                         <th><i class="fa fa-check-circle"></i> <?php echo $this->translate("Status") ?></th>
                         <th><i class="fa fa-edit"></i> <?php echo $this->translate("Ações") ?></th>
                     </tr>
@@ -52,6 +57,21 @@ $this->headtitle($this->translate("Usuários"));
                             <td><a href="#"><?php echo $user->name; ?></a></td>
                             <td><a href="<?php echo $this->url("company/edit", array("id" => $user->company_id)); ?>"><?php echo $user->company; ?></a></td>
                             <td><?php echo $user->email; ?></td>
+                            <td>
+                            <?php 
+                            switch($user->type){
+                                case 1:
+                                    echo "Técnico";
+                                    break;
+                                case 2:
+                                    echo "Administrador";
+                                    break;
+                                case 3:
+                                    echo "Vendedor";
+                                    break;
+                            }
+                            ?>
+                            </td>
                             <td><span
                                     class="label label-<?php echo $statusClass; ?> label-mini"><?php echo $status; ?></span></td>
                             <td>
