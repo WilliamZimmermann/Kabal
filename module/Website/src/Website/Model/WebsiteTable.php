@@ -200,15 +200,12 @@ class WebsiteTable {
         //Before to delete it, delete all user permissions for this website and module
         $permissionTable = new TableGateway("company_user_permissions", $this->tableGateway->getAdapter());
         $permissionTable = $permissionTable->delete(array("website_module_idWebsite"=>$website, "website_module_idModule"=>$module));
-        if($permissionTable){
-            //If permissions delete are ok, delete module relationship
-            $moduleTable = new TableGateway("company_website_has_system_module", $this->tableGateway->getAdapter());
-            $result = $moduleTable->delete(array("company_website_idWebsite"=>$website, "system_module_idModule"=>$module));
-            if($result){    
-                return "WEBSITE011";
-            }else{
-                return "WEBSITE012";
-            }
+
+        //If permissions delete are ok, delete module relationship
+        $moduleTable = new TableGateway("company_website_has_system_module", $this->tableGateway->getAdapter());
+        $result = $moduleTable->delete(array("company_website_idWebsite"=>$website, "system_module_idModule"=>$module));
+        if($result){    
+            return "WEBSITE011";
         }else{
             return "WEBSITE012";
         }
