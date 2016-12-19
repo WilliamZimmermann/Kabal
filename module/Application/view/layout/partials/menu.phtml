@@ -41,6 +41,13 @@ $websiteId = $session->__get('websiteId');
 	
 	<?php if($idCompany==1 || $websiteId>0){ ?>
 	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-users"></i>
+			<span><?php echo $this->translate("Clientes")?></span>
+	</a>
+	<ul class="sub">
+		<li><a href="<?php echo $this->url("customer"); ?>"><?php echo $this->translate("Clientes") ?></a></li>
+		<li><a href="<?php echo $this->url("article/new"); ?>"><?php echo $this->translate("Novo Cliente") ?></a></li>
+	</ul></li>
+	<li class="sub-menu"><a href="javascript:;"> <i class="fa fa-user"></i>
 			<span><?php echo $this->translate("Usuários")?></span>
 	</a>
 		<ul class="sub">
