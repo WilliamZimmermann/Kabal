@@ -16,6 +16,10 @@ use Customer\Model\CustomerTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Customer\Model\Customer;
+use Customer\Model\CustomerPersonTable;
+use Customer\Model\CustomerPerson;
+use Customer\Model\CustomerCompany;
+use Customer\Model\CustomerCompanyTable;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -63,6 +67,28 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Customer());
                     return new TableGateway('customer', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Customer\Model\CustomerPersonTable' => function ($sm) {
+                    $tableGateway = $sm->get('CustomerPersonTableGateway');
+                    $table = new CustomerPersonTable($tableGateway);
+                    return $table;
+                },
+                'CustomerPersonTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new CustomerPerson());
+                    return new TableGateway('customer_person', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Customer\Model\CustomerPersonTable' => function ($sm) {
+                    $tableGateway = $sm->get('CustomerCompanyTableGateway');
+                    $table = new CustomerCompanyTable($tableGateway);
+                    return $table;
+                },
+                'CustomerCompanyTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new CustomerCompany());
+                    return new TableGateway('customer_company', $dbAdapter, null, $resultSetPrototype);
                 },
             )
         );

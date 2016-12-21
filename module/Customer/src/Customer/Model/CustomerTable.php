@@ -76,9 +76,9 @@ class CustomerTable
                 return "CUSTOMER002";
             }
         }else{
-            //If this article already exists
-            if($this->getArticle($id)){
-                if($this->tableGateway->update($data, array('idArticle'=>$id))){
+            //If this customer already exists
+            if($this->getCustomer($id)){
+                if($this->tableGateway->update($data, array('company_id'=>$id))){
                     return "CUSTOMER004";
                 }else{
                     return "CUSTOMER005";

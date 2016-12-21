@@ -13,6 +13,10 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Session\Container;
+use Zend\Db\ResultSet\ResultSet;
+use Application\Model\Country;
+use Zend\Db\TableGateway\TableGateway;
+use Application\Model\CountryTable;
 
 class Module
 {
@@ -73,5 +77,24 @@ class Module
             }
              
         }
+    }
+    
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Application\Model\CountryTable' => function ($sm) {
+                    $tableGateway = $sm->get('CountryTableGateway');
+                    $table = new CountryTable($tableGateway);
+                    return $table;
+                },
+                'CountryTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Country());
+                    return new TableGateway('country', $dbAdapter, null, $resultSetPrototype);
+                },
+            )
+        );
     }
 }

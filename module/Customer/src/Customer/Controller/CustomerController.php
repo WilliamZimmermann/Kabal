@@ -15,7 +15,8 @@ class CustomerController extends AbstractActionController
 {
     protected $moduleId = 9;
     protected $customerTable;
-    
+    protected $customerPersonTable;
+    protected $customerCompanyTable;
     
     public function indexAction()
     {
@@ -40,7 +41,8 @@ class CustomerController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $logedUser["idCompany"]==1){
-            return array();
+            $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
+            return array("countries"=>$countries);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -52,6 +54,22 @@ class CustomerController extends AbstractActionController
             $this->customerTable = $sm->get('Customer\Model\CustomerTable');
         }
         return $this->customerTable;
+    }
+    
+    public function getCustomerPersonTable(){
+        if(!$this->customerPersonTable){
+            $sm = $this->getServiceLocator();
+            $this->customerPersonTable = $sm->get('Customer\Model\CustomerPersonTable');
+        }
+        return $this->customerPersonTable;
+    }
+    
+    public function getCustomerCompanyTable(){
+        if(!$this->customerCompanyTable){
+            $sm = $this->getServiceLocator();
+            $this->customerCompanyTable = $sm->get('Customer\Model\CustomerCompanyTable');
+        }
+        return $this->customerCompanyTable;
     }
 
 }

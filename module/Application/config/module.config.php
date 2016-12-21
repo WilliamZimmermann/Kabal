@@ -2,6 +2,7 @@
 use Application\Services\SystemMessages;
 use Application\Services\SystemLog;
 use Application\Services\SystemFunctions;
+use Application\Factories\CountryFactory;
 
 /**
  * Zend Framework (http://framework.zend.com/)
@@ -105,8 +106,10 @@ return array(
         'invokables'=>[
             'systemMessages'=>SystemMessages::class,
             'systemLog'=>SystemLog::class,
-            'systemFunctions'=>SystemFunctions::class
-            
+            'systemFunctions'=>SystemFunctions::class,
+        ],
+        'factories'=>[
+            'countryFactory' => CountryFactory::class
         ],
         'aliases' => array(
             'translator' => 'MvcTranslator',
