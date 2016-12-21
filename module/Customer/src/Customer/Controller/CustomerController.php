@@ -29,7 +29,18 @@ class CustomerController extends AbstractActionController
                 "delete"=>$this->getServiceLocator()->get('user')->checkPermission($permission, "delete")
             );
             $customers = $this->getCustomerTable()->fetchAll($logedUser["idCompany"]);
-            return array("articles"=>$customers, "permissions"=>$permissions);
+            return array("customers"=>$customers, "permissions"=>$permissions);
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
+    public function newAction(){
+        //Check if this user can access this article
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $logedUser["idCompany"]==1){
+            return array();
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
