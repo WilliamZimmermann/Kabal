@@ -2,6 +2,7 @@
 namespace Customer\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Application\Services\SystemFunctions;
 
 class CustomerTable
 {
@@ -57,7 +58,7 @@ class CustomerTable
             'customeType'=>$customer->customerType,
             'email'=>$customer->customerType,
             'password'=>$customer->password,
-            'birthDate'=>$customer->birthDate,
+            'birthDate'=>SystemFunctions::dateInvert($customer->birthDate, "american"),
             'country_id'=>$customer->country_id,
             'comments'=>$customer->comments,
             'log'=>$customer->log,

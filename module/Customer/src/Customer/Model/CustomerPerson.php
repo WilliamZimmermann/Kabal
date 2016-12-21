@@ -25,10 +25,6 @@ class CustomerPerson
 
     public function validation()
     {
-        if (! $this->customer_id) {
-            return false;
-        }
-        
         $stringValidator = new \Zend\Validator\StringLength();
         $stringValidator->setMax(50);
         $stringValidator->setMin(2);

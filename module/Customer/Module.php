@@ -79,7 +79,7 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new CustomerPerson());
                     return new TableGateway('customer_person', $dbAdapter, null, $resultSetPrototype);
                 },
-                'Customer\Model\CustomerPersonTable' => function ($sm) {
+                'Customer\Model\CustomerCompanyTable' => function ($sm) {
                     $tableGateway = $sm->get('CustomerCompanyTableGateway');
                     $table = new CustomerCompanyTable($tableGateway);
                     return $table;

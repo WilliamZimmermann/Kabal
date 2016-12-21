@@ -13,7 +13,6 @@ $this->headtitle($this->translate("Novo Cliente"));
 		<!--breadcrumbs end -->
 	</div>
 </div>
-
 <?php 
 if($message["flag"]>0){
     if($message["flag"]==1){
@@ -50,7 +49,7 @@ if($message["flag"]>0){
                               </ul>
                           </header>
 			<div class="panel-body">
-				<form class="form-horizontal tasi-form" method="post" id="customer">
+				<form class="form-horizontal tasi-form" method="post" id="customer" action="">
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Tipo*")?></label>
 						<div class="col-sm-10">
@@ -63,22 +62,22 @@ if($message["flag"]>0){
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Nome*")?></label>
     						<div class="col-sm-5">
-                            	<input type="text" class="form-control" name="name" id="name" maxlength="50" required placeholder="<?php echo $this->translate("Nome")?>" value="<?php echo $customer->name; ?>" >
+                            	<input type="text" class="form-control" name="name" id="name" maxlength="50" placeholder="<?php echo $this->translate("Nome")?>" value="<?php echo $customerPerson->name; ?>" >
     						</div>
     						<div class="col-sm-5">
-                            	<input type="text" class="form-control" name="lastName" id="lastName" maxlength="60" required placeholder="<?php echo $this->translate("Sobrenome")?>" value="<?php echo $customer->lastName; ?>" >
+                            	<input type="text" class="form-control" name="lastName" id="lastName" maxlength="60" placeholder="<?php echo $this->translate("Sobrenome")?>" value="<?php echo $customerPerson->last_name; ?>" >
     						</div>
     					</div>
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CPF")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" data-mask="999.999.999-99" name="document_1" id="document_1" maxlength="30" value="<?php echo $customer->document_1; ?>" >
+                            	<input type="text" class="form-control" data-mask="999.999.999-99" name="document_1" id="document_1" maxlength="30" value="<?php echo $customerPerson->document_1; ?>" >
     						</div>
     					</div>
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("RG")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" name="document_2" id="document_2" maxlength="30" value="<?php echo $customer->document_2; ?>" >
+                            	<input type="text" class="form-control" name="document_2" id="document_2" maxlength="30" value="<?php echo $customerPerson->document_2; ?>" >
     						</div>
     					</div>
 					</div>
@@ -86,25 +85,25 @@ if($message["flag"]>0){
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Razão Social*")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" name="social_name" id="social_name" maxlength="100" required placeholder="<?php echo $this->translate("Razão Social")?>" value="<?php echo $customer->social_name; ?>" >
+                            	<input type="text" class="form-control" name="social_name" id="social_name" maxlength="100" placeholder="<?php echo $this->translate("Razão Social")?>" value="<?php echo $customerCompany->social_name; ?>" >
     						</div>
     					</div>
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Nome Fantasia*")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" name="fantasy_name" id="fantasy_name" maxlength="100" required placeholder="<?php echo $this->translate("Nome Fantasia")?>" value="<?php echo $customer->fantasy_name; ?>" >
+                            	<input type="text" class="form-control" name="fantasy_name" id="fantasy_name" maxlength="100" placeholder="<?php echo $this->translate("Nome Fantasia")?>" value="<?php echo $customerCompany->fantasy_name; ?>" >
     						</div>
     					</div>
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CNPJ")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" data-mask="99.999.999/9999-99" name="document_1" id="document_1" maxlength="30" value="<?php echo $customer->document_1; ?>" >
+                            	<input type="text" class="form-control" data-mask="99.999.999/9999-99" name="document_1" id="document_1" maxlength="30" value="<?php echo $customerCompany->document_1; ?>" >
     						</div>
     					</div>
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("IE")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" name="document_2" id="document_2" maxlength="30" value="<?php echo $customer->document_2; ?>" >
+                            	<input type="text" class="form-control" name="document_2" id="document_2" maxlength="30" value="<?php echo $customerCompany->document_2; ?>" >
     						</div>
     					</div>
 					</div>
@@ -134,7 +133,7 @@ if($message["flag"]>0){
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("E-mail*")?></label>
 						<div class="col-sm-10">
-                          	<input name="email" type="email" value="" class="form-control" maxlength="250" required>
+                          	<input name="email" type="email" value="<?php echo $customer->email; ?>" class="form-control" maxlength="250" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -145,7 +144,7 @@ if($message["flag"]>0){
 						<hr>
 						<div class="col-sm-2 col-sm-2"></div>
 						<div class="col-sm-10">
-                          	<input name="password2" type="password2" value="" class="form-control" maxlength="30" required>
+                          	<input name="password2" type="password" value="" class="form-control" maxlength="30" required>
 						</div>
 					</div>
 					<div class="form-group">

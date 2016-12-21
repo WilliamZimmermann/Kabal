@@ -12,6 +12,7 @@ class Customer
     public $customerType;
     public $email;
     public $password;    
+    public $password2;
     public $birthDate;
     public $country_id;
     public $comments;
@@ -26,7 +27,8 @@ class Customer
         $this->addedBy = (!empty($data['addedBy'])) ? (int)$data['addedBy'] : null;
         $this->customerType = (!empty($data['customerType'])) ? (int)$data['customerType'] : null;
         $this->email = (!empty($data['email'])) ? strip_tags($data['email']) : null;
-        $this->password = (!empty($data['email'])) ? md5($data['password']) : null;
+        $this->password = (!empty($data['password'])) ? md5($data['password']) : null;
+        $this->password2 = (!empty($data['password2'])) ? md5($data['password2']) : null;
         $this->birthDate = (!empty($data['birthDate'])) ? $data['birthDate'] : null;
         $this->comments = (!empty($data['comments'])) ? $data['comments'] : null;
         $this->log = (!empty($data['log'])) ? $data['log'] : null;
@@ -36,7 +38,7 @@ class Customer
     }
     
     public function validation(){
-        if(!$this->website_id){
+        if(!$this->company_id){
             return false;
         }
         
@@ -56,10 +58,16 @@ class Customer
         if(!$stringValidator->isValid($this->password)) {
             return false;
         }
+        if(!$stringValidator->isValid($this->password2)) {
+            return false;
+        }
+        if($this->password!=$this->password2){
+            return false;
+        }
         
         //Validate Birth Date (day)
         $dateValidator = new Date();
-        $dateValidator->setFormat("d/m/Y H:i");
+        $dateValidator->setFormat("Y-m-d");
         if(!$dateValidator->isValid($this->birthDate)) {
             return false;
         }

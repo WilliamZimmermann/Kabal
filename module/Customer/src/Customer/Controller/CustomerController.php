@@ -10,6 +10,9 @@
 namespace Customer\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Customer\Model\Customer;
+use Customer\Model\CustomerPerson;
+use Customer\Model\CustomerCompany;
 
 class CustomerController extends AbstractActionController
 {
@@ -42,7 +45,110 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $logedUser["idCompany"]==1){
             $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
-            return array("countries"=>$countries);
+            $customer = new Customer();
+            $customerPerson = new CustomerPerson();
+            $customerCompany = new CustomerCompany();
+            
+            $message = $this->getServiceLocator()->get('customerMessages');
+            $request = $this->getRequest();
+           
+            if($request->isPost()){
+                $data = $request->getPost();
+                $customer->exchangeArray($data);
+                $customer->company_id = $logedUser["idCompany"];
+                $customer->addedBy = $logedUser["idUser"];
+                if($customer->validation()){ //Verify to check if all data is ok
+                    $flag = true;
+                    //Check what kind of customer is the client (person or comapany)
+                    if($customer->customerType==1){
+                        $customerPerson->exchangeArray($data);
+                        if($customerPerson->validation()){ //Standard validations are ok
+                            //If necessary, make a validation for document_1
+                            if($customerPerson->document_1){
+                                //Check country id from customer
+                                if($customer->country_id == 33){ //33 is Brazil
+                                    //So, must to validate the CPF
+                                    if(!$customerPerson->cpfValidator($customerPerson->document_1)){
+                                        $flag = false;
+                                        $message->setCode("CUSTOMER003");
+                                    }
+                                }
+                            }
+                        }else{
+                            $message->setCode("CUSTOMER003");
+                        }
+                    }else{
+                        $customerCompany->exchangeArray($data);
+                        if($customerCompany->validation()){ //Standard validations are ok
+                            //If necessary, make a validation for document_1
+                            if($customerCompany->document_1){
+                                //Check country id for customer
+                                if($customer->country_id == 33){ //33 is Brazil
+                                    //So, must to validate the CNPJ
+                                    if(!$customerCompany->cnpjValidator($customerCompany->document_1)){
+                                        $flag = false;
+                                        $message->setCode("CUSTOMER003");
+                                    }
+                                }
+                            }
+                        }else{
+                            $message->setCode("CUSTOMER003");
+                        }
+                    }
+                    die("chegou");
+                    /**
+                     * TODO - há algum erro daqui para baixo
+                     */
+                    //If all validations are ok
+                    if($flag){
+                        $result = $this->customerTable->saveCustomer($customer);
+                        if($result["code"=="CUSTOMER001"]){ //If saved
+                            //Must to save person or company
+                            if($customer->customerType<>2){//Person
+                                $customerPerson->customer_id = $result["id"];
+                                if($this->getCustomerPersonTable()->saveCustomer($customerPerson)){
+                                    $flag = true;
+                                }else{
+                                    $this->getServiceLocator()->get('systemLog')->addLog(0, "Failed when tried to save Customer Person.", 3);
+                                    $flag = false;
+                                }
+                            }else{//Company
+                                $customerCompany->customer_id = $result["id"];
+                                if($this->getCustomerCompanyTable()->saveCustomer($customerCompany)){
+                                    $flag = true;
+                                }else{
+                                    $this->getServiceLocator()->get('systemLog')->addLog(0, "Failed when tried to save Customer Company.", 3);
+                                    $flag = false;
+                                }
+                            }
+                            if($flag){ //All inserts are ok
+                                /**
+                                 * TODO
+                                 * Redirect for update page
+                                 */
+                            }else{
+                                /*
+                                 * If there was a problem when tried to insert in Customer Person or Company
+                                 * delete customer from database
+                                 */
+                                $this->customerTable->deleteCustomer($result["id"]);
+                                $result["code"] = "CUSTOMER003";
+                            }
+                        }
+                        $message->setCode($result["code"]);
+                    }
+                }else{
+                    $message->setCode("CUSTOMER003");
+                }
+                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+            }
+            return array(
+                "message"=>$message->getMessage(), 
+                "countries"=>$countries, 
+                "customer"=>$customer, 
+                "customerPerson"=>$customerPerson,
+                "customerCompany"=>$customerCompany
+            );
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
