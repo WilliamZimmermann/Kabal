@@ -61,6 +61,8 @@ class CustomerController extends AbstractActionController
                     $flag = true;
                     //Check what kind of customer is the client (person or comapany)
                     if($customer->customerType==1){
+                        $data["document_1"] = $data["p_document_1"];
+                        $data["document_2"] = $data["p_document_2"];
                         $customerPerson->exchangeArray($data);
                         if($customerPerson->validation()){ //Standard validations are ok
                             //If necessary, make a validation for document_1
@@ -78,6 +80,8 @@ class CustomerController extends AbstractActionController
                             $message->setCode("CUSTOMER003");
                         }
                     }else{
+                        $data["document_1"] = $data["c_document_1"];
+                        $data["document_2"] = $data["c_document_2"];
                         $customerCompany->exchangeArray($data);
                         if($customerCompany->validation()){ //Standard validations are ok
                             //If necessary, make a validation for document_1
@@ -95,18 +99,18 @@ class CustomerController extends AbstractActionController
                             $message->setCode("CUSTOMER003");
                         }
                     }
-                    die("chegou");
                     /**
                      * TODO - há algum erro daqui para baixo
                      */
                     //If all validations are ok
                     if($flag){
-                        $result = $this->customerTable->saveCustomer($customer);
-                        if($result["code"=="CUSTOMER001"]){ //If saved
+                        $customer->log = "Cliente adicionado por meio do site pelo usuário ".$logedUser["name"]."(".$logedUser["idUser"].").";
+                        $result = $this->getCustomerTable()->saveCustomer($customer);
+                        if($result["code"]=="CUSTOMER001"){ //If saved
                             //Must to save person or company
-                            if($customer->customerType<>2){//Person
+                            if($customer->customerType==1){//Person
                                 $customerPerson->customer_id = $result["id"];
-                                if($this->getCustomerPersonTable()->saveCustomer($customerPerson)){
+                                if($this->getCustomerPersonTable()->saveCustomer($customerPerson, 1)){
                                     $flag = true;
                                 }else{
                                     $this->getServiceLocator()->get('systemLog')->addLog(0, "Failed when tried to save Customer Person.", 3);
@@ -131,7 +135,7 @@ class CustomerController extends AbstractActionController
                                  * If there was a problem when tried to insert in Customer Person or Company
                                  * delete customer from database
                                  */
-                                $this->customerTable->deleteCustomer($result["id"]);
+                                $this->getCustomerTable()->deleteCustomer($result["id"]);
                                 $result["code"] = "CUSTOMER003";
                             }
                         }

@@ -20,6 +20,11 @@ class Customer
     public $dateCreated;
     public $dateUpdated;
     public $active;
+    //For Joins
+    public $name;
+    public $name2;
+    public $name3;
+    public $name4;
     
     public function exchangeArray($data){
         $this->idCustomer = (!empty($data['idCustomer'])) ? $data['idCustomer'] : null;
@@ -30,11 +35,17 @@ class Customer
         $this->password = (!empty($data['password'])) ? md5($data['password']) : null;
         $this->password2 = (!empty($data['password2'])) ? md5($data['password2']) : null;
         $this->birthDate = (!empty($data['birthDate'])) ? $data['birthDate'] : null;
+        $this->country_id = (!empty($data['country_id'])) ? $data['country_id'] : null;
         $this->comments = (!empty($data['comments'])) ? $data['comments'] : null;
         $this->log = (!empty($data['log'])) ? $data['log'] : null;
         $this->dateCreated = (!empty($data['dateCreated'])) ? $data['dateCreated'] : date("Y-m-d H:i:s");
         $this->dateUpdated = (!empty($data['dateUpdated'])) ? $data['dateUpdated'] : date("Y-m-d H:i:s");
         $this->active = (!empty($data['active'])) ? 1 : 0;
+        //For Joins
+        $this->name = (!empty($data['name'])) ? strip_tags($data['name']) : null;
+        $this->name2 = (!empty($data['name2'])) ? strip_tags($data['name2']) : null;
+        $this->name3 = (!empty($data['name3'])) ? strip_tags($data['name3']) : null;
+        $this->name4 = (!empty($data['name4'])) ? strip_tags($data['name4']) : null;
     }
     
     public function validation(){

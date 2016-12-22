@@ -3,12 +3,12 @@ namespace Application\Model;
 
 class Country
 {
-    public $idCountry;
+    public $countryId;
     public $name;
     public $name2;
     
     public function exchangeArray($data){
-        $this->idCountry = (!empty($data['idCountry'])) ? $data['idCountry'] : null;
+        $this->countryId = (!empty($data['countryId'])) ? $data['countryId'] : null;
         $this->name = (!empty($data['name'])) ? $data['name'] : null;
         $this->name2 = (!empty($data['name2'])) ? (int)$data['name2'] : null;
     }

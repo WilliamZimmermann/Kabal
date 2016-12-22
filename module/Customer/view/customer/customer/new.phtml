@@ -65,19 +65,19 @@ if($message["flag"]>0){
                             	<input type="text" class="form-control" name="name" id="name" maxlength="50" placeholder="<?php echo $this->translate("Nome")?>" value="<?php echo $customerPerson->name; ?>" >
     						</div>
     						<div class="col-sm-5">
-                            	<input type="text" class="form-control" name="lastName" id="lastName" maxlength="60" placeholder="<?php echo $this->translate("Sobrenome")?>" value="<?php echo $customerPerson->last_name; ?>" >
+                            	<input type="text" class="form-control" name="last_name" id="last_name" maxlength="60" placeholder="<?php echo $this->translate("Sobrenome")?>" value="<?php echo $customerPerson->last_name; ?>" >
     						</div>
     					</div>
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CPF")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" data-mask="999.999.999-99" name="document_1" id="document_1" maxlength="30" value="<?php echo $customerPerson->document_1; ?>" >
+                            	<input type="text" class="form-control" data-mask="999.999.999-99" name="p_document_1" id="p_document_1" maxlength="30" value="<?php echo $customerPerson->document_1; ?>" >
     						</div>
     					</div>
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("RG")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" name="document_2" id="document_2" maxlength="30" value="<?php echo $customerPerson->document_2; ?>" >
+                            	<input type="text" class="form-control" name="p_document_2" id="p_document_2" maxlength="30" value="<?php echo $customerPerson->document_2; ?>" >
     						</div>
     					</div>
 					</div>
@@ -97,13 +97,13 @@ if($message["flag"]>0){
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CNPJ")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" data-mask="99.999.999/9999-99" name="document_1" id="document_1" maxlength="30" value="<?php echo $customerCompany->document_1; ?>" >
+                            	<input type="text" class="form-control" data-mask="99.999.999/9999-99" name="c_document_1" id="c_document_1" maxlength="30" value="<?php echo $customerCompany->document_1; ?>" >
     						</div>
     					</div>
     					<div class="form-group">
     						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("IE")?></label>
     						<div class="col-sm-10">
-                            	<input type="text" class="form-control" name="document_2" id="document_2" maxlength="30" value="<?php echo $customerCompany->document_2; ?>" >
+                            	<input type="text" class="form-control" name="c_document_2" id="c_document_2" maxlength="30" value="<?php echo $customerCompany->document_2; ?>" >
     						</div>
     					</div>
 					</div>
@@ -116,10 +116,11 @@ if($message["flag"]>0){
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("País de origem*")?></label>
 						<div class="col-sm-10">
-                        	<select name="country" required="required" class="form-control">
+                        	<select name="country_id" required="required" class="form-control">
                         		<option value="0"><?php echo $this->translate("Selecione")?></option>
-                        		<?php foreach($countries as $country){ ?>
-                        		<option value="<?php echo $country->idCountry; ?>"><?php echo $country->name; ?></option>
+                        		<?php foreach($countries as $country){ 
+                        		    ?>
+                        		<option value="<?php echo $country->countryId; ?>"><?php echo $country->name; ?></option>
                         		<?php } ?>
                         	</select>
 						</div>

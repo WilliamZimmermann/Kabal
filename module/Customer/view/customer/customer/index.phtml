@@ -71,11 +71,19 @@ $this->headtitle($this->translate("Clientes"));
         }
         ?>
 					<tr>
-						<td><?php //echo $customer->title; ?></td>
-						<td><?php //echo $customer->description; ?></td>
+						<td>
+						<?php 
+						if($customer->customerType==1){
+						  echo $customer->name." ".$customer->name2;
+                        }else{
+                            echo $customer->name3." (".$customer->name4.")";
+                        }
+                        ?>
+						</td>
+						<td><?php echo $customer->email; ?></td>
 						<td><?php //echo $customer->author; ?></td>
 						<td><?php //echo SystemFunctions::dateInvert($customer->publicationDate, "brazilian"); ?></td>
-						<td><?php //echo SystemFunctions::dateInvert($customer->lastUpdateDate, "brazilian"); ?></td>
+						<td><?php echo SystemFunctions::dateInvert($customer->dateUpdated, "brazilian"); ?></td>
 						<td><span
 							class="label label-<?php echo $statusClass; ?> label-mini"><?php echo $status; ?></span></td>
 						<td>

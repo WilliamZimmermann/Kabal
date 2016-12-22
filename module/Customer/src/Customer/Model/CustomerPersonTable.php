@@ -25,7 +25,7 @@ class CustomerPersonTable
         $rowset = $this->tableGateway->select($data);
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new \Exception("Could not find row at customer person $id");
         }
         return $row;
     }
@@ -33,9 +33,10 @@ class CustomerPersonTable
     /**
      * This function insert or edit a article in the database
      * @param Article $customer (if $customer->idArticle have a valid id, will update, not insert)
+     * @param int $action - (1 Insert | 2 Update)
      * @throws \Exception
      */
-    public function saveCustomer(CustomerPerson $customer){
+    public function saveCustomer(CustomerPerson $customer, $action=1){
         $data = array(
             'customer_id'=>$customer->customer_id,
             'name'=>$customer->name, 
@@ -44,11 +45,12 @@ class CustomerPersonTable
             'document_2'=>$customer->document_2,
             );
         
+        
         $id = (int)$customer->customer_id;
         //If there is no Id, so, it's a new article
-        if($id  == 0){
+        if($action==1){
             if($this->tableGateway->insert($data)){
-                $id = $this->tableGateway->getLastInsertValue();
+                //$id = $this->tableGateway->getLastInsertValue();
                 return true;
             }else{
                 return false;

@@ -18,6 +18,13 @@ class CustomerTable
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function fetchAll($companyId){
+        $sqlSelect = $this->tableGateway->getSql()->select();
+        $sqlSelect->join('customer_person', 'customer.idCustomer = customer_person.customer_id', array("name"=>"name", "name2"=>last_name), 'left');
+        $sqlSelect->join('customer_company', 'customer.idCustomer = customer_company.customer_id', array("name3"=>"social_name", "name4"=>"fantasy_name"), 'left');
+        $sqlSelect->where(array("company_id"=>$companyId));
+        $resultSet = $this->tableGateway->selectWith($sqlSelect);
+        return $resultSet;
+        /*
         if($companyId>1){
             $where = array("company_id"=>$companyId);
         }else if($companyId==1){
@@ -26,6 +33,7 @@ class CustomerTable
         
         $resultSet = $this->tableGateway->select($where);
         return $resultSet;
+        */
     }
     
     /**
@@ -55,8 +63,8 @@ class CustomerTable
         $data = array(
             'company_id'=>$customer->company_id,
             'addedBy'=>$customer->addedBy, 
-            'customeType'=>$customer->customerType,
-            'email'=>$customer->customerType,
+            'customerType'=>$customer->customerType,
+            'email'=>$customer->email,
             'password'=>$customer->password,
             'birthDate'=>SystemFunctions::dateInvert($customer->birthDate, "american"),
             'country_id'=>$customer->country_id,

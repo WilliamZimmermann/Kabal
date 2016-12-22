@@ -33,9 +33,10 @@ class CustomerCompanyTable
     /**
      * This function insert or edit a article in the database
      * @param Article $customer (if $customer->idArticle have a valid id, will update, not insert)
+     * @param int $action (1 = insert, 2 = update)
      * @throws \Exception
      */
-    public function saveCustomer(CustomerCompany $customer){
+    public function saveCustomer(CustomerCompany $customer, $action=1){
         $data = array(
             'customer_id'=>$customer->customer_id,
             'social_name'=>$customer->social_name, 
@@ -46,7 +47,7 @@ class CustomerCompanyTable
         
         $id = (int)$customer->customer_id;
         //If there is no Id, so, it's a new article
-        if($id  == 0){
+        if($action == 1){
             if($this->tableGateway->insert($data)){
                 $id = $this->tableGateway->getLastInsertValue();
                 return true;

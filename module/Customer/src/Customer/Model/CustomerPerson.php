@@ -28,7 +28,7 @@ class CustomerPerson
         $stringValidator = new \Zend\Validator\StringLength();
         $stringValidator->setMax(50);
         $stringValidator->setMin(2);
-        
+     
         // Validate Name
         if (! $stringValidator->isValid($this->name)) {
             return false;
@@ -36,11 +36,6 @@ class CustomerPerson
         // Validate Last name
         $stringValidator->setMax(60);
         if (! $stringValidator->isValid($this->last_name)) {
-            return false;
-        }
-        
-        // Validate CPF
-        if(!$this->cnpjValidator($this->document_1)){
             return false;
         }
         
