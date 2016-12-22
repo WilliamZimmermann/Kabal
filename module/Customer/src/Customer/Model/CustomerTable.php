@@ -3,6 +3,8 @@ namespace Customer\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Application\Services\SystemFunctions;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
 
 class CustomerTable
 {
@@ -18,22 +20,15 @@ class CustomerTable
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function fetchAll($companyId){
+        
         $sqlSelect = $this->tableGateway->getSql()->select();
         $sqlSelect->join('customer_person', 'customer.idCustomer = customer_person.customer_id', array("name"=>"name", "name2"=>last_name), 'left');
         $sqlSelect->join('customer_company', 'customer.idCustomer = customer_company.customer_id', array("name3"=>"social_name", "name4"=>"fantasy_name"), 'left');
         $sqlSelect->where(array("company_id"=>$companyId));
+        //$sqlSelect->where(new Expression('CASE customer.customerType WHEN 1 THEN customer_person.idCustomer '))
         $resultSet = $this->tableGateway->selectWith($sqlSelect);
         return $resultSet;
-        /*
-        if($companyId>1){
-            $where = array("company_id"=>$companyId);
-        }else if($companyId==1){
-            $where = array();
-        }
         
-        $resultSet = $this->tableGateway->select($where);
-        return $resultSet;
-        */
     }
     
     /**
@@ -65,7 +60,6 @@ class CustomerTable
             'addedBy'=>$customer->addedBy, 
             'customerType'=>$customer->customerType,
             'email'=>$customer->email,
-            'password'=>$customer->password,
             'birthDate'=>SystemFunctions::dateInvert($customer->birthDate, "american"),
             'country_id'=>$customer->country_id,
             'comments'=>$customer->comments,
@@ -78,6 +72,7 @@ class CustomerTable
         $id = (int)$customer->idCustomer;
         //If there is no Id, so, it's a new article
         if($id  == 0){
+            $data['password'] = $customer->password;
             if($this->tableGateway->insert($data)){
                 $id = $this->tableGateway->getLastInsertValue();
                 return array("code"=>"CUSTOMER001", "id"=>$id);
@@ -93,7 +88,7 @@ class CustomerTable
                     return "CUSTOMER005";
                 }
             }else{ //This id was not found at the system, customer not exist
-                return "CUSTOMER07";
+                return "CUSTOMER007";
             }
         }
     }

@@ -621,3 +621,31 @@
 2016-12-19T20:05:01+00:00 NOTICE (5): USER ID: 1. MESSAGE: Permissões do usuário 1 alteradas com sucesso. [USER014]
 2016-12-19T20:05:01+00:00 NOTICE (5): USER ID: 1. MESSAGE: Permissões do usuário 1 alteradas com sucesso. [USER014]
 2016-12-19T20:05:01+00:00 NOTICE (5): USER ID: 1. MESSAGE: Permissões do usuário 1 alteradas com sucesso. [USER014]
+2016-12-22T19:51:23+00:00 NOTICE (5): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Um ou mais campos possuem dados inválidos. Tente novamente. [CUSTOMER006]
+2016-12-22T19:54:14+00:00 NOTICE (5): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Um ou mais campos possuem dados inválidos. Tente novamente. [CUSTOMER006]
+2016-12-22T19:56:22+00:00 NOTICE (5): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Um ou mais campos possuem dados inválidos. Tente novamente. [CUSTOMER006]
+2016-12-22T19:56:41+00:00 NOTICE (5): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Um ou mais campos possuem dados inválidos. Tente novamente. [CUSTOMER006]
+2016-12-22T19:56:57+00:00 NOTICE (5): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Um ou mais campos possuem dados inválidos. Tente novamente. [CUSTOMER006]
+2016-12-22T19:57:48+00:00 NOTICE (5): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Um ou mais campos possuem dados inválidos. Tente novamente. [CUSTOMER006]
+2016-12-22T20:00:07+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:01:24+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:06:09+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:07:46+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:07:55+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:08:14+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:08:51+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:09:02+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:11:06+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:13:45+00:00 ERR (3): USER ID: 1. MESSAGE: Failed when tried to save Customer Company.
+2016-12-22T20:13:45+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:13:45+00:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
+2016-12-22T20:14:18+00:00 ERR (3): USER ID: 1. MESSAGE: Failed when tried to save Customer Company.
+2016-12-22T20:14:18+00:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do cliente alterados com sucesso. [CUSTOMER004]
+2016-12-22T20:14:18+00:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do cliente alterados com sucesso. [CUSTOMER004]
+2016-12-22T20:14:33+00:00 CRIT (2): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Tente novamente. [CUSTOMER005]
+2016-12-22T20:15:25+00:00 CRIT (2): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Tente novamente. [CUSTOMER005]
+2016-12-22T20:16:26+00:00 ERR (3): USER ID: 1. MESSAGE: Failed when tried to save Customer Company.
+2016-12-22T20:16:26+00:00 CRIT (2): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Tente novamente. [CUSTOMER005]
+2016-12-22T20:16:26+00:00 CRIT (2): USER ID: 1. MESSAGE: Falha ao alterar dados do cliente. Tente novamente. [CUSTOMER005]
+2016-12-22T20:18:39+00:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do cliente alterados com sucesso. [CUSTOMER004]
+2016-12-22T20:24:45+00:00 NOTICE (5): USER ID: 1. MESSAGE: Cliente cadastrado com sucesso. Deseja cadastrar outro cliente? [CUSTOMER001]

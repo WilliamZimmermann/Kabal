@@ -35,6 +35,20 @@ return array(
                             ),
                         ),
                     ),
+                    'edit' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id[/:code]]',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                                'code'=>'[a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'edit',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),

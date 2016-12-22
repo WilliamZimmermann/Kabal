@@ -104,7 +104,7 @@ class CustomerController extends AbstractActionController
                      */
                     //If all validations are ok
                     if($flag){
-                        $customer->log = "Cliente adicionado por meio do site pelo usuário ".$logedUser["name"]."(".$logedUser["idUser"].").";
+                        $customer->log = "Cliente adicionado por meio do site pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d-m-Y H:i:s").".";
                         $result = $this->getCustomerTable()->saveCustomer($customer);
                         if($result["code"]=="CUSTOMER001"){ //If saved
                             //Must to save person or company
@@ -126,10 +126,7 @@ class CustomerController extends AbstractActionController
                                 }
                             }
                             if($flag){ //All inserts are ok
-                                /**
-                                 * TODO
-                                 * Redirect for update page
-                                 */
+                                $this->redirect()->toRoute("customer/edit", array("id"=>$result["id"], "code"=>$result["code"]));
                             }else{
                                 /*
                                  * If there was a problem when tried to insert in Customer Person or Company
@@ -152,6 +149,139 @@ class CustomerController extends AbstractActionController
                 "customer"=>$customer, 
                 "customerPerson"=>$customerPerson,
                 "customerCompany"=>$customerCompany
+            );
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
+    public function editAction(){
+        //Check if this user can access this article
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
+
+            $customerPerson = new CustomerPerson();
+            $customerCompany = new CustomerCompany();
+            if($customerData->customerType==1){
+                $customerPersonData = $this->getCustomerPersonTable()->getCustomer($id);
+            }else{
+                $customerCompanyData = $this->getCustomerCompanyTable()->getCustomer($id);
+            }
+    
+            $message = $this->getServiceLocator()->get('customerMessages');
+            if($this->params()->fromRoute('code')){
+                $message->setCode($this->params()->fromRoute('code'));
+            }
+            $request = $this->getRequest();
+             
+            if($request->isPost()){
+                $customer = new Customer();
+                $data = $request->getPost();
+                $customer->exchangeArray($data);
+                $customer->idCustomer = $customerData->idCustomer;
+                $customer->company_id = $customerData->company_id;
+                $customer->addedBy = $customerData->addedBy;
+                if($customer->validation(false)){ //Verify to check if all data is ok
+                    $flag = true;
+                    //Check what kind of customer is the client (person or comapany)
+                    if($customer->customerType==1){
+                        $data["document_1"] = $data["p_document_1"];
+                        $data["document_2"] = $data["p_document_2"];
+                        $customerPerson->exchangeArray($data);
+                        if($customerPerson->validation()){ //Standard validations are ok
+                            //If necessary, make a validation for document_1
+                            if($customerPerson->document_1){
+                                //Check country id from customer
+                                if($customer->country_id == 33){ //33 is Brazil
+                                    //So, must to validate the CPF
+                                    if(!$customerPerson->cpfValidator($customerPerson->document_1)){
+                                        $flag = false;
+                                        $message->setCode("CUSTOMER006");
+                                    }
+                                }
+                            }
+                        }else{
+                            $message->setCode("CUSTOMER006");
+                        }
+                    }else{
+                        $data["document_1"] = $data["c_document_1"];
+                        $data["document_2"] = $data["c_document_2"];
+                        $customerCompany->exchangeArray($data);
+                        if($customerCompany->validation()){ //Standard validations are ok
+                            //If necessary, make a validation for document_1
+                            if($customerCompany->document_1){
+                                //Check country id for customer
+                                if($customer->country_id == 33){ //33 is Brazil
+                                    //So, must to validate the CNPJ
+                                    if(!$customerCompany->cnpjValidator($customerCompany->document_1)){
+                                        $flag = false;
+                                        $message->setCode("CUSTOMER006");
+                                    }
+                                }
+                            }
+                        }else{
+                            $message->setCode("CUSTOMER006");
+                        }
+                    }
+                    /**
+                     * TODO - há algum erro daqui para baixo
+                     */
+                    //If all validations are ok
+                    if($flag){
+                        $customer->dateCreated = $customerData->dateCreated;
+                        $customer->log = $customerData->log."<br>"."Cliente alterado por meio do site pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+                        $result = $this->getCustomerTable()->saveCustomer($customer);
+                        if($result=="CUSTOMER004"){ //If saved
+                            //Must to save person or company
+                            if($customer->customerType==1){//Person
+                                $customerPerson->customer_id = $customerData->idCustomer;
+                                if($this->getCustomerPersonTable()->saveCustomer($customerPerson, 2)){
+                                    $flag = true;
+                                }
+                            }else{//Company
+                                
+                                $customerCompany->customer_id = $customerData->idCustomer;
+                                if($this->getCustomerCompanyTable()->saveCustomer($customerCompany, 2)){
+                                    $flag = true;
+                                }
+                            }
+                            if($flag){ //All updates are ok
+                                //Load new data again
+                                $customerData = $this->getCustomerTable()->getCustomer($id);
+                                if($customerData->customerType==1){
+                                    $customerPersonData = $this->getCustomerPersonTable()->getCustomer($id);
+                                }else{
+                                    $customerCompanyData = $this->getCustomerCompanyTable()->getCustomer($id);
+                                }
+                            }else{
+                                /*
+                                 * If there was a problem when tried to update in Customer Person or Company
+                                 */
+                                $result = "CUSTOMER005";
+                            }
+                        }
+                        $message->setCode($result);
+                    }
+                }else{
+                    $message->setCode("CUSTOMER006");
+                }
+                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+            }
+            return array(
+                "message"=>$message->getMessage(),
+                "countries"=>$countries,
+                "customer"=>$customerData,
+                "customerPerson"=>$customerPersonData,
+                "customerCompany"=>$customerCompanyData
             );
         }else{
             return $this->redirect()->toRoute("noPermission");

@@ -48,7 +48,7 @@ class Customer
         $this->name4 = (!empty($data['name4'])) ? strip_tags($data['name4']) : null;
     }
     
-    public function validation(){
+    public function validation($validatePassword=true){
         if(!$this->company_id){
             return false;
         }
@@ -63,17 +63,19 @@ class Customer
             return false;
         }
         
-        //Validate Password
-        $stringValidator->setMax(33);
-        $stringValidator->setMin(6);
-        if(!$stringValidator->isValid($this->password)) {
-            return false;
-        }
-        if(!$stringValidator->isValid($this->password2)) {
-            return false;
-        }
-        if($this->password!=$this->password2){
-            return false;
+        if($validatePassword){
+            //Validate Password
+            $stringValidator->setMax(33);
+            $stringValidator->setMin(6);
+            if(!$stringValidator->isValid($this->password)) {
+                return false;
+            }
+            if(!$stringValidator->isValid($this->password2)) {
+                return false;
+            }
+            if($this->password!=$this->password2){
+                return false;
+            }
         }
         
         //Validate Birth Date (day)

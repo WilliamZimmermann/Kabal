@@ -1,0 +1,208 @@
+<?php 
+use Application\Services\SystemFunctions;
+
+$this->headtitle($this->translate("Editar Cliente"));
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("customer")?>"><?php echo $this->translate("Clientes") ?></a></li>
+			<li class="active"><?php echo $this->translate("Editar Cliente") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+<?php 
+if($message["flag"]>0){
+    if($message["flag"]==1){
+        $class = "success";
+    }else{
+        $class = "danger";
+    }
+    ?>
+    <div class="alert alert-<?php echo $class; ?> alert-block fade in">
+    	<button data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>
+    	<p><?php echo $message["message"]?></p>
+    </div>
+    <?php
+}
+?>
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading tab-bg-dark-navy-blue ">
+                              <ul class="nav nav-tabs">
+                                  <li class="active">
+                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Editar Cliente")?></a>
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Endereços")?></a>                                      
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Contatos")?></a>                                      
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Integrações")?></a>                                      
+                                  </li>
+                              </ul>
+                          </header>
+			<div class="panel-body">
+				<form class="form-horizontal tasi-form" method="post" id="customer" action="">
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Tipo*")?></label>
+						<div class="col-sm-10">
+							<label><input type="radio" name="customerType" class="customerType" value="1" <?php if($customer->customerType==1){ ?>checked="checked"<?php } ?>>&nbsp;<?php echo $this->translate("Pessoa Física")?></label>
+							<br>
+							<label><input type="radio" name="customerType" class="customerType" value="2" <?php if($customer->customerType==2){ ?>checked="checked"<?php } ?>>&nbsp;<?php echo $this->translate("Pessoa Jurídica")?></label>
+						</div>
+					</div>
+					<div id="form-cpf">
+    					<div class="form-group">
+    						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Nome*")?></label>
+    						<div class="col-sm-5">
+                            	<input type="text" class="form-control" name="name" id="name" maxlength="50" placeholder="<?php echo $this->translate("Nome")?>" value="<?php echo $customerPerson->name; ?>" >
+    						</div>
+    						<div class="col-sm-5">
+                            	<input type="text" class="form-control" name="last_name" id="last_name" maxlength="60" placeholder="<?php echo $this->translate("Sobrenome")?>" value="<?php echo $customerPerson->last_name; ?>" >
+    						</div>
+    					</div>
+    					<div class="form-group">
+    						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CPF")?></label>
+    						<div class="col-sm-10">
+                            	<input type="text" class="form-control" data-mask="999.999.999-99" name="p_document_1" id="p_document_1" maxlength="30" value="<?php echo $customerPerson->document_1; ?>" >
+    						</div>
+    					</div>
+    					<div class="form-group">
+    						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("RG")?></label>
+    						<div class="col-sm-10">
+                            	<input type="text" class="form-control" name="p_document_2" id="p_document_2" maxlength="30" value="<?php echo $customerPerson->document_2; ?>" >
+    						</div>
+    					</div>
+					</div>
+					<div id="form-cnpj">
+    					<div class="form-group">
+    						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Razão Social*")?></label>
+    						<div class="col-sm-10">
+                            	<input type="text" class="form-control" name="social_name" id="social_name" maxlength="100" placeholder="<?php echo $this->translate("Razão Social")?>" value="<?php echo $customerCompany->social_name; ?>" >
+    						</div>
+    					</div>
+    					<div class="form-group">
+    						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Nome Fantasia*")?></label>
+    						<div class="col-sm-10">
+                            	<input type="text" class="form-control" name="fantasy_name" id="fantasy_name" maxlength="100" placeholder="<?php echo $this->translate("Nome Fantasia")?>" value="<?php echo $customerCompany->fantasy_name; ?>" >
+    						</div>
+    					</div>
+    					<div class="form-group">
+    						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CNPJ")?></label>
+    						<div class="col-sm-10">
+                            	<input type="text" class="form-control" data-mask="99.999.999/9999-99" name="c_document_1" id="c_document_1" maxlength="30" value="<?php echo $customerCompany->document_1; ?>" >
+    						</div>
+    					</div>
+    					<div class="form-group">
+    						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("IE")?></label>
+    						<div class="col-sm-10">
+                            	<input type="text" class="form-control" name="c_document_2" id="c_document_2" maxlength="30" value="<?php echo $customerCompany->document_2; ?>" >
+    						</div>
+    					</div>
+					</div>
+					<div class="form-group">
+    					<hr>
+    					<div class="col-sm-12">
+    						<h4><?php echo $this->translate("Informações gerais")?></h4>
+    					</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("País de origem*")?></label>
+						<div class="col-sm-10">
+                        	<select name="country_id" required="required" class="form-control">
+                        		<option value="0"><?php echo $this->translate("Selecione")?></option>
+                        		<?php foreach($countries as $country){ 
+                        		    ?>
+                        		<option value="<?php echo $country->countryId; ?>" <?php if($customer->country_id==$country->countryId){ ?>selected="selected"<?php } ?>><?php echo $country->name; ?></option>
+                        		<?php } ?>
+                        	</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Data de Nascimento/Fundação*")?></label>
+						<div class="col-sm-10">
+                          	<input size="10" name="birthDate" type="date"  value="<?php echo SystemFunctions::dateInvert($customer->birthDate, 'american', false); ?>" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("E-mail*")?></label>
+						<div class="col-sm-10">
+                          	<input name="email" type="email" value="<?php echo $customer->email; ?>" class="form-control" maxlength="250" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Senha")?></label>
+						<div class="col-sm-10">
+                          	<button type="submit" class="btn btn-warning"><?php echo $this->translate("Resetar Senha")?></button>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Comentários")?></label>
+						<div class="col-sm-10">
+								<textarea rows="5" class="form-control" name="comments"><?php echo $customer->comments; ?></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Log")?></label>
+						<div class="col-sm-10">
+								<?php echo $customer->log; ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Ativo")?></label>
+						<div class="col-sm-10">
+								<input type="checkbox" name="active" value="1" <?php if($customer->active){ ?>checked<?php } ?> data-toggle="switch" /> 
+						</div>
+					</div>
+					<div class="form-group">
+						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Salvar")?></button>
+						&nbsp;<a href="<?php echo $this->url("article")?>" class="btn btn-danger"><?php echo $this->translate("Cancelar")?></a>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</div>
+<?php 
+$this->headscript()->captureStart();
+$customerType = $customer->customerType;
+echo <<<JS
+$(document).ready(function(){
+	if('$customerType'==2){
+        $('#form-cpf').hide('true');
+    }else{
+        $('#form-cnpj').hide('true');
+    }
+    $('.customerType').change(function(){
+        console.log("Choose");
+        $('#form-cpf').hide('true');
+        $('#form-cnpj').hide('true');
+        if(this.value==1){
+            console.log("Show CPF");
+            $('#form-cpf').fadeIn('slow');
+        }
+        if(this.value==2){
+            console.log("Show CNPJ");
+            $('#form-cnpj').fadeIn('slow');
+        }
+    });
+});
+JS;
+$this->headscript()->captureEnd();
+
+$this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-datetimepicker/css/datetimepicker.css'));
+
+$this->headScript()->prependFile($this->basePath("js/validators/customer.js"));
+$this->headScript()->prependFile($this->basePath('js/advanced-component-datetime.js'));
+$this->headScript()->prependFile($this->basePath('assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'));
+$this->headScript()->prependFile($this->basePath('assets/bootstrap-inputmask/bootstrap-inputmask.min.js'));
+?>

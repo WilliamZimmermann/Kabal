@@ -81,14 +81,14 @@ $this->headtitle($this->translate("Clientes"));
                         ?>
 						</td>
 						<td><?php echo $customer->email; ?></td>
-						<td><?php //echo $customer->author; ?></td>
+						<td><?php //echo var_dump($customer); ?></td>
 						<td><?php //echo SystemFunctions::dateInvert($customer->publicationDate, "brazilian"); ?></td>
 						<td><?php echo SystemFunctions::dateInvert($customer->dateUpdated, "brazilian"); ?></td>
 						<td><span
 							class="label label-<?php echo $statusClass; ?> label-mini"><?php echo $status; ?></span></td>
 						<td>
 							<a
-							href="<?php echo $this->url("article/edit", array("id"=>$customer->idCustomer))?>"
+							href="<?php echo $this->url("customer/edit", array("id"=>$customer->idCustomer))?>"
 							class="btn btn-primary btn-xs"> <i class="fa fa-pencil"></i>
 						</a>
 							<button data-toggle="modal" href="#delete-<?php echo $customer->idCustomer; ?>"

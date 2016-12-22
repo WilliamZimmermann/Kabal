@@ -124,7 +124,7 @@ class WebsiteController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
-            // Get the Company ID
+            // Get Website ID
             $id = (int) $this->params()->fromRoute('id', 0);
             
             // Get companies for the select
