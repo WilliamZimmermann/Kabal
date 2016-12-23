@@ -17,6 +17,10 @@ use Zend\Db\ResultSet\ResultSet;
 use Application\Model\Country;
 use Zend\Db\TableGateway\TableGateway;
 use Application\Model\CountryTable;
+use Application\Model\ZoneTable;
+use Application\Model\Zone;
+use Application\Model\CityTable;
+use Application\Model\City;
 
 class Module
 {
@@ -93,6 +97,28 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Country());
                     return new TableGateway('country', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\ZoneTable' => function ($sm) {
+                    $tableGateway = $sm->get('ZoneTableGateway');
+                    $table = new ZoneTable($tableGateway);
+                    return $table;
+                },
+                'ZoneTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Zone());
+                    return new TableGateway('zone', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\CityTable' => function ($sm) {
+                    $tableGateway = $sm->get('CityTableGateway');
+                    $table = new CityTable($tableGateway);
+                    return $table;
+                },
+                'CityTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new City());
+                    return new TableGateway('city', $dbAdapter, null, $resultSetPrototype);
                 },
             )
         );

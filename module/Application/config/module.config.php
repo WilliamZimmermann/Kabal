@@ -3,6 +3,8 @@ use Application\Services\SystemMessages;
 use Application\Services\SystemLog;
 use Application\Services\SystemFunctions;
 use Application\Factories\CountryFactory;
+use Application\Factories\ZoneFactory;
+use Application\Factories\CityFactory;
 
 /**
  * Zend Framework (http://framework.zend.com/)
@@ -109,7 +111,9 @@ return array(
             'systemFunctions'=>SystemFunctions::class,
         ],
         'factories'=>[
-            'countryFactory' => CountryFactory::class
+            'countryFactory' => CountryFactory::class,
+            'zoneFactory' => ZoneFactory::class,
+            'cityFactory' => CityFactory::class
         ],
         'aliases' => array(
             'translator' => 'MvcTranslator',
