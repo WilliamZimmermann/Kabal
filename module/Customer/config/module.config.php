@@ -49,6 +49,18 @@ return array(
                             ),
                         ),
                     ),
+                    /*
+                    'checkEmail' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/checkEmail',
+                            'defaults' => array(
+                                'action'=>'checkEmail',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
+                    */
                 ),
             ),
         ),

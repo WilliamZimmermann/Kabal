@@ -28,7 +28,7 @@ class CustomerMessages
                 // CUSTOMER MODULE
                 case "CUSTOMER001":
                     $message["flag"] = 1;
-                    $message["message"] = "Cliente cadastrado com sucesso. Deseja cadastrar outro cliente? [CUSTOMER001]";
+                    $message["message"] = "Cliente cadastrado com sucesso. [CUSTOMER001]";
                     $this->logPriority = 5;
                     break;
                 case "CUSTOMER002":
@@ -70,6 +70,11 @@ class CustomerMessages
                     $message["flag"] = 2;
                     $message["message"] = "Houve um erro ao tentar excluir o cliente. Tente novamente. [CUSTOMER009]";
                     $this->logPriority = 3;
+                    break;
+                case "CUSTOMER010":
+                    $message["flag"] = 2;
+                    $message["message"] = "Ação não executada. Esse email já está sendo usado por outro cliente. [CUSTOMER010]";
+                    $this->logPriority = 5;
                     break;
                 default:
                     $message["flag"] = 2;

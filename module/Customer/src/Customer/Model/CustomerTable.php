@@ -3,8 +3,6 @@ namespace Customer\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Application\Services\SystemFunctions;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Expression;
 
 class CustomerTable
 {
@@ -29,6 +27,25 @@ class CustomerTable
         $resultSet = $this->tableGateway->selectWith($sqlSelect);
         return $resultSet;
         
+    }
+    
+    /**
+     * Check if some email is already inserted in our database for the same company
+     * @param string $email
+     * @param int $company_id
+     * @param int $idCustomer
+     * @return number
+     */
+    public function emailExists($email, $company_id, $idCustomer=null){
+        $sqlSelect = $this->tableGateway->getSql()->select();
+        if($idCustomer){ //It's a update
+            $sqlSelect->where(array("company_id"=>$company_id, "email"=>$email));
+            $sqlSelect->where->notEqualTo('idCustomer', $idCustomer);
+        }else{
+            //It's a insert
+            $sqlSelect->where(array("company_id"=>$company_id, "email"=>$email));
+        }
+        return $this->tableGateway->selectWith($sqlSelect)->count();
     }
     
     /**
@@ -82,7 +99,7 @@ class CustomerTable
         }else{
             //If this customer already exists
             if($this->getCustomer($id)){
-                if($this->tableGateway->update($data, array('company_id'=>$id))){
+                if($this->tableGateway->update($data, array('idCustomer'=>$id))){
                     return "CUSTOMER004";
                 }else{
                     return "CUSTOMER005";

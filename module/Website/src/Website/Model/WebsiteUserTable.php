@@ -78,7 +78,7 @@ class WebsiteUserTable
      * @param int $idWebsite
      * @return number
      */
-    public function haveRelationship(int $idUser, int $idWebsite){
+    public function haveRelationship($idUser, $idWebsite){
         $result = $this->tableGateway->select(array("company_user_idUser"=>$idUser, "company_website_idWebsite"=>$idWebsite))->count();
         return $result;
     }

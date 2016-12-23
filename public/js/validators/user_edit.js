@@ -22,7 +22,7 @@ var Script = function () {
                 name: {
                     required: "Digite o nome do website",
                     minlength: "Nome do website muito curto"
-                }
+                },
                 email: "Por favor, digite um endereço de email válido",
             }
         });
