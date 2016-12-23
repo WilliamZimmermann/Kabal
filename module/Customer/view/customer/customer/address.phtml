@@ -1,0 +1,129 @@
+<?php 
+use Application\Services\SystemFunctions;
+
+$this->headtitle($this->translate("Editar Endereços do Cliente"));
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("customer")?>"><?php echo $this->translate("Clientes") ?></a></li>
+			<li class="active"><?php echo $this->translate("Editar Endereços do Cliente") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+<?php 
+if($message["flag"]>0){
+    if($message["flag"]==1){
+        $class = "success";
+    }else{
+        $class = "danger";
+    }
+    ?>
+    <div class="alert alert-<?php echo $class; ?> alert-block fade in">
+    	<button data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>
+    	<p><?php echo $message["message"]?></p>
+    </div>
+    <?php
+}
+?>
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading tab-bg-dark-navy-blue ">
+                              <ul class="nav nav-tabs">
+                                  <li>
+                                      <a href="<?php echo $this->url("customer/edit", array("id"=>$customer->idCustomer))?>"><?php echo $this->translate("Editar Cliente")?></a>
+                                  </li>
+                                  <li class="active">
+                                      <a data-toggle="tab"><?php echo $this->translate("Endereços")?></a>                                      
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Contatos")?></a>                                      
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Integrações")?></a>                                      
+                                  </li>
+                              </ul>
+                          </header>
+			<div class="panel-body">
+				<form class="form-horizontal tasi-form" method="post" id="customerAddress" action="">
+					<?php if($customer->customerType==1){ ?>
+					<div class="form-group">
+						<div class="col-sm-12">
+						<h4><?php echo $this->translate("Nome:")?>
+							<?php echo $customerPerson->name." ".$customerPerson->last_name; ?></h4></div>
+					</div>
+					<?php }else{ ?>
+					<div class="form-group">
+						<div class="col-sm-12"><h4><?php echo $this->translate("Empresa:")?>
+							<?php echo $customerCompany->social_name." (".$customerCompany->fantasy_name.")"; ?></h4>
+						</div>
+					</div>
+					<?php } ?>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<div class="col-sm-3">
+    							<div class="alert alert-warning alert-block col-sm-12">
+        							<h4><?php echo $this->translate("Casa")?></h4>
+        							<strong><?php echo $this->translate("Endereço: ")?></strong>Rua Felipe Assmann, 518, Bairro Matiel<br>
+        							<strong><?php echo $this->translate("Cidade: ")?></strong>Feliz, RS (Brasil)<br>
+        							<strong><?php echo $this->translate("CEP: ")?></strong>95770-000<br><br>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-info"><i class="fa fa-map-marker"></i></a>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-warning"><?php echo $this->translate("Editar")?></a>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-danger"><?php echo $this->translate("Excluir")?></a>
+        						</div>
+    						</div>
+    						<div class="col-sm-3">
+    							<div class="alert alert-warning alert-block col-sm-12">
+        							<h4><?php echo $this->translate("Trabalho")?></h4>
+        							<strong><?php echo $this->translate("Endereço: ")?></strong>Rua Felipe Assmann, 518, Bairro Matiel<br>
+        							<strong><?php echo $this->translate("Cidade: ")?></strong>Feliz, RS (Brasil)<br>
+        							<strong><?php echo $this->translate("CEP: ")?></strong>95770-000<br><br>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-info"><i class="fa fa-map-marker"></i></a>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-warning"><?php echo $this->translate("Editar")?></a>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-danger"><?php echo $this->translate("Excluir")?></a>
+        						</div>
+    						</div>
+    						<div class="col-sm-3">
+    							<div class="alert alert-warning alert-block col-sm-12">
+        							<h4><?php echo $this->translate("Casa da Mãe")?></h4>
+        							<strong><?php echo $this->translate("Endereço: ")?></strong>Rua Felipe Assmann, 518, Bairro Matiel<br>
+        							<strong><?php echo $this->translate("Cidade: ")?></strong>Feliz, RS (Brasil)<br>
+        							<strong><?php echo $this->translate("CEP: ")?></strong>95770-000<br><br>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-info"><i class="fa fa-map-marker"></i></a>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-warning"><?php echo $this->translate("Editar")?></a>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-danger"><?php echo $this->translate("Excluir")?></a>
+        						</div>
+    						</div>
+    						<div class="col-sm-3">
+        						<div class="alert alert-success alert-block col-sm-12">
+        							<h4><?php echo $this->translate("Vazio")?></h4>
+        							<a href="<?php echo $this->url("article")?>" class="btn btn-success"><?php echo $this->translate("Adicionar Endereço")?></a>
+        						</div>
+    						</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</div>
+<?php 
+$this->headscript()->captureStart();
+$customerType = $customer->customerType;
+echo <<<JS
+$(document).ready(function(){
+	
+});
+JS;
+$this->headscript()->captureEnd();
+
+
+$this->headScript()->prependFile($this->basePath("js/validators/customer.js"));
+$this->headScript()->prependFile($this->basePath('assets/bootstrap-inputmask/bootstrap-inputmask.min.js'));
+?>

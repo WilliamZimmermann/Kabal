@@ -49,6 +49,19 @@ return array(
                             ),
                         ),
                     ),
+                    'address' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/address',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'address',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
                     /*
                     'checkEmail' => array(
                         'type'    => 'Segment',

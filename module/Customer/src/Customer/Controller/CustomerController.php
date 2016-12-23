@@ -292,6 +292,41 @@ class CustomerController extends AbstractActionController
         }
     }
     
+    public function addressAction(){
+        //Check if this user can access this article
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            $customerPerson = new CustomerPerson();
+            $customerCompany = new CustomerCompany();
+            if($customerData->customerType==1){
+                $customerPersonData = $this->getCustomerPersonTable()->getCustomer($id);
+            }else{
+                $customerCompanyData = $this->getCustomerCompanyTable()->getCustomer($id);
+            }
+            
+            $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
+            $message = $this->getServiceLocator()->get('customerMessages');
+            
+            return array(
+                "message"=>$message->getMessage(),
+                "countries"=>$countries,
+                "customer"=>$customerData,
+                "customerPerson"=>$customerPersonData,
+                "customerCompany"=>$customerCompanyData
+            );
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
     /*
     public function checkEmailAction(){
         //Check if this user can access this article
