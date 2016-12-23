@@ -1,10 +1,7 @@
 <?php
 namespace Customer\Model;
 
-use Zend\Validator\Date;
-use Zend\Validator\EmailAddress;
-
-class Customer
+class CustomerAddress
 {
     public $idAddress;
     public $customer_id;
@@ -13,62 +10,74 @@ class Customer
     public $house_number;
     public $complement;
     public $neighborhood;
-    public $city;
     public $zip_code;
-    public $zone;
+    public $city_id;
+    public $zone_id;
     public $country_id;
     public $principal;
     public $active;
     
     public function exchangeArray($data){
-        $this->idAddress = (!empty($data['idAddress'])) ? $data['idAddress'] : null;
-        $this->customer_id = (!empty($data['customer_id'])) ? $data['customer_id'] : null;
-        $this->addedBy = (!empty($data['addedBy'])) ? (int)$data['addedBy'] : null;
-        $this->customerType = (!empty($data['customerType'])) ? (int)$data['customerType'] : null;
-        $this->email = (!empty($data['email'])) ? strip_tags($data['email']) : null;
-        $this->password = (!empty($data['password'])) ? md5($data['password']) : null;
-        $this->password2 = (!empty($data['password2'])) ? md5($data['password2']) : null;
-        $this->birthDate = (!empty($data['birthDate'])) ? $data['birthDate'] : null;
+        $this->idAddress = (!empty($data['idAddress'])) ? (int)$data['idAddress'] : null;
+        $this->customer_id = (!empty($data['customer_id'])) ? (int)$data['customer_id'] : null;
+        $this->name = (!empty($data['name'])) ? strip_tags($data['name']) : null;
+        $this->street = (!empty($data['street'])) ? strip_tags($data['street']) : null;
+        $this->house_number = (!empty($data['house_number'])) ? strip_tags($data['house_number']) : null;
+        $this->complement = (!empty($data['complement'])) ? strip_tags($data['complement']) : null;
+        $this->neighborhood = (!empty($data['neighborhood'])) ? strip_tags($data['neighborhood']) : null;
+        $this->zip_code = (!empty($data['zip_code'])) ? strip_tags($data['zip_code']) : null;
+        $this->city_id = (!empty($data['city_id'])) ? $data['city_id'] : null;
+        $this->zone_id = (!empty($data['zone_id'])) ? $data['zone_id'] : null;
         $this->country_id = (!empty($data['country_id'])) ? $data['country_id'] : null;
+        $this->principal = (!empty($data['principal'])) ? 1 : 0;
         $this->active = (!empty($data['active'])) ? 1 : 0;
     }
     
     public function validation($validatePassword=true){
-        if(!$this->company_id){
+        if(!$this->customer_id){
             return false;
         }
         
         $stringValidator = new \Zend\Validator\StringLength();
-        $stringValidator->setMax(85);
         $stringValidator->setMin(2);
+        $stringValidator->setMax(45);
         
-        $emailValidator = new EmailAddress();
-        //Email validation
-        if(!$emailValidator->isValid($this->email)) {
+        if(!$stringValidator->isValid($this->name)){
+            return false;
+        }
+        $stringValidator->setMax(60);
+        if(!$stringValidator->isValid($this->street)){
+            return false;
+        }
+        $stringValidator->setMin(0);
+        $stringValidator->setMax(15);
+        if(!$stringValidator->isValid($this->house_number)){
+            return false;
+        }
+        $stringValidator->setMax(60);
+        if(!$stringValidator->isValid($this->complement)){
+            return false;
+        }
+        $stringValidator->setMax(60);
+        if(!$stringValidator->isValid($this->neighborhood)){
+            return false;
+        }
+        $stringValidator->setMin(1);
+        $stringValidator->setMax(45);
+        if(!$stringValidator->isValid($this->zip_code)){
             return false;
         }
         
-        if($validatePassword){
-            //Validate Password
-            $stringValidator->setMax(33);
-            $stringValidator->setMin(6);
-            if(!$stringValidator->isValid($this->password)) {
-                return false;
-            }
-            if(!$stringValidator->isValid($this->password2)) {
-                return false;
-            }
-            if($this->password!=$this->password2){
-                return false;
-            }
-        }
-        
-        //Validate Birth Date (day)
-        $dateValidator = new Date();
-        $dateValidator->setFormat("Y-m-d");
-        if(!$dateValidator->isValid($this->birthDate)) {
+        if(!$this->city_id){
             return false;
         }
+        if(!$this->zone_id){
+            return false;
+        }
+        if(!$this->country_id){
+            return false;
+        }
+        
         
         return true;
     }

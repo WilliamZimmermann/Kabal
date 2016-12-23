@@ -76,6 +76,46 @@ class CustomerMessages
                     $message["message"] = "Ação não executada. Esse email já está sendo usado por outro cliente. [CUSTOMER010]";
                     $this->logPriority = 5;
                     break;
+                case "CUSTOMER011":
+                    $message["flag"] = 1;
+                    $message["message"] = "Endereço do cliente cadastrado com sucesso. [CUSTOMER011]";
+                    $this->logPriority = 5;
+                    break;
+                case "CUSTOMER012":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar endereço do cliente. [CUSTOMER012]";
+                    $this->logPriority = 2;
+                    break;
+                case "CUSTOMER013":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar/alterar endereço do cliente. Um ou mais campos possuem dados inválidos. [CUSTOMER013]";
+                    $this->logPriority = 5;
+                    break;
+                case "CUSTOMER014":
+                    $message["flag"] = 1;
+                    $message["message"] = "Endereço do cliente alterado com sucesso. [CUSTOMER014]";
+                    $this->logPriority = 5;
+                    break;
+                case "CUSTOMER015":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar endereço do cliente. [CUSTOMER015]";
+                    $this->logPriority = 2;
+                    break;
+                case "CUSTOMER016":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha - esse endereço não existe. [CUSTOMER016]";
+                    $this->logPriority = 5;
+                    break;
+                case "CUSTOMER017":
+                    $message["flag"] = 1;
+                    $message["message"] = "Endereço removido com sucesso. [CUSTOMER017]";
+                    $this->logPriority = 5;
+                    break;
+                case "CUSTOMER018":
+                    $message["flag"] = 1;
+                    $message["message"] = "Houve um erro ao tentar excluir o endereço. [CUSTOMER018]";
+                    $this->logPriority = 3;
+                    break;
                 default:
                     $message["flag"] = 2;
                     $message["message"] = "Mensagem desconhecida.";

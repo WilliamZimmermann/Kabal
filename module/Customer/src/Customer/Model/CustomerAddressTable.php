@@ -2,9 +2,8 @@
 namespace Customer\Model;
 
 use Zend\Db\TableGateway\TableGateway;
-use Application\Services\SystemFunctions;
 
-class CustomerTable
+class CustomerAddressTable
 {
     protected $tableGateway;
     
@@ -13,49 +12,24 @@ class CustomerTable
     }
     
     /**
-     * This function returns all customers that are in our records
-     * @param $companyId - Company Id to filter
+     * This function returns all address for 1 customer
+     * @param $customerId - If for 1 customer to filter
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function fetchAll($companyId){
-        
-        $sqlSelect = $this->tableGateway->getSql()->select();
-        $sqlSelect->join('customer_person', 'customer.idCustomer = customer_person.customer_id', array("name"=>"name", "name2"=>last_name), 'left');
-        $sqlSelect->join('customer_company', 'customer.idCustomer = customer_company.customer_id', array("name3"=>"social_name", "name4"=>"fantasy_name"), 'left');
-        $sqlSelect->where(array("company_id"=>$companyId));
-        //$sqlSelect->where(new Expression('CASE customer.customerType WHEN 1 THEN customer_person.idCustomer '))
-        $resultSet = $this->tableGateway->selectWith($sqlSelect);
+    public function fetchAll($customerId){
+        $resultSet = $this->tableGateway->select(array("customer_id"=>$customerId));
         return $resultSet;
         
     }
     
     /**
-     * Check if some email is already inserted in our database for the same company
-     * @param string $email
-     * @param int $company_id
-     * @param int $idCustomer
-     * @return number
-     */
-    public function emailExists($email, $company_id, $idCustomer=null){
-        $sqlSelect = $this->tableGateway->getSql()->select();
-        if($idCustomer){ //It's a update
-            $sqlSelect->where(array("company_id"=>$company_id, "email"=>$email));
-            $sqlSelect->where->notEqualTo('idCustomer', $idCustomer);
-        }else{
-            //It's a insert
-            $sqlSelect->where(array("company_id"=>$company_id, "email"=>$email));
-        }
-        return $this->tableGateway->selectWith($sqlSelect)->count();
-    }
-    
-    /**
-     * This function get a specific customer registred in our data base
+     * This function get a specific address registred in our data base
      * @param int $id
-     * @param string $param (name of some param to make the serc (idCustomer by default)
+     * @param string $param (name of some param to make the serc (idAddress by default)
      * @throws \Exception
      * @return ArrayObject|NULL
      */
-    public function getCustomer($id, $param="idCustomer"){
+    public function getAddress($id, $param="idAddress"){
         $id  = (int) $id;
         $data = array($param => $id);
         $rowset = $this->tableGateway->select($data);
@@ -71,57 +45,57 @@ class CustomerTable
      * @param Article $customer (if $customer->idArticle have a valid id, will update, not insert)
      * @throws \Exception
      */
-    public function saveCustomer(Customer $customer){
+    public function saveAddress(CustomerAddress $customerAddress){
         $data = array(
-            'company_id'=>$customer->company_id,
-            'addedBy'=>$customer->addedBy, 
-            'customerType'=>$customer->customerType,
-            'email'=>$customer->email,
-            'birthDate'=>SystemFunctions::dateInvert($customer->birthDate, "american"),
-            'country_id'=>$customer->country_id,
-            'comments'=>$customer->comments,
-            'log'=>$customer->log,
-            'dateCreated'=>$customer->dateCreated,
-            'dateUpdated'=>$customer->dateUpdated, 
-            'active'=>$customer->active
+            'customer_id'=>$customerAddress->customer_id,
+            'name'=>$customerAddress->name,
+            'street'=>$customerAddress->street,
+            'houseNumber'=>$customerAddress->house_number,
+            'complement'=>$customerAddress->complement,
+            'neighborhood'=>$customerAddress->neighborhood,
+            'zip_code'=>$customerAddress->zip_code,
+            'city_id'=>$customerAddress->city_id,
+            'zone_id'=>$customerAddress->zone_id,
+            'country_id'=>$customerAddress->country_id,
+            'principal'=>$customerAddress->principal,
+            'active'=>$customerAddress->active
             );
         
-        $id = (int)$customer->idCustomer;
-        //If there is no Id, so, it's a new article
+        $id = (int)$customerAddress->idAddress;
+        //If there is no Id, so, it's a new address
         if($id  == 0){
-            $data['password'] = $customer->password;
             if($this->tableGateway->insert($data)){
                 $id = $this->tableGateway->getLastInsertValue();
-                return array("code"=>"CUSTOMER001", "id"=>$id);
+                return array("code"=>"CUSTOMER011", "id"=>$id);
             }else{
-                return "CUSTOMER002";
+                return "CUSTOMER012";
             }
         }else{
             //If this customer already exists
             if($this->getCustomer($id)){
                 if($this->tableGateway->update($data, array('idCustomer'=>$id))){
-                    return "CUSTOMER004";
+                    return "CUSTOMER014";
                 }else{
-                    return "CUSTOMER005";
+                    return "CUSTOMER015";
                 }
-            }else{ //This id was not found at the system, customer not exist
-                return "CUSTOMER007";
+            }else{ //This id was not found at the system, address does not exist
+                return "CUSTOMER016";
             }
         }
     }
     
     
     /**
-     * This function delete a specific customer
+     * This function delete a specific address
      * @param int $id
      * @return number
      */
-    public function deleteCustomer($id){
+    public function deleteAddress($id){
         //Here we must to put the recursive functions to delete all future content
-        if($this->tableGateway->delete(array('idCustomer'=>(int)$id))){
-            return "CUSTOMER008";
+        if($this->tableGateway->delete(array('idAddress'=>(int)$id))){
+            return "CUSTOMER017";
         }else{
-            return "CUSTOMER009";
+            return "CUSTOMER018";
         }
     }
 }
