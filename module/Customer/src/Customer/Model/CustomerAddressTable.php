@@ -17,9 +17,14 @@ class CustomerAddressTable
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function fetchAll($customerId){
-        $resultSet = $this->tableGateway->select(array("customer_id"=>$customerId));
-        return $resultSet;
+        $sqlSelect = $this->tableGateway->getSql()->select();
+        $sqlSelect->join('country', 'customer_address.country_id = country.countryId', array("country"=>"name"), 'left');
+        $sqlSelect->join('zone', 'customer_address.zone_id = zone.id', array("zone"=>"name", "initials"=>"initials"), 'left');
+        $sqlSelect->join('city', 'customer_address.city_id = city.id', array("city"=>"name"), 'left');
+        $sqlSelect->where(array("customer_id"=>$customerId));
+        $resultSet = $this->tableGateway->selectWith($sqlSelect);
         
+        return $resultSet;        
     }
     
     /**
@@ -50,7 +55,7 @@ class CustomerAddressTable
             'customer_id'=>$customerAddress->customer_id,
             'name'=>$customerAddress->name,
             'street'=>$customerAddress->street,
-            'houseNumber'=>$customerAddress->house_number,
+            'house_number'=>$customerAddress->house_number,
             'complement'=>$customerAddress->complement,
             'neighborhood'=>$customerAddress->neighborhood,
             'zip_code'=>$customerAddress->zip_code,
@@ -66,7 +71,7 @@ class CustomerAddressTable
         if($id  == 0){
             if($this->tableGateway->insert($data)){
                 $id = $this->tableGateway->getLastInsertValue();
-                return array("code"=>"CUSTOMER011", "id"=>$id);
+                return "CUSTOMER011";
             }else{
                 return "CUSTOMER012";
             }

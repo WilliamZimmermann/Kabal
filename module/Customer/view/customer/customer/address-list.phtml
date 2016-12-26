@@ -1,0 +1,36 @@
+<div class="col-sm-12">
+    <?php foreach($addresses as $address){ ?>
+    <div class="col-sm-3">
+    	<div class="alert alert-warning alert-block col-sm-12">
+    		<h4><?php echo $address->name; ?></h4>
+    		<strong><?php echo $this->translate("Endereço: ")?></strong><?php echo $address->street; ?>, <?php echo $address->house_number; ?>, <?php echo $address->neighborhood; ?><br>
+    		<?php if($address->complement){ ?><strong><?php echo $this->translate("Complemento: "); ?></strong><?php echo $address->complement; ?><br><?php } ?>
+    		<strong><?php echo $this->translate("Cidade: ")?></strong><?php echo $address->city; ?>, <?php echo $address->initials; ?> (<?php echo $address->country; ?>)<br>
+    		<strong><?php echo $this->translate("CEP: ")?></strong><?php echo $address->zip_code; ?><br><br>
+    		<a href="http://maps.google.com/?q=<?php echo $address->street." ".$address->house_number.", ".$address->city.",".$address->initials.", ".$address->country.", ".$address->zip_code; ?>" target="_blank" class="btn btn-info"><i class="fa fa-map-marker"></i></a>
+    		<a href="<?php echo $this->url("article")?>" class="btn btn-warning"><?php echo $this->translate("Editar")?></a>
+    		<button name="delete"
+						class="btn btn-danger delete" value=<?php echo $address->idAddress; ?>
+						><?php echo $this->translate('Apagar') ?></button>
+    	</div>
+    </div>
+    <?php } ?>
+</div>
+<script>
+$(document).ready(function(){
+	//Remover
+    $(".delete").click(function(e){
+    	$.post("<?php echo $this->url("customer/address-delete", array("id"=>$customer->idCustomer))?>",
+        {
+            id: $(this).attr("value"),
+        },
+        function(data, status){
+            if(data=='success'){
+                $("#address-list").load("<?php  echo $this->url('customer/address-list', array("id"=>$customer->idCustomer)); ?>");
+            }else{
+    	        alert("Ops, algo deu errado");
+            }
+        });
+    });
+});
+</script>

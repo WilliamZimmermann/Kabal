@@ -20,6 +20,7 @@ class CustomerController extends AbstractActionController
     protected $customerTable;
     protected $customerPersonTable;
     protected $customerCompanyTable;
+    protected $customerAddressTable;
     
     public function indexAction()
     {
@@ -292,10 +293,16 @@ class CustomerController extends AbstractActionController
         }
     }
     
+    /**
+     * This action show addresses options
+     * @return \Zend\Http\Response|NULL[]|unknown[]|\Customer\Model\ArrayObject[]|\Customer\Model\NULL[]
+     */
     public function addressAction(){
         //Check if this user can access this article
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+        
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
@@ -312,10 +319,36 @@ class CustomerController extends AbstractActionController
                 $customerCompanyData = $this->getCustomerCompanyTable()->getCustomer($id);
             }
             
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $address = new \Customer\Model\CustomerAddress();
+                $data = $request->getPost();
+                $address->exchangeArray($data);
+                
+                if($address->validation()){ //Verify to check if all data is ok
+                    $result = $this->getCustomerAddressTable()->saveAddress($address);
+                    if($result=="CUSTOMER012"){
+                        $message->setCode($result);
+                        $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                        die("error");
+                    }else{
+                        $message->setCode($result);
+                        $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                        die("success");
+                    }
+                }else{
+                    $message->setCode("CUSTOMER013");
+                    $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                    die("error");
+                }
+                
+            }
+            $addresses = $this->getCustomerAddressTable()->fetchAll($id);
             $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
             $message = $this->getServiceLocator()->get('customerMessages');
             
             return array(
+                "addresses"=>$addresses,
                 "message"=>$message->getMessage(),
                 "countries"=>$countries,
                 "customer"=>$customerData,
@@ -324,6 +357,65 @@ class CustomerController extends AbstractActionController
             );
         }else{
             return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
+    /**
+     * This aciton list, using Jquery, all address for some customer
+     * @return \Zend\Http\Response|NULL[]|\Zend\Db\ResultSet\ResultSet[]|\Customer\Model\ArrayObject[]|\Customer\Model\NULL[]
+     */
+    public function addressListAction(){
+        //Check if this user can access this article
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+        
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            
+            $addresses = $this->getCustomerAddressTable()->fetchAll($id);
+            $this->layout("layout/layout_blank");
+            return array(
+                "addresses"=>$addresses,
+                "message"=>$message->getMessage(),
+                "customer"=>$customerData,
+            );
+        }
+    }
+    
+    public function addressDeleteAction(){
+        //Check if this user can access this article
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+        
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            $request = $this->getRequest();
+            $dados = $request->getContent();
+            $idAddress = substr($dados, 3);
+            $result = $this->getCustomerAddressTable()->deleteAddress($idAddress);
+            if($result=="CUSTOMER017"){ //Agora deleta do banco de dados
+                $message->setCode($result);
+                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                die("success");
+            }else{
+                $message->setCode($result);
+                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                die("error");
+            }
         }
     }
     
@@ -371,6 +463,14 @@ class CustomerController extends AbstractActionController
             $this->customerCompanyTable = $sm->get('Customer\Model\CustomerCompanyTable');
         }
         return $this->customerCompanyTable;
+    }
+    
+    public function getCustomerAddressTable(){
+        if(!$this->customerAddressTable){
+            $sm = $this->getServiceLocator();
+            $this->customerAddressTable = $sm->get('Customer\Model\CustomerAddressTable');
+        }
+        return $this->customerAddressTable;
     }
 
 }

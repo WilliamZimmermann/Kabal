@@ -62,6 +62,32 @@ return array(
                             ),
                         ),
                     ),
+                    'address-list' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/address/list',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'addressList',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
+                    'address-delete' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/address/delete',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'addressDelete',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
                     /*
                     'checkEmail' => array(
                         'type'    => 'Segment',

@@ -1,0 +1,42 @@
+
+
+	<?php 
+	echo $this->headLink()
+	->prependStylesheet($this->basePath('css/style-responsive.css'))
+	->prependStylesheet($this->basePath('css/style.css'))
+	->prependStylesheet($this->basePath('css/slidebars.css'))
+	->prependStylesheet($this->basePath('css/owl.carousel.css'))
+	->prependStylesheet($this->basePath('assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css'))
+	->prependStylesheet($this->basePath('css/gallery.css'))
+	->prependStylesheet($this->basePath('assets/fancybox/source/jquery.fancybox.css'))
+	->prependStylesheet($this->basePath('css/bootstrap-reset.css'))
+    ->prependStylesheet($this->basePath('css/bootstrap.min.css'));  
+    ?>
+   
+          <?php echo $this->content;?>
+          
+  
+   	<?php echo $this->headScript()
+   	        ->prependFile($this->basePath('js/toucheffects.js'))
+   	        ->prependFile($this->basePath('js/modernizr.custom.js'))
+   	        ->prependFile('https://use.fontawesome.com/fa657d5a4c.js')
+            ->prependFile($this->basePath('js/count.js'))
+            ->prependFile($this->basePath('js/easy-pie-chart.js'))
+            ->prependFile($this->basePath('js/respond.min.js'))
+            ->prependFile($this->basePath('js/common-scripts.js'))
+            ->prependFile($this->basePath('js/slidebars.min.js'))
+            ->prependFile($this->basePath('js/jquery.validate.min.js'))
+            ->prependFile($this->basePath('js/respond.min.js'))
+            ->prependFile($this->basePath('js/jquery.customSelect.min.js'))
+            ->prependFile($this->basePath('js/owl.carousel.js'))
+            ->prependFile($this->basePath('assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js'))
+            ->prependFile($this->basePath('js/jquery.sparkline.js'))
+            ->prependFile($this->basePath('js/jquery.nicescroll.js'))
+            ->prependFile($this->basePath('js/jquery.scrollTo.min.js'))
+            ->prependFile($this->basePath('assets/fancybox/source/jquery.fancybox.js'))
+            ->prependFile($this->basePath('js/jquery.dcjqaccordion.2.7.js'))
+            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery.js'))
+    ; 
+   	echo $this->inlinescript();
+            ?>

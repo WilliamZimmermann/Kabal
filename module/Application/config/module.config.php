@@ -67,6 +67,26 @@ return array(
                     ),
                 ),
             ),
+            'zones'=>array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/zones',
+                    'defaults' => array(
+                        'controller'    => 'Application\Controller\Region',
+                        'action'        => 'zones',
+                    ),
+                ),
+            ),
+            'cities'=>array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/cities',
+                    'defaults' => array(
+                        'controller'    => 'Application\Controller\Region',
+                        'action'        => 'cities',
+                    ),
+                ),
+            ),
             
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
@@ -132,7 +152,9 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'Application\Controller\Login' => 'Application\Controller\LoginController'
+            'Application\Controller\Login' => 'Application\Controller\LoginController',
+            'Application\Controller\Region' => 'Application\Controller\RegionController'
+            
         ),
     ),
     'view_manager' => array(
@@ -143,6 +165,7 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/layout_blank'           => __DIR__ . '/../view/layout/layout_blank.phtml',
             'layout/images'           => __DIR__ . '/../view/layout/image.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',

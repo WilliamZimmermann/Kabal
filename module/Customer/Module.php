@@ -20,6 +20,8 @@ use Customer\Model\CustomerPersonTable;
 use Customer\Model\CustomerPerson;
 use Customer\Model\CustomerCompany;
 use Customer\Model\CustomerCompanyTable;
+use Customer\Model\CustomerAddressTable;
+use Customer\Model\CustomerAddress;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -89,6 +91,17 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new CustomerCompany());
                     return new TableGateway('customer_company', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Customer\Model\CustomerAddressTable' => function ($sm) {
+                    $tableGateway = $sm->get('CustomerAddressTableGateway');
+                    $table = new CustomerAddressTable($tableGateway);
+                    return $table;
+                },
+                'CustomerAddressTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new CustomerAddress());
+                    return new TableGateway('customer_address', $dbAdapter, null, $resultSetPrototype);
                 },
             )
         );
