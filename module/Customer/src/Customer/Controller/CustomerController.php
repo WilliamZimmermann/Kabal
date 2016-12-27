@@ -13,6 +13,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Customer\Model\Customer;
 use Customer\Model\CustomerPerson;
 use Customer\Model\CustomerCompany;
+use Customer\Model\CustomerAddress;
 
 class CustomerController extends AbstractActionController
 {
@@ -24,7 +25,7 @@ class CustomerController extends AbstractActionController
     
     public function indexAction()
     {
-        //Check if this user can access this article
+        //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
@@ -41,7 +42,7 @@ class CustomerController extends AbstractActionController
     }
     
     public function newAction(){
-        //Check if this user can access this article
+        //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $logedUser["idCompany"]==1){
@@ -159,7 +160,7 @@ class CustomerController extends AbstractActionController
     }
     
     public function editAction(){
-        //Check if this user can access this article
+        //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
@@ -298,7 +299,7 @@ class CustomerController extends AbstractActionController
      * @return \Zend\Http\Response|NULL[]|unknown[]|\Customer\Model\ArrayObject[]|\Customer\Model\NULL[]
      */
     public function addressAction(){
-        //Check if this user can access this article
+        //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
@@ -365,7 +366,7 @@ class CustomerController extends AbstractActionController
      * @return \Zend\Http\Response|NULL[]|\Zend\Db\ResultSet\ResultSet[]|\Customer\Model\ArrayObject[]|\Customer\Model\NULL[]
      */
     public function addressListAction(){
-        //Check if this user can access this article
+        //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
@@ -378,10 +379,12 @@ class CustomerController extends AbstractActionController
             if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
                 return $this->redirect()->toRoute('noPermission');
             }
+            $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
             
             $addresses = $this->getCustomerAddressTable()->fetchAll($id);
             $this->layout("layout/layout_blank");
             return array(
+                "countries"=>$countries,
                 "addresses"=>$addresses,
                 "message"=>$message->getMessage(),
                 "customer"=>$customerData,
@@ -390,7 +393,7 @@ class CustomerController extends AbstractActionController
     }
     
     public function addressDeleteAction(){
-        //Check if this user can access this article
+        //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
@@ -412,6 +415,69 @@ class CustomerController extends AbstractActionController
                 $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
                 die("success");
             }else{
+                $message->setCode($result);
+                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                die("error");
+            }
+        }
+    }
+    
+    public function addressDataAction(){
+        //Check if this user can access this address
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+    
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            $request = $this->getRequest();
+            $dados = $request->getContent();
+        
+            $idAddress = substr($dados, 3);
+            $result = $this->getCustomerAddressTable()->getAddress($idAddress);
+            die(json_encode($result));
+        }
+    }
+    
+    public function addressEditAction(){
+        //Check if this user can access this address
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+        
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            $request = $this->getRequest();
+            $dados = $request->getPost();
+            
+            $address = new CustomerAddress();
+            $address->exchangeArray($dados);
+            if($address->validation()){
+                //Agora Salva do banco de dados
+                $result = $this->getCustomerAddressTable()->saveAddress($address);
+                if($result=="CUSTOMER014"){ 
+                    $message->setCode($result);
+                    $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                    die("success");
+                }else{
+                    $message->setCode($result);
+                    $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                    die("error");
+                }
+            }else{
+                $result = "CUSTOMER013";
                 $message->setCode($result);
                 $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
                 die("error");

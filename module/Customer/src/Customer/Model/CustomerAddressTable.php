@@ -76,9 +76,9 @@ class CustomerAddressTable
                 return "CUSTOMER012";
             }
         }else{
-            //If this customer already exists
-            if($this->getCustomer($id)){
-                if($this->tableGateway->update($data, array('idCustomer'=>$id))){
+            //If this address already exists
+            if($this->getAddress($id)){
+                if($this->tableGateway->update($data, array('idAddress'=>$id))){
                     return "CUSTOMER014";
                 }else{
                     return "CUSTOMER015";

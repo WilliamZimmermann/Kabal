@@ -75,6 +75,32 @@ return array(
                             ),
                         ),
                     ),
+                    'address-data' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/address/data',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'addressData',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
+                    'address-edit' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/address/edit',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'addressEdit',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
                     'address-delete' => array(
                         'type'    => 'Segment',
                         'options' => array(

@@ -1,4 +1,4 @@
-<?php 
+<?php
 use Application\Services\SystemFunctions;
 
 $this->headtitle($this->translate("Editar Endereços do Cliente"));
@@ -15,57 +15,48 @@ $this->headtitle($this->translate("Editar Endereços do Cliente"));
 		<!--breadcrumbs end -->
 	</div>
 </div>
- 
+
 
 <div class="row">
 	<div class="col-lg-12">
 		<section class="panel">
 			<header class="panel-heading tab-bg-dark-navy-blue ">
-                              <ul class="nav nav-tabs">
-                                  <li>
-                                      <a href="<?php echo $this->url("customer/edit", array("id"=>$customer->idCustomer))?>"><?php echo $this->translate("Editar Cliente")?></a>
-                                  </li>
-                                  <li class="active">
-                                      <a data-toggle="tab"><?php echo $this->translate("Endereços")?></a>                                      
-                                  </li>
-                                  <li class="">
-                                      <a><?php echo $this->translate("Contatos")?></a>                                      
-                                  </li>
-                                  <li class="">
-                                      <a><?php echo $this->translate("Integrações")?></a>                                      
-                                  </li>
-                              </ul>
-                          </header>
+				<ul class="nav nav-tabs">
+					<li><a
+						href="<?php echo $this->url("customer/edit", array("id"=>$customer->idCustomer))?>"><?php echo $this->translate("Editar Cliente")?></a>
+					</li>
+					<li class="active"><a data-toggle="tab"><?php echo $this->translate("Endereços")?></a>
+					</li>
+					<li class=""><a><?php echo $this->translate("Contatos")?></a></li>
+					<li class=""><a><?php echo $this->translate("Integrações")?></a></li>
+				</ul>
+			</header>
 			<div class="panel-body">
 					<?php if($customer->customerType==1){ ?>
 					<div class="form-group">
-						<div class="col-sm-12">
+					<div class="col-sm-12">
 						<h4><?php echo $this->translate("Nome:")?>
-							<?php echo $customerPerson->name." ".$customerPerson->last_name; ?></h4></div>
+							<?php echo $customerPerson->name." ".$customerPerson->last_name; ?></h4>
 					</div>
+				</div>
 					<?php }else{ ?>
 					<div class="form-group">
-						<div class="col-sm-12"><h4><?php echo $this->translate("Empresa:")?>
+					<div class="col-sm-12">
+						<h4><?php echo $this->translate("Empresa:")?>
 							<?php echo $customerCompany->social_name." (".$customerCompany->fantasy_name.")"; ?></h4>
-						</div>
 					</div>
+				</div>
 					<?php } ?>
 					<div class="form-group">
-						
-						<div id="address-list">
-						
-						</div>
-						<?php if(count($addresses)<5){ ?>
-						<div class="col-sm-12">
-    						<div class="col-sm-3">
-        						<div class="alert alert-success alert-block col-sm-12">
-        							<h4><?php echo $this->translate("Vazio")?></h4>
-        							<button data-toggle="modal" href="#add-address" class="btn btn-success"><?php echo $this->translate("Adicionar Endereço")?></button>
-        						</div>
-    						</div>
-						</div>
-						<?php } ?>
+					<?php if(count($addresses)<5){ ?>
+					<div class="col-sm-12">
+						<button data-toggle="modal" href="#add-address" class="btn btn-success"><?php echo $this->translate("Adicionar Endereço")?></button>
+						<hr>
 					</div>
+					
+					<?php } ?>
+					<div id="address-list"></div>
+				</div>
 			</div>
 		</section>
 	</div>
@@ -79,88 +70,102 @@ $this->headtitle($this->translate("Editar Endereços do Cliente"));
 						aria-hidden="true">&times;</button>
 					<h4 class="modal-title"><?php echo $this->translate("Cadastrar novo endereço")?></h4>
 				</div>
-				<form class="form-horizontal tasi-form" method="post" id="customerAddress" action="">
-				
-				<div class="modal-body">
-					<input type="hidden" name="customer_id" value="<?php echo $customer->idCustomer; ?>">
-    				<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição*:")?></label>
-						<div class="col-sm-10">
-								<input type="text" name="name" maxlength="45" class="form-control" required>
+				<form class="form-horizontal tasi-form" method="post"
+					id="customerAddress" action="">
+
+					<div class="modal-body">
+						<input type="hidden" name="customer_id"
+							value="<?php echo $customer->idCustomer; ?>">
+						<div class="form-group">
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição*:")?></label>
+							<div class="col-sm-10">
+								<input type="text" name="name" maxlength="45"
+									class="form-control" required>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Rua*:")?></label>
-						<div class="col-sm-10">
-								<input type="text" name="street" maxlength="60" class="form-control" required>
+						<div class="form-group">
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Rua*:")?></label>
+							<div class="col-sm-10">
+								<input type="text" name="street" maxlength="60"
+									class="form-control" required>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Número:")?></label>
-						<div class="col-sm-4">
-								<input type="text" name="house_number" maxlength="15" class="form-control">
+						<div class="form-group">
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Número:")?></label>
+							<div class="col-sm-4">
+								<input type="text" name="house_number" maxlength="15"
+									class="form-control">
+							</div>
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Complemento:")?></label>
+							<div class="col-sm-4">
+								<input type="text" name="complement" maxlength="60"
+									class="form-control">
+							</div>
 						</div>
-						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Complemento:")?></label>
-						<div class="col-sm-4">
-								<input type="text" name="complement" maxlength="60" class="form-control">
+						<div class="form-group">
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Bairro:")?></label>
+							<div class="col-sm-4">
+								<input type="text" name="neighborhood" maxlength="60"
+									class="form-control">
+							</div>
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CEP*:")?></label>
+							<div class="col-sm-4">
+								<input type="text" name="zip_code" maxlength="45"
+									class="form-control" required>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Bairro:")?></label>
-						<div class="col-sm-4">
-								<input type="text" name="neighborhood" maxlength="60" class="form-control">
-						</div>
-						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CEP*:")?></label>
-						<div class="col-sm-4">
-								<input type="text" name="zip_code" maxlength="45" class="form-control" required>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("País*:")?></label>
-						<div class="col-sm-10">
-								<select name="country_id" id="country" required class="form-control">
+						<div class="form-group">
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("País*:")?></label>
+							<div class="col-sm-10">
+								<select name="country_id" id="country" required
+									class="form-control">
 									<option value="0"><?php echo $this->translate("Selecione")?></option>
 									<?php foreach($countries as $country){ ?>
 									<option value="<?php echo $country->countryId; ?>"><?php echo $country->name; ?></option>
 									<?php } ?>
 								</select>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Estado*:")?></label>
-						<div class="col-sm-10">
-								<select name="zone_id" id="zone" required class="form-control" disabled="disabled">
+						<div class="form-group">
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Estado*:")?></label>
+							<div class="col-sm-10">
+								<select name="zone_id" id="zone" required class="form-control"
+									disabled="disabled">
 									<option value="0"><?php echo $this->translate("Selecione")?></option>
 								</select>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Cidade*:")?></label>
-						<div class="col-sm-10">
-								<select name="city_id" id="city" required class="form-control" disabled="disabled">
+						<div class="form-group">
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Cidade*:")?></label>
+							<div class="col-sm-10">
+								<select name="city_id" id="city" required class="form-control"
+									disabled="disabled">
 									<option value="0"><?php echo $this->translate("Selecione")?></option>
 								</select>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button data-dismiss="modal" class="btn btn-default"
-						type="button"><?php echo $this->translate("Cancelar")?></button>
-					<button class="btn btn-success" type="submit"><?php echo $this->translate("Cadastrar")?></button>
-				</div>
+					<div class="modal-footer">
+						<button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Cancelar")?></button>
+						<button class="btn btn-success" type="submit"><?php echo $this->translate("Cadastrar")?></button>
+					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 	<!-- END NEW ADDRESS MODAL -->
 </div>
-<?php 
+<?php
 $this->headscript()->captureStart();
 $customerType = $customer->customerType;
 $urlZones = $this->url('zones');
 $urlCities = $this->url('cities');
-$urlAddress = $this->url('customer/address', array("id"=>$customer->idCustomer));
-$urlAddressList = $this->url('customer/address-list', array("id"=>$customer->idCustomer));
+$urlAddress = $this->url('customer/address', array(
+    "id" => $customer->idCustomer
+));
+$urlAddressList = $this->url('customer/address-list', array(
+    "id" => $customer->idCustomer
+));
 
 echo <<<JS
 $(document).ready(function(){
@@ -207,7 +212,7 @@ $(document).ready(function(){
             }
         });
     });
-    //Upload
+    //Insert
     $("#customerAddress").submit(function(e){
     	e.preventDefault();
     	$.ajax({
@@ -237,7 +242,6 @@ $(document).ready(function(){
 });
 JS;
 $this->headscript()->captureEnd();
-
 
 $this->headScript()->prependFile($this->basePath("js/validators/customer.js"));
 $this->headScript()->prependFile($this->basePath('assets/bootstrap-inputmask/bootstrap-inputmask.min.js'));

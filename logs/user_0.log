@@ -235,3 +235,12 @@
 2016-12-26T16:41:17+01:00 INFO (6): USER ID: 0. MESSAGE: The user 1 made login.
 2016-12-26T16:41:17+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
 2016-12-26T16:41:17+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-12-27T16:38:34+01:00 INFO (6): USER ID: 0. MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com.br ou a senha estão corretos.
+2016-12-27T16:38:44+01:00 INFO (6): USER ID: 0. MESSAGE: Falha no login, dados incorretos. Verifique se o email william.zimmer@teksul.com.br ou a senha estão corretos.
+2016-12-27T16:39:07+01:00 INFO (6): USER ID: 0. MESSAGE: The user 1 made login.
+2016-12-27T16:39:07+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-12-27T16:39:07+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-12-27T18:00:15+01:00 INFO (6): USER ID: 0. MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2016-12-27T18:00:24+01:00 INFO (6): USER ID: 0. MESSAGE: The user 1 made login.
+2016-12-27T18:00:24+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2016-12-27T18:00:24+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
