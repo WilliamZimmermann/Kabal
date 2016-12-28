@@ -27,7 +27,9 @@ $this->headtitle($this->translate("Editar Endereços do Cliente"));
 					</li>
 					<li class="active"><a data-toggle="tab"><?php echo $this->translate("Endereços")?></a>
 					</li>
-					<li class=""><a><?php echo $this->translate("Contatos")?></a></li>
+					<li class="">
+                      <a href="<?php echo $this->url("customer/contacts", array("id"=>$customer->idCustomer)); ?>"><?php echo $this->translate("Contatos")?></a>                                      
+                  	</li>
 					<li class=""><a><?php echo $this->translate("Integrações")?></a></li>
 				</ul>
 			</header>

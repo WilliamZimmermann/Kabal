@@ -114,6 +114,32 @@ return array(
                             ),
                         ),
                     ),
+                    'contacts' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/contacts',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'contacts',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
+                    'contact-add' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/contact/add',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'contactAdd',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
                     /*
                     'checkEmail' => array(
                         'type'    => 'Segment',

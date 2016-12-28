@@ -22,6 +22,7 @@ class CustomerController extends AbstractActionController
     protected $customerPersonTable;
     protected $customerCompanyTable;
     protected $customerAddressTable;
+    protected $customerContactTable;
     
     public function indexAction()
     {
@@ -487,6 +488,67 @@ class CustomerController extends AbstractActionController
         }
     }
     
+    /**
+     * This action show contacts 
+     * @return \Zend\Http\Response|NULL[]|unknown[]|\Customer\Model\ArrayObject[]|\Customer\Model\NULL[]
+     */
+    public function contactsAction(){
+        //Check if this user can access this address
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+    
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            $customerPerson = new CustomerPerson();
+            $customerCompany = new CustomerCompany();
+            if($customerData->customerType==1){
+                $customerPersonData = $this->getCustomerPersonTable()->getCustomer($id);
+            }else{
+                $customerCompanyData = $this->getCustomerCompanyTable()->getCustomer($id);
+            }
+    
+            $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
+            $message = $this->getServiceLocator()->get('customerMessages');
+    
+            return array(
+                "message"=>$message->getMessage(),
+                "countries"=>$countries,
+                "customer"=>$customerData,
+                "customerPerson"=>$customerPersonData,
+                "customerCompany"=>$customerCompanyData
+            );
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
+    public function contactAddAction(){
+        //Check if this user can access this address
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+        
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            die("success");
+        }else{
+            return "forbiden";
+        }
+    }
+    
     /*
     public function checkEmailAction(){
         //Check if this user can access this article
@@ -508,7 +570,7 @@ class CustomerController extends AbstractActionController
         }
     }
     */
-    
+    //Customer
     public function getCustomerTable(){
         if(!$this->customerTable){
             $sm = $this->getServiceLocator();
@@ -516,7 +578,7 @@ class CustomerController extends AbstractActionController
         }
         return $this->customerTable;
     }
-    
+    //Cusotmer Person
     public function getCustomerPersonTable(){
         if(!$this->customerPersonTable){
             $sm = $this->getServiceLocator();
@@ -524,7 +586,7 @@ class CustomerController extends AbstractActionController
         }
         return $this->customerPersonTable;
     }
-    
+    //Customer Company
     public function getCustomerCompanyTable(){
         if(!$this->customerCompanyTable){
             $sm = $this->getServiceLocator();
@@ -532,13 +594,21 @@ class CustomerController extends AbstractActionController
         }
         return $this->customerCompanyTable;
     }
-    
+    //Address
     public function getCustomerAddressTable(){
         if(!$this->customerAddressTable){
             $sm = $this->getServiceLocator();
             $this->customerAddressTable = $sm->get('Customer\Model\CustomerAddressTable');
         }
         return $this->customerAddressTable;
+    }
+    //Contact
+    public function getCustomerContactTable(){
+        if(!$this->customerContactTable){
+            $sm = $this->getServiceLocator();
+            $this->customerContactTable = $sm->get('Customer\Model\CustomerContactTable');
+        }
+        return $this->customerContactTable;
     }
 
 }

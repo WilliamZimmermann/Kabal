@@ -22,6 +22,8 @@ use Customer\Model\CustomerCompany;
 use Customer\Model\CustomerCompanyTable;
 use Customer\Model\CustomerAddressTable;
 use Customer\Model\CustomerAddress;
+use Customer\Model\CustomerContactTable;
+use Customer\Model\CustomerContact;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -102,6 +104,17 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new CustomerAddress());
                     return new TableGateway('customer_address', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Customer\Model\CustomerContactTable' => function ($sm) {
+                    $tableGateway = $sm->get('CustomerContactTableGateway');
+                    $table = new CustomerContactTable($tableGateway);
+                    return $table;
+                },
+                'CustomerContactTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new CustomerContact());
+                    return new TableGateway('customer_contact', $dbAdapter, null, $resultSetPrototype);
                 },
             )
         );

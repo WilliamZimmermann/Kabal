@@ -43,7 +43,7 @@ if($message["flag"]>0){
                                       <a href="<?php echo $this->url("customer/address", array("id"=>$customer->idCustomer)); ?>"><?php echo $this->translate("Endereços")?></a>                                      
                                   </li>
                                   <li class="">
-                                      <a><?php echo $this->translate("Contatos")?></a>                                      
+                                      <a href="<?php echo $this->url("customer/contacts", array("id"=>$customer->idCustomer)); ?>"><?php echo $this->translate("Contatos")?></a>                                      
                                   </li>
                                   <li class="">
                                       <a><?php echo $this->translate("Integrações")?></a>                                      
