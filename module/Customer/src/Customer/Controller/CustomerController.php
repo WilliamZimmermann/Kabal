@@ -380,11 +380,13 @@ class CustomerController extends AbstractActionController
                 return $this->redirect()->toRoute('noPermission');
             }
             $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
+            $countries2 = $this->getServiceLocator()->get('countryFactory')->fetchAll();
             
             $addresses = $this->getCustomerAddressTable()->fetchAll($id);
             $this->layout("layout/layout_blank");
             return array(
                 "countries"=>$countries,
+                "countries2"=>$countries2,
                 "addresses"=>$addresses,
                 "message"=>$message->getMessage(),
                 "customer"=>$customerData,

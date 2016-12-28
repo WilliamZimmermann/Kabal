@@ -48,121 +48,18 @@ $this->headtitle($this->translate("Editar Endereços do Cliente"));
 				</div>
 					<?php } ?>
 					<div class="form-group">
-					<?php if(count($addresses)<5){ ?>
-					<div class="col-sm-12">
-						<button data-toggle="modal" href="#add-address" class="btn btn-success"><?php echo $this->translate("Adicionar Endereço")?></button>
-						<hr>
+						<div id="address-list"></div>
 					</div>
-					
-					<?php } ?>
-					<div id="address-list"></div>
-				</div>
 			</div>
 		</section>
 	</div>
-	<!-- NEW ADDRESS MODAL -->
-	<div class="modal fade" id="add-address" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title"><?php echo $this->translate("Cadastrar novo endereço")?></h4>
-				</div>
-				<form class="form-horizontal tasi-form" method="post"
-					id="customerAddress" action="">
-
-					<div class="modal-body">
-						<input type="hidden" name="customer_id"
-							value="<?php echo $customer->idCustomer; ?>">
-						<div class="form-group">
-							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição*:")?></label>
-							<div class="col-sm-10">
-								<input type="text" name="name" maxlength="45"
-									class="form-control" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Rua*:")?></label>
-							<div class="col-sm-10">
-								<input type="text" name="street" maxlength="60"
-									class="form-control" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Número:")?></label>
-							<div class="col-sm-4">
-								<input type="text" name="house_number" maxlength="15"
-									class="form-control">
-							</div>
-							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Complemento:")?></label>
-							<div class="col-sm-4">
-								<input type="text" name="complement" maxlength="60"
-									class="form-control">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Bairro:")?></label>
-							<div class="col-sm-4">
-								<input type="text" name="neighborhood" maxlength="60"
-									class="form-control">
-							</div>
-							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CEP*:")?></label>
-							<div class="col-sm-4">
-								<input type="text" name="zip_code" maxlength="45"
-									class="form-control" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("País*:")?></label>
-							<div class="col-sm-10">
-								<select name="country_id" id="country" required
-									class="form-control">
-									<option value="0"><?php echo $this->translate("Selecione")?></option>
-									<?php foreach($countries as $country){ ?>
-									<option value="<?php echo $country->countryId; ?>"><?php echo $country->name; ?></option>
-									<?php } ?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Estado*:")?></label>
-							<div class="col-sm-10">
-								<select name="zone_id" id="zone" required class="form-control"
-									disabled="disabled">
-									<option value="0"><?php echo $this->translate("Selecione")?></option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Cidade*:")?></label>
-							<div class="col-sm-10">
-								<select name="city_id" id="city" required class="form-control"
-									disabled="disabled">
-									<option value="0"><?php echo $this->translate("Selecione")?></option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Cancelar")?></button>
-						<button class="btn btn-success" type="submit"><?php echo $this->translate("Cadastrar")?></button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- END NEW ADDRESS MODAL -->
 </div>
 <?php
 $this->headscript()->captureStart();
 $customerType = $customer->customerType;
 $urlZones = $this->url('zones');
 $urlCities = $this->url('cities');
-$urlAddress = $this->url('customer/address', array(
-    "id" => $customer->idCustomer
-));
+
 $urlAddressList = $this->url('customer/address-list', array(
     "id" => $customer->idCustomer
 ));
@@ -170,75 +67,6 @@ $urlAddressList = $this->url('customer/address-list', array(
 echo <<<JS
 $(document).ready(function(){
     $("#address-list").load("$urlAddressList");
-    //Carregar Estados
-    $("#country").change(function(e){
-    	$.post("$urlZones",
-        {
-            id: $("#country").val()
-        },
-        function(data, status){
-            if(data!='error'){
-            	$.each(JSON.parse(data),function(key, value) 
-                {
-                    $("#zone").append('<option value=' + value.id + '>' + value.name + '</option>');
-                });
-			    
-			    $("#zone").removeAttr("disabled");
-            }else{
-    	        console.log("Ops, algo deu errado ao tentar carregar os Estados do País "+$("#country").val());
-            }
-        });
-    });
-    //Carregar Cidades
-    $("#zone").change(function(e){
-    	$.post("$urlCities",
-        {
-            id: $("#zone").val()
-        },
-        function(data, status){
-            if(data!='error'){
-                $('#city')
-                    .empty()
-                    .append('<option selected="selected" value="0">Selecione</option>')
-                ;
-            	$.each(JSON.parse(data),function(key, value) 
-                {
-                    $("#city").append('<option value=' + value.id + '>' + value.name + '</option>');
-                });
-			    
-			    $("#city").removeAttr("disabled");
-            }else{
-    	        console.log("Ops, algo deu errado ao tentar carregar as Cidades do Estado "+$("#zone").val());
-            }
-        });
-    });
-    //Insert
-    $("#customerAddress").submit(function(e){
-    	e.preventDefault();
-    	$.ajax({
-            url: "$urlAddress",
-      type: "POST",
-      data:  new FormData(this),
-      contentType: false,
-            cache: false,
-      processData:false,
-      success: function(data){
-       if(data=='error')
-       {
-        alert("Houve um erro ao validar os dados. Tente novamente.");
-       }
-       else
-       {
-        $("#customerAddress")[0].reset(); 
-        $("#add-address").modal('toggle');
-        $("#address-list").load("$urlAddressList");
-       }
-     },
-    error: function(e){
-       $("#err").html(e).fadeIn();
-    }          
-       });
-    });
 });
 JS;
 $this->headscript()->captureEnd();
