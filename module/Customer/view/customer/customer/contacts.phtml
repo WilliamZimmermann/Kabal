@@ -50,8 +50,7 @@ $this->headtitle($this->translate("Contatos do Cliente"));
 			    	<button data-toggle="modal" href="#addContact" id="novo" class="btn btn-success"><?php echo $this->translate("Adicionar Contato")?></button>
 			    	
 			    </div>
-			    <div class="col-sm-12">
-    			    
+			    <div class="col-sm-12" id="contacts-table">
 				</div>
 			</div>
 		</section>
@@ -72,7 +71,7 @@ $this->headtitle($this->translate("Contatos do Cliente"));
         				<div class="form-group">
         					<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição*:")?></label>
         					<div class="col-sm-10">
-                              	<input name="description" type="text" value="" class="form-control" maxlength="255" required>
+                              	<input name="desc" type="text" value="" class="form-control" maxlength="255" required>
         					</div>
         				</div>
         				<div class="form-group">
@@ -113,10 +112,13 @@ $this->headtitle($this->translate("Contatos do Cliente"));
 <?php
 $customerType = $customer->customerType;
 $contactAddUrl = $this->url("customer/contact-add", array("id"=>$customer->idCustomer));
+$contactsUrl = $this->url("customer/contact-list", array("id"=>$customer->idCustomer));
 
 $this->headscript()->captureStart();
 echo <<<JS
 $(document).ready(function(){
+    $("#contacts-table").load("$contactsUrl");
+    
     $("#novo").click(function(e){
         $("#customerContactAdd")[0].reset();
         $("#formulario").fadeIn();
@@ -125,14 +127,27 @@ $(document).ready(function(){
     });
     $("#customerContactAdd").submit(function(e){
         e.preventDefault();
-        $.post("$contactAddUrl", function(data, status){
-			if(data=='success'){
-			    $("#formulario").hide();
-			    $("#cadastrar").hide();
-			    $("#success").fadeIn(300);
-		    }
-            alert("ops"+data+" Status: "+status);
-        });
+        $.ajax({
+              url: "$contactAddUrl",
+              type: "POST",
+              data:  new FormData(this),
+              contentType: false,
+                    cache: false,
+              processData:false,
+              success: function(data){
+                   if(data=='success')
+                   {
+                        $("#formulario").hide();
+        			    $("#cadastrar").hide();
+        			    $("#success").fadeIn(300);
+			            $("#contacts-table").load("$contactsUrl");
+                   }
+                   else
+                   {
+                        alert("Houve um erro ao tentar cadastrar.");
+                   }
+    	      }
+		});    
     });
 });
 JS;

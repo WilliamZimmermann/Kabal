@@ -127,6 +127,19 @@ return array(
                             ),
                         ),
                     ),
+                    'contact-list' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/contact/list',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'contactsList',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
                     'contact-add' => array(
                         'type'    => 'Segment',
                         'options' => array(
@@ -136,6 +149,32 @@ return array(
                             ),
                             'defaults' => array(
                                 'action'=>'contactAdd',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
+                    'contact-edit' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/contact/edit',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'contactEdit',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
+                    'contact-delete' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]/contact/delete',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'contactDelete',
                                 'controller'=>'Customer'
                             ),
                         ),

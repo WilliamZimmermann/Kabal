@@ -14,6 +14,7 @@ use Customer\Model\Customer;
 use Customer\Model\CustomerPerson;
 use Customer\Model\CustomerCompany;
 use Customer\Model\CustomerAddress;
+use Customer\Model\CustomerContact;
 
 class CustomerController extends AbstractActionController
 {
@@ -517,12 +518,42 @@ class CustomerController extends AbstractActionController
             $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
             $message = $this->getServiceLocator()->get('customerMessages');
     
+            $contacts = $this->getCustomerContactTable()->fetchAll($id);
+            
             return array(
                 "message"=>$message->getMessage(),
                 "countries"=>$countries,
                 "customer"=>$customerData,
                 "customerPerson"=>$customerPersonData,
-                "customerCompany"=>$customerCompanyData
+                "customerCompany"=>$customerCompanyData,
+                "contacts"=>$contacts
+            );
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
+    public function contactsListAction(){
+        //Check if this user can access this address
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+    
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            
+            $contacts = $this->getCustomerContactTable()->fetchAll($id);
+            $this->layout("layout/layout_blank");
+            
+            return array(
+                "customer"=>$customerData,
+                "contacts"=>$contacts
             );
         }else{
             return $this->redirect()->toRoute("noPermission");
@@ -543,7 +574,81 @@ class CustomerController extends AbstractActionController
             if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
                 return $this->redirect()->toRoute('noPermission');
             }
-            die("success");
+            $request = $this->getRequest();
+            $data = $request->getPost();
+            $customerContact = new CustomerContact();
+            $customerContact->exchangeArray($data);
+            $customerContact->customer_id = $id;
+            if($customerContact->validation()){
+                $result = $this->getCustomerContactTable()->saveContact($customerContact);
+                $message->setCode($result);
+                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                if($result=="CUSTOMER019"){
+                    die("success");
+                }else{
+                    die("error");
+                }
+            }else{
+                $result = "CUSTOMER021";
+                $message->setCode($result);
+                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                die("error");
+            }
+        }else{
+            return "forbiden";
+        }
+    }
+    
+    /**
+     * This action delete a contact
+     * @return \Zend\Http\Response|string
+     */
+    public function contactDeleteAction(){
+        //Check if this user can access this address
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+    
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            $request = $this->getRequest();
+            $idContact = $request->getContent();
+            $result = $this->getCustomerContactTable()->deleteContact($idContact);
+            $message->setCode($result);
+            $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+            if($result=="CUSTOMER025"){
+                die("success");
+            }else{
+                die("error");
+            }
+        }else{
+            return "forbiden";
+        }
+    }
+    
+    public function contactEditAction(){
+        //Check if this user can access this address
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        $message = $this->getServiceLocator()->get('customerMessages');
+    
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            $idContact = $_GET["idContact"];
+            $result = $this->getCustomerContactTable()->getContact($idContact);
+            die(json_encode($result));
         }else{
             return "forbiden";
         }
