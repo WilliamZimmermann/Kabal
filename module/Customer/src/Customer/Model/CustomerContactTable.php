@@ -47,7 +47,6 @@ class CustomerContactTable
      */
     public function saveContact(CustomerContact $customerContact){
         $data = array(
-            'customer_id'=>$customerContact->customer_id,
             'desc'=>$customerContact->desc,
             'phone'=>$customerContact->phone,
             'email'=>$customerContact->email,
@@ -57,6 +56,7 @@ class CustomerContactTable
         $id = (int)$customerContact->idContact;
         //If there is no Id, so, it's a new contact
         if($id  == 0){
+            $data["customer_id"] = $customerContact->customer_id;
             if($this->tableGateway->insert($data)){
                 $id = $this->tableGateway->getLastInsertValue();
                 return "CUSTOMER019";
@@ -65,7 +65,7 @@ class CustomerContactTable
             }
         }else{
             //If this contact already exists
-            if($this->getAddress($id)){
+            if($this->getContact($id)){
                 if($this->tableGateway->update($data, array('idContact'=>$id))){
                     return "CUSTOMER022";
                 }else{
@@ -89,6 +89,20 @@ class CustomerContactTable
             return "CUSTOMER025";
         }else{
             return "CUSTOMER026";
+        }
+    }
+    
+    /**
+     * This function delete all contacts from a specific customer
+     * @param int $idCustomer
+     * @return number
+     */
+    public function deleteAllContacts($idCustomer){
+        //Here we must to put the recursive functions to delete all future content
+        if($this->tableGateway->delete(array('customer_id'=>(int)$idCustomer))){
+            return true;
+        }else{
+            return false;
         }
     }
 }

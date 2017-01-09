@@ -103,5 +103,19 @@ class CustomerAddressTable
             return "CUSTOMER018";
         }
     }
+    
+    /**
+     * Delete all address for a specific customer
+     * @param int $idCustomer
+     * @return boolean
+     */
+    public function deleteAllAddresses($idCustomer){
+        //Here we must to put the recursive functions to delete all future content
+        if($this->tableGateway->delete(array('customer_id'=>(int)$idCustomer))){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 

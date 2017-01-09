@@ -20,9 +20,9 @@ class CustomerContact
         $this->email = (!empty($data['email'])) ? strip_tags($data['email']) : null;
     }
     
-    public function validation(){
+    public function validation($edit=false){
         
-        if(!$this->customer_id){
+        if(!$this->customer_id and $edit==false){
             return false;
         }
         $stringValidator = new \Zend\Validator\StringLength();

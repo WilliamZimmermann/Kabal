@@ -74,10 +74,11 @@ $this->headtitle($this->translate("Clientes"));
 						<td>
 						<?php 
 						if($customer->customerType==1){
-						  echo $customer->name." ".$customer->name2;
+						  $name = $customer->name." ".$customer->name2;
                         }else{
-                            echo $customer->name3." (".$customer->name4.")";
+                            $name = $customer->name3." (".$customer->name4.")";
                         }
+                        echo $name;
                         ?>
 						</td>
 						<td><?php echo $customer->email; ?></td>
@@ -107,11 +108,11 @@ $this->headtitle($this->translate("Clientes"));
 										aria-hidden="true">&times;</button>
 									<h4 class="modal-title"><?php echo $this->translate("Desejas realmente excluir?")?></h4>
 								</div>
-								<div class="modal-body"><?php echo $this->translate("Você realmente deseja excluir <strong>".$customer->title."</strong> e todo o conteúdo relacionado com essa página?")?></div>
+								<div class="modal-body"><?php echo $this->translate("Você realmente deseja excluir o cliente <strong>".$name."</strong>?")?></div>
 								<div class="modal-footer">
 									<button data-dismiss="modal" class="btn btn-default"
 										type="button"><?php echo $this->translate("Cancelar")?></button>
-									<a href="<?php echo $this->url("article/delete", array("id"=>$customer->idCustomer))?>" class="btn btn-danger" type="button"><?php echo $this->translate("Excluir")?></a>
+									<a href="<?php echo $this->url("customer/delete", array("id"=>$customer->idCustomer))?>" class="btn btn-danger" type="button"><?php echo $this->translate("Excluir")?></a>
 								</div>
 							</div>
 						</div>

@@ -36,7 +36,7 @@
 					<?php } ?>
 				</tbody>
 </table>
-<!-- NEW ECIT MODAL -->
+<!-- EDIT CONTACT MODAL -->
 <div class="modal fade" id="editContact" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -46,9 +46,10 @@
 					aria-hidden="true">&times;</button>
 				<h4 class="modal-title"><?php echo $this->translate("Editar contato")?></h4>
 			</div>
-			<form class="form-horizontal tasi-form" method="post" id="customerContactEdit" action="">
+			<form class="form-horizontal tasi-form" method="post" id="customerContactEdit" action="">			
 				<div class="modal-body" id="formulario">
-        				<div class="form-group">
+						<input name="idContact" id="idContact" value="" type="hidden">
+						<div class="form-group">
         					<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição*:")?></label>
         					<div class="col-sm-10">
                               	<input name="desc" type="text" id="desc" value="" class="form-control" maxlength="255" required>
@@ -82,7 +83,7 @@
 				</div>
 				<div class="modal-footer">
 					<button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Sair")?></button>
-					<button class="btn btn-success" type="submit" id="cadastrar"><?php echo $this->translate("Salvar")?></button>
+					<button class="btn btn-success" type="submit" id="edit"><?php echo $this->translate("Salvar")?></button>
 				</div>
 			</form>
 		</div>
@@ -92,6 +93,9 @@
 <?php 
 $deleteUrl = $this->url("customer/contact-delete", array("id"=>$customer->idCustomer));
 $editDataUrl = $this->url("customer/contact-edit", array("id"=>$customer->idCustomer));
+$contactEditUrl = $this->url("customer/contact-edit", array("id"=>$customer->idCustomer));
+$contactsUrl = $this->url("customer/contact-list", array("id"=>$customer->idCustomer));
+
 $this->headScript()->captureStart();
 echo <<<JS
 $(document).ready(function(){
@@ -130,6 +134,7 @@ $(document).ready(function(){
 	    function(data, status){
 		    var dados = JSON.parse(data);
 		    if(data!='error'){
+		        $('#idContact').val(dados["idContact"]);
                 $('#desc').val(dados["desc"]);
 			    $('#phone').val(dados["phone"]);
 			    $('#email').val(dados["email"]);
@@ -138,6 +143,31 @@ $(document).ready(function(){
 			    }
 		    }
         });
+    });
+    $("#customerContactEdit").submit(function(e){
+        e.preventDefault();
+        $.ajax({
+              url: "$contactEditUrl",
+              type: "POST",
+              data:  new FormData(this),
+              contentType: false,
+                    cache: false,
+              processData:false,
+              success: function(data){
+                   if(data=='success')
+                   {
+                        $("#formulario").hide();
+        			    $("#edit").hide();
+        			    $("#success").fadeIn(300);
+					    //Dá um refresh na página
+                        window.location.reload(true);
+                   }
+                   else
+                   {
+                        alert("Houve um erro ao tentar cadastrar.");
+                   }
+    	      }
+		});    
     });
 });
 JS;

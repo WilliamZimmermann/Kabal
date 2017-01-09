@@ -49,6 +49,19 @@ return array(
                             ),
                         ),
                     ),
+                    'delete' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/delete/[:id]',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'delete',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
                     'address' => array(
                         'type'    => 'Segment',
                         'options' => array(

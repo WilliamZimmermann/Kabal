@@ -297,6 +297,39 @@ class CustomerController extends AbstractActionController
     }
     
     /**
+     * This action delete a article from the system
+     * @return \Zend\Http\Response|NULL[]
+     */
+    public function deleteAction(){
+        //Check if this user can access this article
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+            $id = (int) $this->params()->fromRoute('id', 0);
+            if (!$id) { //If there is no ID
+                $this->getServiceLocator()->get('systemLog')->addLog(0, "Article ".$id." not found to delete.", 5);
+                return $this->redirect()->toRoute('article');
+            }
+            //Recursive delete
+            $message = $this->getServiceLocator()->get('customerMessages');
+            
+            //First, remove associated addresses
+            $this->getCustomerAddressTable()->deleteAllAddresses($id);
+            //Now, remove all associated contacts
+            $this->getCustomerContactTable()->deleteAllContacts($id);
+            //Remove customer Person or Company
+            if($this->getCustomerPersonTable()->deleteCustomer($id) || $this->getCustomerCompanyTable()->deleteCustomer($id)){
+                //Now, remove customer
+                $result = $this->getCustomerTable()->deleteCustomer($id);
+                $message->setCode("CUSTOMER006");
+            }
+            return $this->redirect()->toRoute("customer");
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
+    /**
      * This action show addresses options
      * @return \Zend\Http\Response|NULL[]|unknown[]|\Customer\Model\ArrayObject[]|\Customer\Model\NULL[]
      */
@@ -330,13 +363,14 @@ class CustomerController extends AbstractActionController
                 
                 if($address->validation()){ //Verify to check if all data is ok
                     $result = $this->getCustomerAddressTable()->saveAddress($address);
+                    $message->setCode($result);
+                    $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                    
                     if($result=="CUSTOMER012"){
-                        $message->setCode($result);
-                        $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
                         die("error");
                     }else{
-                        $message->setCode($result);
-                        $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                        $log = "\n Novo endereço adicionado por meio do site pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+                        $this->getCustomerTable()->saveLogChanges($id, $log);
                         die("success");
                     }
                 }else{
@@ -414,14 +448,14 @@ class CustomerController extends AbstractActionController
             $dados = $request->getContent();
             $idAddress = substr($dados, 3);
             $result = $this->getCustomerAddressTable()->deleteAddress($idAddress);
+            $message->setCode($result);
+            $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
             if($result=="CUSTOMER017"){ //Agora deleta do banco de dados
-                $message->setCode($result);
-                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                $log = "\n Endereço removido por meio do site pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+                $this->getCustomerTable()->saveLogChanges($id, $log);
                 die("success");
             }else{
-                $message->setCode($result);
-                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
-                die("error");
+               die("error");
             }
         }
     }
@@ -471,14 +505,15 @@ class CustomerController extends AbstractActionController
             if($address->validation()){
                 //Agora Salva do banco de dados
                 $result = $this->getCustomerAddressTable()->saveAddress($address);
+                $message->setCode($result);
+                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                
                 if($result=="CUSTOMER014"){ 
-                    $message->setCode($result);
-                    $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                    $log = "\n Endereço alterado por meio do site pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+                    $this->getCustomerTable()->saveLogChanges($id, $log);
                     die("success");
                 }else{
-                    $message->setCode($result);
-                    $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
-                    die("error");
+                   die("error");
                 }
             }else{
                 $result = "CUSTOMER013";
@@ -584,6 +619,8 @@ class CustomerController extends AbstractActionController
                 $message->setCode($result);
                 $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
                 if($result=="CUSTOMER019"){
+                    $log = "\n Dados de contato adicionados por meio do site pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+                    $this->getCustomerTable()->saveLogChanges($id, $log);
                     die("success");
                 }else{
                     die("error");
@@ -623,6 +660,8 @@ class CustomerController extends AbstractActionController
             $message->setCode($result);
             $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
             if($result=="CUSTOMER025"){
+                $log = "\n Dados de contato apagados por meio do site pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+                $this->getCustomerTable()->saveLogChanges($id, $log);
                 die("success");
             }else{
                 die("error");
@@ -647,6 +686,26 @@ class CustomerController extends AbstractActionController
                 return $this->redirect()->toRoute('noPermission');
             }
             $idContact = $_GET["idContact"];
+            $request = $this->getRequest();
+            if($request->isPost()){
+                $data = $request->getPost();
+                $customerContact = new CustomerContact();
+                $customerContact->exchangeArray($data);
+                if($customerContact->validation(true)){
+                    $result = $this->getCustomerContactTable()->saveContact($customerContact);
+                    $message->setCode($result);
+                    $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                    if($result=="CUSTOMER022"){
+                        $log = "\n Dados de contato alterados por meio do site pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+                        $this->getCustomerTable()->saveLogChanges($id, $log);
+                        die("success");
+                    }else{
+                        die("error");
+                    }
+                }else{
+                    die("error");
+                }
+            }
             $result = $this->getCustomerContactTable()->getContact($idContact);
             die(json_encode($result));
         }else{
@@ -675,6 +734,7 @@ class CustomerController extends AbstractActionController
         }
     }
     */
+    
     //Customer
     public function getCustomerTable(){
         if(!$this->customerTable){
@@ -683,6 +743,7 @@ class CustomerController extends AbstractActionController
         }
         return $this->customerTable;
     }
+    
     //Cusotmer Person
     public function getCustomerPersonTable(){
         if(!$this->customerPersonTable){

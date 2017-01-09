@@ -110,6 +110,25 @@ class CustomerTable
         }
     }
     
+    //Save a log of any customer changes
+    public function saveLogChanges($idCustomer, $message){
+        $customer = $this->getCustomer($idCustomer);
+        if($customer){
+            $log = $customer->log;
+            $data = array(
+              "log"=>$log."<br>".$message,
+              "dateUpdated"=>date('Y-m-d H:i:s')
+            );
+            if($this->tableGateway->update($data, array('idCustomer'=>$idCustomer))){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+    
     
     /**
      * This function delete a specific customer
@@ -124,5 +143,6 @@ class CustomerTable
             return "CUSTOMER009";
         }
     }
+    
 }
 
