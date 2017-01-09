@@ -3,6 +3,8 @@ namespace Customer\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Application\Services\SystemFunctions;
+use Zend\Paginator\Paginator;
+use Zend\Paginator\Adapter\DbSelect;
 
 class CustomerTable
 {
@@ -17,15 +19,19 @@ class CustomerTable
      * @param $companyId - Company Id to filter
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function fetchAll($companyId){
+    public function fetchAll($companyId, $currentPage = 1, $countPerPage = 2){
         
         $sqlSelect = $this->tableGateway->getSql()->select();
         $sqlSelect->join('customer_person', 'customer.idCustomer = customer_person.customer_id', array("name"=>"name", "name2"=>last_name), 'left');
         $sqlSelect->join('customer_company', 'customer.idCustomer = customer_company.customer_id', array("name3"=>"social_name", "name4"=>"fantasy_name"), 'left');
         $sqlSelect->where(array("company_id"=>$companyId));
-        //$sqlSelect->where(new Expression('CASE customer.customerType WHEN 1 THEN customer_person.idCustomer '))
-        $resultSet = $this->tableGateway->selectWith($sqlSelect);
-        return $resultSet;
+        $sqlSelect->order("customer_person.name, customer_company.social_name");     
+        $adapter = new DbSelect($sqlSelect, $this->tableGateway->getAdapter(), $this->tableGateway->getResultSetPrototype());
+        
+        $paginator = new Paginator($adapter);
+        $paginator->setItemCountPerPage($countPerPage);
+        $paginator->setCurrentPageNumber($currentPage);
+        return $paginator;
         
     }
     

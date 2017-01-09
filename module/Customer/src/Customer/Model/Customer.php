@@ -25,6 +25,7 @@ class Customer
     public $name2;
     public $name3;
     public $name4;
+    public $phone;
     
     public function exchangeArray($data){
         $this->idCustomer = (!empty($data['idCustomer'])) ? $data['idCustomer'] : null;
@@ -46,6 +47,7 @@ class Customer
         $this->name2 = (!empty($data['name2'])) ? strip_tags($data['name2']) : null;
         $this->name3 = (!empty($data['name3'])) ? strip_tags($data['name3']) : null;
         $this->name4 = (!empty($data['name4'])) ? strip_tags($data['name4']) : null;
+        $this->phone = (!empty($data['phone'])) ? strip_tags($data['phone']) : null;
     }
     
     public function validation($validatePassword=true){

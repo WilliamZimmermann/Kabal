@@ -36,7 +36,12 @@ class CustomerController extends AbstractActionController
                 "edit"=>$this->getServiceLocator()->get('user')->checkPermission($permission, "edit"),
                 "delete"=>$this->getServiceLocator()->get('user')->checkPermission($permission, "delete")
             );
-            $customers = $this->getCustomerTable()->fetchAll($logedUser["idCompany"]);
+            // Page number
+            $currentPage = $this->params()->fromQuery('page');
+            // Number of records per page
+            $countPerPage = "30";
+            
+            $customers = $this->getCustomerTable()->fetchAll($logedUser["idCompany"], $currentPage, $countPerPage);
             return array("customers"=>$customers, "permissions"=>$permissions);
         }else{
             return $this->redirect()->toRoute("noPermission");
