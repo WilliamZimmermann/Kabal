@@ -29,15 +29,11 @@ class ImagesDatabaseController extends AbstractActionController
             ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if ($this->getServiceLocator()
             ->get('user')
-            ->checkPermission($permission, "insert") || $this->getServiceLocator()
-            ->get('user')
-            ->checkPermission($permission, "edit") || $this->getServiceLocator()
-            ->get('user')
-            ->checkPermission($permission, "delete") || $logedUser["idCompany"] == 1) {
+            ->checkPermission($permission, "insert")) {
             
             if ($this->getServiceLocator()
                 ->get('user')
-                ->checkPermission($permission, "edit") || $logedUser["idCompany"] == 1) {
+                ->checkPermission($permission, "edit")) {
                 $request = $this->getRequest();
                 if ($request->isPost()) {
                     $message = $this->getServiceLocator()->get('systemMessages');
@@ -57,7 +53,8 @@ class ImagesDatabaseController extends AbstractActionController
             
             return array(
                 "images" => $images,
-                "idWebsite" => $logedUser["idWebsite"]
+                "idWebsite" => $logedUser["idWebsite"],
+                "permission"=>$permission
             );
         } else {
             return $this->redirect()->toRoute("noPermission");
@@ -75,7 +72,7 @@ class ImagesDatabaseController extends AbstractActionController
             ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if ($this->getServiceLocator()
             ->get('user')
-            ->checkPermission($permission, "insert") || $logedUser["idCompany"] == 1) {
+            ->checkPermission($permission, "edit")) {
             
             return array();
         } else {
@@ -94,7 +91,7 @@ class ImagesDatabaseController extends AbstractActionController
             ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if ($this->getServiceLocator()
             ->get('user')
-            ->checkPermission($permission, "insert") || $logedUser["idCompany"] == 1) {
+            ->checkPermission($permission, "edit")) {
             $request = $this->getRequest();
             if ($request->isPost()) {
                 // Get Message Service
@@ -143,11 +140,7 @@ class ImagesDatabaseController extends AbstractActionController
             ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if ($this->getServiceLocator()
             ->get('user')
-            ->checkPermission($permission, "insert") || $this->getServiceLocator()
-            ->get('user')
-            ->checkPermission($permission, "edit") || $this->getServiceLocator()
-            ->get('user')
-            ->checkPermission($permission, "delete") || $logedUser["idCompany"] == 1) {
+            ->checkPermission($permission, "edit")) {
             
                 
             if ($this->getServiceLocator()
@@ -178,7 +171,7 @@ class ImagesDatabaseController extends AbstractActionController
             ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if ($this->getServiceLocator()
             ->get('user')
-            ->checkPermission($permission, "delete") || $logedUser["idCompany"] == 1) {
+            ->checkPermission($permission, "delete")) {
             $id = (int) $this->params()->fromRoute('id', 0);
             if (! $id) { // If there is no ID
                 $this->getServiceLocator()

@@ -29,8 +29,8 @@ class CompanyController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete")){
-            return array("companies"=>$this->getCompanyTable()->fetchAll());
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
+            return array("companies"=>$this->getCompanyTable()->fetchAll(), "permission"=>$permission);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -40,7 +40,7 @@ class CompanyController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $company = new Company();
             //If was a POST
             $message = $this->getServiceLocator()->get('systemMessages');

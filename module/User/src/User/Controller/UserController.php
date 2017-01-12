@@ -26,7 +26,7 @@ class UserController extends AbstractActionController {
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete")){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
             if($logedUser["idCompany"]==1){
                 $companyId = null;
                 $ableToInsert = true;
@@ -54,7 +54,7 @@ class UserController extends AbstractActionController {
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $user = new User();
             
             //Get Message Service

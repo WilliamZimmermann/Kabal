@@ -39,18 +39,15 @@ class WebsiteController extends AbstractActionController
             ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if ($this->getServiceLocator()
             ->get('user')
-            ->checkPermission($permission, "insert") || $this->getServiceLocator()
-            ->get('user')
-            ->checkPermission($permission, "edit") || $this->getServiceLocator()
-            ->get('user')
-            ->checkPermission($permission, "delete")) {
+            ->checkPermission($permission, "insert")) {
                 if($logedUser["idCompany"]==1){
                     $websites = $this->getWebsiteTable()->fetchAll(null);
                 }else{
                     $websites = $this->getWebsiteTable()->fetchAll($logedUser["idCompany"]);
                 }
                 return array(
-                "websites" => $websites, "logedUser"=>$logedUser
+                "websites" => $websites, "logedUser"=>$logedUser,
+                    "permission"=>$permission
             );
         } else {
             return $this->redirect()->toRoute("noPermission");
@@ -68,7 +65,7 @@ class WebsiteController extends AbstractActionController
             ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if ($this->getServiceLocator()
             ->get('user')
-            ->checkPermission($permission, "insert") && $logedUser["idCompany"]==1) {
+            ->checkPermission($permission, "edit")) {
             $website = new Website();
             
             // Get Message Service
@@ -190,7 +187,7 @@ class WebsiteController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") && $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get the Website ID
             $id = (int) $this->params()->fromRoute('id', 0);
             // Will check if this id exists at the database

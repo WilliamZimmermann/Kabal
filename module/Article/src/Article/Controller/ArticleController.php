@@ -30,9 +30,9 @@ class ArticleController extends AbstractActionController
         //Check if this user can access this article
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
             $articles = $this->getArticleTable()->fetchAll($logedUser["idWebsite"]);
-            return array("articles"=>$articles);
+            return array("articles"=>$articles, "permission"=>$permission);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -47,7 +47,7 @@ class ArticleController extends AbstractActionController
         //Check if this user can access this article
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $article = new Article();
             //If was a POST
             $message = $this->getServiceLocator()->get('systemMessages');
@@ -83,7 +83,7 @@ class ArticleController extends AbstractActionController
         //Check if this user can access this article
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $article = new Article();
             $message = $this->getServiceLocator()->get('systemMessages');
 
@@ -133,7 +133,7 @@ class ArticleController extends AbstractActionController
         //Check if this user can access this article
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "new") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $article = new ArticleLanguage();
             $message = $this->getServiceLocator()->get('systemMessages');
     
@@ -239,7 +239,7 @@ class ArticleController extends AbstractActionController
         //Check if this user can access this article
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete")){
             $id = (int) $this->params()->fromRoute('id', 0);
             if (!$id) { //If there is no ID
                 $this->getServiceLocator()->get('systemLog')->addLog(0, "Article ".$id." not found to delete.", 5);

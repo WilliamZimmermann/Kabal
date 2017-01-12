@@ -13,7 +13,7 @@ $this->headtitle($this->translate("Websites"));
     </div>
 </div>
 <?php 
-if($logedUser["idCompany"]==1){ ?>
+if($permission->editP){ ?>
 <div class="row">
     <div class="col-lg-10"></div>
     <div class="col-lg-2">
@@ -53,13 +53,15 @@ if($logedUser["idCompany"]==1){ ?>
                             <td><span
                                     class="label label-<?php echo $statusClass; ?> label-mini"><?php echo $status; ?></span></td>
                             <td>
+                            	<?php if($permission->editP){?>
                                 <a href="<?php echo $this->url("website/edit-users", array("id"=>$website->idWebsite))?>" class="btn btn-warning btn-xs">
                                     <i class="fa fa-users"></i>
                                 </a> <a
                                     href="<?php echo $this->url("website/edit", array("id" => $website->idWebsite)) ?>"
                                     class="btn btn-primary btn-xs"> <i class="fa fa-pencil"></i>
                                 </a>
-                                <?php if($logedUser["idCompany"]==1){ ?>
+                                <?php } ?>
+                                <?php if($permission->deleteP){ ?>
                                 <button data-toggle="modal" href="#delete-<?php echo $website->idWebsite; ?>"
                                         class="btn btn-danger btn-xs">
                                     <i class="fa fa-trash-o "></i>

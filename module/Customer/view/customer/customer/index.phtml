@@ -34,7 +34,7 @@ $this->headtitle($this->translate("Clientes"));
 		
 		<button class="btn btn-default"><?php echo $this->translate("Procurar")?></button>
 	</div>
-	<?php if($permissions["insert"]){?>
+	<?php if($permission->editP){?>
 	<div class="col-lg-2">
 		<a href="<?php echo $this->url("customer/new")?>"
 			class="btn btn-primary"><i class="fa fa-user"></i> <?php echo $this->translate("Novo Cliente")?></a>
@@ -88,12 +88,19 @@ $this->headtitle($this->translate("Clientes"));
 						<td>
 							<a
 							href="<?php echo $this->url("customer/edit", array("id"=>$customer->idCustomer))?>"
+							class="btn btn-default btn-xs"> <i class="fa fa-eye"></i></a>
+							<?php if($permission->editP){ ?>
+							<a
+							href="<?php echo $this->url("customer/edit", array("id"=>$customer->idCustomer))?>"
 							class="btn btn-primary btn-xs"> <i class="fa fa-pencil"></i>
 						</a>
+						<?php } ?>
+						<?php if($permission->deleteP){ ?>
 							<button data-toggle="modal" href="#delete-<?php echo $customer->idCustomer; ?>"
 								class="btn btn-danger btn-xs">
 								<i class="fa fa-trash-o "></i>
 							</button>
+							<?php } ?>
 						</td>
 					</tr>
 					<!-- EXCLUSION MODAL -->

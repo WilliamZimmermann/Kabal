@@ -73,8 +73,8 @@ if ($message["flag"] > 0) {
                             <thead>
                                 <tr>
                                     <th><i class="fa fa-cube"></i> <?php echo $this->translate("Módulo") ?></th>
-                                    <th><i class="fa fa-plus-circle"></i> <?php echo $this->translate("Cadastro") ?></th>
-                                    <th><i class="fa fa-pencil"></i> <?php echo $this->translate("Edição") ?></th>
+                                    <th><i class="fa fa-eye"></i> <?php echo $this->translate("Visualização") ?></th>
+                                    <th><i class="fa fa-pencil"></i> <?php echo $this->translate("Cadastro & Edição") ?></th>
                                     <th><i class="fa fa-trash"></i> <?php echo $this->translate("Exclusão") ?></th>
                                 </tr>
                             </thead>
@@ -88,7 +88,7 @@ if ($message["flag"] > 0) {
 							    $delete = 0;
 							    foreach($modulePermissions as $permission){
 							        if($permission->website_module_idModule == $module->system_module_idModule){
-							            $insert = $permission->insertP;
+							            $insert = $permission->insertP; //Now it's visualization
 							            $edit = $permission->editP;
 							            $delete = $permission->deleteP;
 							            break;

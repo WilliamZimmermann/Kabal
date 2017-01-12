@@ -25,9 +25,9 @@ class PageController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
             $pages = $this->getPageTable()->fetchAll($logedUser["idWebsite"]);
-            return array("pages"=>$pages);
+            return array("pages"=>$pages, "permission"=>$permission);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -42,7 +42,7 @@ class PageController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $page = new Page();
             //If was a POST
             $message = $this->getServiceLocator()->get('systemMessages');
@@ -74,7 +74,7 @@ class PageController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $page = new Page();
             $message = $this->getServiceLocator()->get('systemMessages');
             
@@ -121,7 +121,7 @@ class PageController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "new") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $page = new PageLanguage();
             $message = $this->getServiceLocator()->get('systemMessages');
     
@@ -202,7 +202,7 @@ class PageController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete")){
             $id = (int) $this->params()->fromRoute('id', 0);
             if (!$id) { //If there is no ID
                 $this->getServiceLocator()->get('systemLog')->addLog(0, "Page ".$id." not found to delete.", 5);

@@ -30,19 +30,14 @@ class CustomerController extends AbstractActionController
         //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
-            $permissions = array(
-                "insert"=>$this->getServiceLocator()->get('user')->checkPermission($permission, "insert"),
-                "edit"=>$this->getServiceLocator()->get('user')->checkPermission($permission, "edit"),
-                "delete"=>$this->getServiceLocator()->get('user')->checkPermission($permission, "delete")
-            );
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
             // Page number
             $currentPage = $this->params()->fromQuery('page');
             // Number of records per page
             $countPerPage = "30";
             
             $customers = $this->getCustomerTable()->fetchAll($logedUser["idCompany"], $currentPage, $countPerPage);
-            return array("customers"=>$customers, "permissions"=>$permissions);
+            return array("customers"=>$customers, "permission"=>$permission);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -52,7 +47,7 @@ class CustomerController extends AbstractActionController
         //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $countries = $this->getServiceLocator()->get('countryFactory')->fetchAll();
             $customer = new Customer();
             $customerPerson = new CustomerPerson();
@@ -170,7 +165,7 @@ class CustomerController extends AbstractActionController
         //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -309,7 +304,7 @@ class CustomerController extends AbstractActionController
         //Check if this user can access this article
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete")){
             $id = (int) $this->params()->fromRoute('id', 0);
             if (!$id) { //If there is no ID
                 $this->getServiceLocator()->get('systemLog')->addLog(0, "Article ".$id." not found to delete.", 5);
@@ -344,7 +339,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
         
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -412,7 +407,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
         
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -441,7 +436,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
         
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -471,7 +466,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
     
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -494,7 +489,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
         
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -539,7 +534,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
     
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -579,7 +574,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
     
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -606,7 +601,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
         
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -651,7 +646,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
     
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
@@ -682,7 +677,7 @@ class CustomerController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         $message = $this->getServiceLocator()->get('customerMessages');
     
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             // Get Customer ID
             $id = (int) $this->params()->fromRoute('id', 0);
             //First of all, check if this customer is from this company
