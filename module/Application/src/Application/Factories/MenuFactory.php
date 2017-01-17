@@ -3,14 +3,14 @@ namespace Application\Factories;
 
 use Zend\ServiceManager\FactoryInterface;
 
-class CityFactory implements FactoryInterface{
+class MenuFactory implements FactoryInterface{
     /**
      * {@inheritDoc}
      * @see \Zend\ServiceManager\FactoryInterface::createService()
      */
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
     {
-        return $serviceLocator->get('Application\Model\UserPermissions'); 
+        return $serviceLocator->get('Application\Model\UserPermission'); 
     }
 
     

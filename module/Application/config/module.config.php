@@ -5,6 +5,7 @@ use Application\Services\SystemFunctions;
 use Application\Factories\CountryFactory;
 use Application\Factories\ZoneFactory;
 use Application\Factories\CityFactory;
+use Application\Factories\MenuFactory;
 
 /**
  * Zend Framework (http://framework.zend.com/)
@@ -133,7 +134,8 @@ return array(
         'factories'=>[
             'countryFactory' => CountryFactory::class,
             'zoneFactory' => ZoneFactory::class,
-            'cityFactory' => CityFactory::class
+            'cityFactory' => CityFactory::class,
+            'menuFactory' => MenuFactory::class
         ],
         'aliases' => array(
             'translator' => 'MvcTranslator',

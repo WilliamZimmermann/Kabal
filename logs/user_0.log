@@ -267,3 +267,13 @@
 2017-01-12T20:21:34+01:00 INFO (6): USER ID: 0. MESSAGE: The user 1 made login.
 2017-01-12T20:21:34+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
 2017-01-12T20:21:34+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2017-01-13T16:37:37+01:00 INFO (6): USER ID: 0. MESSAGE: The user 1 made login.
+2017-01-13T16:37:37+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2017-01-13T16:37:37+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2017-01-16T17:04:08+01:00 INFO (6): USER ID: 0. MESSAGE: Falha no login, dados incorretos. Verifique se o email me@williamzimmermann.com.br ou a senha estão corretos.
+2017-01-16T17:04:17+01:00 INFO (6): USER ID: 0. MESSAGE: The user 1 made login.
+2017-01-16T17:04:17+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2017-01-16T17:04:17+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2017-01-17T11:48:26+01:00 INFO (6): USER ID: 0. MESSAGE: The user 1 made login.
+2017-01-17T11:48:26+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.
+2017-01-17T11:48:26+01:00 INFO (6): USER ID: 0. MESSAGE: User made login.

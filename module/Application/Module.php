@@ -21,6 +21,8 @@ use Application\Model\ZoneTable;
 use Application\Model\Zone;
 use Application\Model\CityTable;
 use Application\Model\City;
+use Application\Model\UserPermissionTable;
+use Application\Model\UserPermission;
 
 class Module
 {
@@ -38,6 +40,7 @@ class Module
          * Get all websites for this user
          */
         $viewModel->userWebsites = $serviceManager->get('website_user')->fetchByUser($userData["idUser"]);
+        $viewModel->permissions = $serviceManager->get('menuFactory')->fetchByUser($userData["idUser"], $userData["idWebsite"]);
     }
 
     public function getConfig()
@@ -119,6 +122,17 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new City());
                     return new TableGateway('city', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\UserPermission' => function ($sm) {
+                    $tableGateway = $sm->get('UserPermissionTableGateway');
+                    $table = new UserPermissionTable($tableGateway);
+                    return $table;
+                },
+                'UserPermissionTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new UserPermission());
+                    return new TableGateway('company_user_permissions', $dbAdapter, null, $resultSetPrototype);
                 },
             )
         );
