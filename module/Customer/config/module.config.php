@@ -35,6 +35,19 @@ return array(
                             ),
                         ),
                     ),
+                    'view' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/view/[:id]',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'view',
+                                'controller'=>'Customer'
+                            ),
+                        ),
+                    ),
                     'edit' => array(
                         'type'    => 'Segment',
                         'options' => array(

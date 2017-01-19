@@ -34,11 +34,20 @@ class CustomerAddressTable
      * @throws \Exception
      * @return ArrayObject|NULL
      */
-    public function getAddress($id, $param="idAddress"){
+    public function getAddress($id, $param="idAddress", $justPrincipal=false){
         $id  = (int) $id;
-        $data = array($param => $id);
-        $rowset = $this->tableGateway->select($data);
-        $row = $rowset->current();
+        if($justPrincipal){
+            $data = array($param => $id, "principal"=>"true");
+        }else{
+            $data = array($param => $id);
+        }
+        $sqlSelect = $this->tableGateway->getSql()->select();
+        $sqlSelect->join('country', 'customer_address.country_id = country.countryId', array("country"=>"name"), 'left');
+        $sqlSelect->join('zone', 'customer_address.zone_id = zone.id', array("zone"=>"name", "initials"=>"initials"), 'left');
+        $sqlSelect->join('city', 'customer_address.city_id = city.id', array("city"=>"name"), 'left');
+        $sqlSelect->where($data);
+        $sqlSelect->limit(1);
+        $row = $this->tableGateway->selectWith($sqlSelect);
         if (!$row) {
             throw new \Exception("Could not find row $id");
         }

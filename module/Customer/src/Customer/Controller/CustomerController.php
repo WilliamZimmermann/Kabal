@@ -161,6 +161,40 @@ class CustomerController extends AbstractActionController
         }
     }
     
+    public function viewAction(){
+        //Check if this user can access this address
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $customerData = $this->getCustomerTable()->getCustomer($id);
+            if($customerData->company_id!=$logedUser["idCompany"] && $logedUser["idCompany"]!=1){
+                return $this->redirect()->toRoute('noPermission');
+            }
+            if($customerData->customerType==1){
+                $customerPersonData = $this->getCustomerPersonTable()->getCustomer($id);
+            }else{
+                $customerCompanyData = $this->getCustomerCompanyTable()->getCustomer($id);
+            }
+            $customerAddressData = $this->getCustomerAddressTable()->getAddress($id, "customer_id", true);
+            $customerContactData = $this->getCustomerContactTable()->getContact($id, "customer_id", true);
+            
+            $this->layout("layout/layout_blank");
+            return array(
+                //"countries"=>$countries,
+                "customer"=>$customerData,
+                "customerPerson"=>$customerPersonData,
+                "customerCompany"=>$customerCompanyData,
+                "customerAddressData"=>$customerAddressData,
+                "customerContactData"=>$customerContactData
+            );
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
     public function editAction(){
         //Check if this user can access this address
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();

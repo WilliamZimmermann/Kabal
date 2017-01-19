@@ -29,13 +29,17 @@ class CustomerContactTable
      * @throws \Exception
      * @return ArrayObject|NULL
      */
-    public function getContact($id, $param="idContact"){
+    public function getContact($id, $param="idContact", $justPrincipal=false){
         $id  = (int) $id;
-        $data = array($param => $id);
+        if($justPrincipal){
+            $data = array($param => $id, "principal"=>true);
+        }else{
+            $data = array($param => $id);
+        }
         $rowset = $this->tableGateway->select($data);
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            return false;
         }
         return $row;
     }

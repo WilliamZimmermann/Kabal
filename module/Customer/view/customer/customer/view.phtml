@@ -1,0 +1,98 @@
+<?php
+use Application\Services\SystemFunctions;
+?>
+<table class="table table-striped table-advance table-hover">
+	<tbody>
+		<tr style="background-color: white"><td colspan=2><h4><?php echo $this->translate("Dados principais")?></h4>
+		</td></tr>
+		<?php if($customer->customerType==1){ //Se é pessoa física ?>
+    		<tr>
+    			<td><strong><?php echo $this->translate("Nome: ")?></strong></td>
+    			<td><?php echo $customerPerson->last_name.", ".$customerPerson->name; ?></td>
+    		</tr>
+    		<?php if($customerPerson->document_1){ ?>
+    		<tr>
+    			<td><strong><?php echo $this->translate("CPF: ")?></strong></td>
+    			<td><?php echo $customerPerson->document_1; ?></td>
+    		</tr>
+    		<?php } ?>
+    		<?php if($customerPerson->document_2){ ?>
+    		<tr>
+    			<td><strong><?php echo $this->translate("RG: ")?></strong></td>
+    			<td><?php echo $customerPerson->document_2; ?></td>
+    		</tr>
+    		<?php } ?>
+		<?php }else{ //Se é pessoa jurídica ?>
+    		<tr>
+    			<td><strong><?php echo $this->translate("Razão Social: ")?></strong></td>
+    			<td><?php echo $customerCompany->social_name; ?></td>
+    		</tr>
+    		<tr>
+    			<td><strong><?php echo $this->translate("Nome Fantasia: ")?></strong></td>
+    			<td><?php echo $customerCompany->fantasy_name; ?></td>
+    		</tr>
+    		<?php if($customerCompany->document_1){ ?>
+    		<tr>
+    			<td><strong><?php echo $this->translate("CNPJ: ")?></strong></td>
+    			<td><?php echo $customerCompany->document_1; ?></td>
+    		</tr>
+    		<?php } ?>
+    		<?php if($customerCompany->document_2){ ?>
+    		<tr>
+    			<td><strong><?php echo $this->translate("Inscrição Estadual: ")?></strong></td>
+    			<td><?php echo $customerCompany->document_2; ?></td>
+    		</tr>
+    		<?php } ?>
+		<?php } ?>
+		<tr>
+			<td><strong><?php echo $this->translate("Nascimento/Fundação: ")?></strong></td>
+			<td><?php echo SystemFunctions::dateInvert($customer->birthDate, 'brazilian', false); ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Data de Cadastro: ")?></strong></td>
+			<td><?php echo SystemFunctions::dateInvert($customer->dateCreated, 'brazilian', true); ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Última Atualização: ")?></strong></td>
+			<td><?php echo SystemFunctions::dateInvert($customer->dateUpdated, 'brazilian', true); ?></td>
+		</tr>
+		<?php if($customerContactData){ ?>
+		<tr style="background-color: white"><td colspan=2><h4><?php echo $this->translate("Dados de contato")?></h4></td></tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Quem? ")?></strong></td>
+			<td><?php echo $customerContactData->desc; ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Telefone: ")?></strong></td>
+			<td><?php echo $customerContactData->phone; ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("E-mail: ")?></strong></td>
+			<td><?php echo $customerContactData->email; ?></td>
+		</tr>
+		<?php } ?>
+		<?php foreach($customerAddressData as $address){ ?>
+		<tr style="background-color: white"><td colspan=2><h4><?php echo $this->translate("Endereço Principal")?></h4></td></tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Nome: ")?></strong></td>
+			<td><?php echo $address->name; ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Endereço: ")?></strong></td>
+			<td><?php echo $address->street.", ".$customerAddressData->house_number; ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Complemento: ")?></strong></td>
+			<td><?php echo $address->complement; ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Bairro: ")?></strong></td>
+			<td><?php echo $address->neighborhood; ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Cidade: ")?></strong></td>
+			<td><?php echo $address->city.", ".$address->zone." - ".$address->country; ?></td>
+		</tr>
+		<?php } ?>
+	</tbody>
+</table>

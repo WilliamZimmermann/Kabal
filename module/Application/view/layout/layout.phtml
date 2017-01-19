@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="William Zimmermann - TekSul">
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" href="<?php echo $this->basepath("img/favicon.png")?>">
 
-    <?php echo $this->headTitle('Aleph א'. $this->translate(''))->setSeparator(' - ')->setAutoEscape(false) ?>
+    <?php echo $this->headTitle('Kabal'. $this->translate(''))->setSeparator(' - ')->setAutoEscape(false) ?>
 
 	<?php 
 	echo $this->headLink()
@@ -37,7 +37,7 @@
                   <i class="fa fa-bars"></i>
               </div>
             <!--logo start-->
-            <a href="index.html" class="logo"><img src="<?php echo $this->basepath("img/aleph.png")?>" alt="Aleph"><span> Aleph</span></a>
+            <a href="index.html" class="logo"><img src="<?php echo $this->basepath("img/kabal.png")?>" alt="Kabal CMS e CRM"></a>
             <!--logo end-->
             <?php echo $this->partial("layout/partials/tool-box")?>
             <?php echo $this->partial("layout/partials/top")?>
