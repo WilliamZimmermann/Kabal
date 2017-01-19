@@ -26,9 +26,9 @@ class CategoryController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
             $categories = $this->getCategoryTable()->fetchAll($logedUser["idWebsite"]);
-            return array("categories"=>$categories);
+            return array("categories"=>$categories, "permission"=>$permission);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -43,7 +43,7 @@ class CategoryController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $category = new Category();
             //If was a POST
             $message = $this->getServiceLocator()->get('systemMessages');
@@ -75,7 +75,7 @@ class CategoryController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $category = new Category();
             $message = $this->getServiceLocator()->get('systemMessages');
             
@@ -122,7 +122,7 @@ class CategoryController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "new") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $category = new CategoryLanguage();
             $message = $this->getServiceLocator()->get('systemMessages');
     
@@ -183,7 +183,7 @@ class CategoryController extends AbstractActionController
         //Check if this user can access this page
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
-        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete") || $logedUser["idCompany"]==1){
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "delete")){
             $id = (int) $this->params()->fromRoute('id', 0);
             if (!$id) { //If there is no ID
                 $this->getServiceLocator()->get('systemLog')->addLog(0, "Category ".$id." not found to delete.", 5);

@@ -1,0 +1,78 @@
+<?php
+use Application\Services\SystemFunctions;
+
+$this->headtitle($this->translate("Editar Endereços do Cliente"));
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("customer")?>"><?php echo $this->translate("Clientes") ?></a></li>
+			<li class="active"><?php echo $this->translate("Editar Endereços do Cliente") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading tab-bg-dark-navy-blue ">
+				<ul class="nav nav-tabs">
+					<li><a
+						href="<?php echo $this->url("customer/edit", array("id"=>$customer->idCustomer))?>"><?php echo $this->translate("Editar Cliente")?></a>
+					</li>
+					<li class="active"><a data-toggle="tab"><?php echo $this->translate("Endereços")?></a>
+					</li>
+					<li class="">
+                      <a href="<?php echo $this->url("customer/contacts", array("id"=>$customer->idCustomer)); ?>"><?php echo $this->translate("Contatos")?></a>                                      
+                  	</li>
+					<li class=""><a><?php echo $this->translate("Integrações")?></a></li>
+				</ul>
+			</header>
+			<div class="panel-body">
+					<?php if($customer->customerType==1){ ?>
+					<div class="form-group">
+					<div class="col-sm-12">
+						<h4><?php echo $this->translate("Nome:")?>
+							<?php echo $customerPerson->name." ".$customerPerson->last_name; ?></h4>
+					</div>
+				</div>
+					<?php }else{ ?>
+					<div class="form-group">
+					<div class="col-sm-12">
+						<h4><?php echo $this->translate("Empresa:")?>
+							<?php echo $customerCompany->social_name." (".$customerCompany->fantasy_name.")"; ?></h4>
+					</div>
+				</div>
+					<?php } ?>
+					<div class="form-group">
+						<div id="address-list"></div>
+					</div>
+			</div>
+		</section>
+	</div>
+</div>
+<?php
+$this->headscript()->captureStart();
+$customerType = $customer->customerType;
+$urlZones = $this->url('zones');
+$urlCities = $this->url('cities');
+
+$urlAddressList = $this->url('customer/address-list', array(
+    "id" => $customer->idCustomer
+));
+
+echo <<<JS
+$(document).ready(function(){
+    $("#address-list").load("$urlAddressList");
+});
+JS;
+$this->headscript()->captureEnd();
+
+$this->headScript()->prependFile($this->basePath("js/validators/customer.js"));
+$this->headScript()->prependFile($this->basePath('assets/bootstrap-inputmask/bootstrap-inputmask.min.js'));
+?>

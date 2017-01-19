@@ -1,0 +1,15 @@
+<div class="pagination pagination-centered">
+    <?php if (isset($this->previous)) { ?>
+        <a class="btn" href="?page=<?php echo $this->previous ?>"><?php echo $this->translate("Anterior")?></a>
+    <?php } ?>
+    <?php foreach ($this->pagesInRange as $item): ?>
+        <?php if($this->current == $item): ?>
+            <a class="btn disabled" href="?page=<?php echo $item;?>"><?php echo $item;?></a>
+        <?php else: ?>
+            <a class="btn" href="?page=<?php echo $item;?>"><?php echo $item;?></a>
+        <?php endif; ?>
+    <?php endforeach;?>
+    <?php if (isset($this->next)) { ?>
+        <a class="btn" href="?page=<?php echo $this->next ?>"><?php echo $this->translate("Próximo")?></a>
+    <?php } ?>
+</div>

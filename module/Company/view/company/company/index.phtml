@@ -12,7 +12,7 @@ $this->headtitle($this->translate("Empresas"));
 		<!--breadcrumbs end -->
 	</div>
 </div>
-
+<?php if($permission->editP){ ?>
 <div class="row">
 	<div class="col-lg-10"></div>
 	<div class="col-lg-2">
@@ -21,6 +21,7 @@ $this->headtitle($this->translate("Empresas"));
 	</div>
 </div>
 <br>
+<?php } ?>
 <div class="row">
 	<div class="col-lg-12">
 		<section class="panel">
@@ -55,14 +56,19 @@ $this->headtitle($this->translate("Empresas"));
 							</button>
 							<button class="btn btn-warning btn-xs">
 								<i class="fa fa-sitemap"></i>
-							</button> <a
+							</button> 
+							<?php if($permission->editP){ ?>
+							<a
 							href="<?php echo $this->url("company/edit", array("id"=>$company->idCompany))?>"
 							class="btn btn-primary btn-xs"> <i class="fa fa-pencil"></i>
 						</a>
+						<?php } ?>
+						<?php if($permission->deleteP){ ?>
 							<button data-toggle="modal" href="#delete-<?php echo $company->idCompany; ?>"
 								class="btn btn-danger btn-xs">
 								<i class="fa fa-trash-o "></i>
 							</button>
+							<?php } ?>
 						</td>
 					</tr>
 					<!-- EXCLUSION MODAL -->

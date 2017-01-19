@@ -15,9 +15,9 @@ class UserService extends AbstractPlugin
         
         $session = new Container('Auth');
         $name = $session->__get('userName');
-        $idUser = $session->__get('idUser');
-        $idCompany = $session->__get('idCompany');
-        $idWebsite = $session->__get("websiteId");
+        $idUser = (int)$session->__get('idUser');
+        $idCompany = (int)$session->__get('idCompany');
+        $idWebsite = (int)$session->__get("websiteId");
         $websiteName = $session->__get("websiteName");
         
         return array("name"=>$name, "idUser"=>$idUser, "idCompany"=>$idCompany, "idWebsite"=>$idWebsite, "websiteName"=>$websiteName);

@@ -3,8 +3,9 @@
 	<header class="panel-heading"> <?php echo $this->translate("Banco de Imagens")?> </header>
 	<div class="panel-body">
 		<h4><?php echo $this->translate("Filtrar por módulos")?></h4>
+		<?php if($permission->editP){ ?>
 		<a class="btn btn-primary" href="<?php echo $this->url("images-database/new")?>"><i class="fa fa-plus"></i> <?php echo $this->translate("Adicionar imagens") ?></a>
-		
+		<?php } ?>
 		<button class="btn btn-primary">
 			<i class="fa fa-television"></i> <?php echo $this->translate("Páginas") ?></button>
 		<hr>
@@ -61,8 +62,13 @@
                           </div>
                           <div class="modal-footer">
                               <button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Fechar")?></button>
+                              
+                              <?php if($permission->deleteP){ ?>
                               <a class="btn btn-danger" type="button" data-toggle="modal" href="#delete-<?php echo $imageCont; ?>"><?php echo $this->translate("Excluir")?></a>
+                              <?php } ?>
+                              <?php if($permission->editP){ ?>
                               <button class="btn btn-success" type="submit"><?php echo $this->translate("Salvar Mudanças")?></button>
+                              <?php } ?>
                           </div>
                           </form>
                       </div>

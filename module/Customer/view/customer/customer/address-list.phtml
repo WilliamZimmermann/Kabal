@@ -1,0 +1,451 @@
+<?php if(count($addresses)<5){ ?>
+<div class="col-sm-12">
+	<button data-toggle="modal" href="#add-address" class="btn btn-success"><?php echo $this->translate("Adicionar Endereço")?></button>
+	<hr>
+</div>
+<?php } ?>
+<div class="col-sm-12">
+    <?php foreach($addresses as $address){ ?>
+    <div class="col-sm-3">
+		<div class="alert alert-warning alert-block col-sm-12">
+			<h4><?php echo $address->name; ?></h4>
+			<strong><?php echo $this->translate("Endereço: ")?></strong><?php echo $address->street; ?>, <?php echo $address->house_number; ?>, <?php echo $address->neighborhood; ?><br>
+    		<?php if($address->complement){ ?><strong><?php echo $this->translate("Complemento: "); ?></strong><?php echo $address->complement; ?><br><?php } ?>
+    		<strong><?php echo $this->translate("Cidade: ")?></strong><?php echo $address->city; ?>, <?php echo $address->initials; ?> (<?php echo $address->country; ?>)<br>
+			<strong><?php echo $this->translate("CEP: ")?></strong><?php echo $address->zip_code; ?><br>
+			<br> <a
+				href="http://maps.google.com/?q=<?php echo $address->street." ".$address->house_number.", ".$address->city.",".$address->initials.", ".$address->country.", ".$address->zip_code; ?>"
+				target="_blank" class="btn btn-info"><i class="fa fa-map-marker"></i></a>
+			<button name="edit" class="btn btn-warning edit"
+				value="<?php echo $address->idAddress; ?>"><?php echo $this->translate("Editar")?></button>
+			<button name="delete" class="btn btn-danger delete"
+				value=<?php echo $address->idAddress; ?>><?php echo $this->translate('Apagar') ?></button>
+		</div>
+	</div>
+    <?php } ?>
+</div>
+<!-- NEW ADDRESS MODAL -->
+<div class="modal fade" id="add-address" tabindex="2" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title"><?php echo $this->translate("Cadastrar novo endereço")?></h4>
+			</div>
+			<form class="form-horizontal tasi-form" method="post"
+				id="customerAddressAdd" action="">
+
+				<div class="modal-body">
+					<input type="hidden" name="customer_id"
+						value="<?php echo $customer->idCustomer; ?>">
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição*:")?></label>
+						<div class="col-sm-10">
+							<input type="text" name="name" maxlength="45"
+								class="form-control" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Rua*:")?></label>
+						<div class="col-sm-10">
+							<input type="text" name="street" maxlength="60"
+								class="form-control" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Número:")?></label>
+						<div class="col-sm-4">
+							<input type="text" name="house_number" maxlength="15"
+								class="form-control">
+						</div>
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Complemento:")?></label>
+						<div class="col-sm-4">
+							<input type="text" name="complement" maxlength="60"
+								class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Bairro:")?></label>
+						<div class="col-sm-4">
+							<input type="text" name="neighborhood" maxlength="60"
+								class="form-control">
+						</div>
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CEP*:")?></label>
+						<div class="col-sm-4">
+							<input type="text" name="zip_code" maxlength="45"
+								class="form-control" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("País*:")?></label>
+						<div class="col-sm-10">
+							<select name="country_id" id="country" required
+								class="form-control">
+								<option value="0"><?php echo $this->translate("Selecione")?></option>
+									<?php foreach($countries as $country){ ?>
+									<option value="<?php echo $country->countryId; ?>"><?php echo $country->name; ?></option>
+									<?php } ?>
+								</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Estado*:")?></label>
+						<div class="col-sm-10">
+							<select name="zone_id" id="zone" required class="form-control"
+								disabled>
+								<option value="0"><?php echo $this->translate("Selecione")?></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Cidade*:")?></label>
+						<div class="col-sm-10">
+							<select name="city_id" id="city" required class="form-control"
+								disabled="disabled">
+								<option value="0"><?php echo $this->translate("Selecione")?></option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Cancelar")?></button>
+					<button class="btn btn-success" type="submit"><?php echo $this->translate("Cadastrar")?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- END NEW ADDRESS MODAL -->
+
+<!-- EDIT ADDRESS MODAL -->
+<div class="modal fade" id="edit-address" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title"><?php echo $this->translate("Alterar Endereço")?></h4>
+			</div>
+			<form class="form-horizontal tasi-form" method="post"
+				id="customerAddress" action="">
+
+				<div class="modal-body">
+					<input type="hidden" name="customer_id" id="customer_id"
+						value="<?php echo $customer->idCustomer; ?>"> <input type="hidden"
+						name="idAddress" id="idAddress"
+						value="<?php echo $customer->idAddress; ?>">
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição*:")?></label>
+						<div class="col-sm-10">
+							<input type="text" name="name" id="name" maxlength="45"
+								class="form-control" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Rua*:")?></label>
+						<div class="col-sm-10">
+							<input type="text" name="street" id="street" maxlength="60"
+								class="form-control" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Número:")?></label>
+						<div class="col-sm-4">
+							<input type="text" name="house_number" id="house_number"
+								maxlength="15" class="form-control">
+						</div>
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Complemento:")?></label>
+						<div class="col-sm-4">
+							<input type="text" name="complement" id="complement"
+								maxlength="60" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Bairro:")?></label>
+						<div class="col-sm-4">
+							<input type="text" name="neighborhood" id="neighborhood"
+								maxlength="60" class="form-control">
+						</div>
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("CEP*:")?></label>
+						<div class="col-sm-4">
+							<input type="text" name="zip_code" id="zip_code" maxlength="45"
+								class="form-control" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("País*:")?></label>
+						<div class="col-sm-10">
+							<select name="country_id" id="country_e" required
+								class="form-control">
+									<?php foreach($countries2 as $country){ ?>
+									<option value="<?php echo $country->countryId; ?>"><?php echo $country->name; ?></option>
+									<?php } ?>
+								</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Estado*:")?></label>
+						<div class="col-sm-10">
+							<select name="zone_id" id="zone_e" required class="form-control"
+								disabled="disabled">
+								<option value="0"><?php echo $this->translate("Selecione")?></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Cidade*:")?></label>
+						<div class="col-sm-10">
+							<select name="city_id" id="city_e" required class="form-control"
+								disabled="disabled">
+								<option value="0"><?php echo $this->translate("Selecione")?></option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Cancelar")?></button>
+					<button class="btn btn-success" type="submit"><?php echo $this->translate("Salvar")?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<?php
+$customerType = $customer->customerType;
+$urlZones = $this->url('zones');
+$urlCities = $this->url('cities');
+$urlAddress = $this->url('customer/address', array(
+    "id" => $customer->idCustomer
+));
+$urlAddressData = $this->url('customer/address-data', array(
+    "id" => $customer->idCustomer
+));
+$urlAddressEdit = $this->url('customer/address-edit', array(
+    "id" => $customer->idCustomer
+));
+?>
+<script>
+$(document).ready(function(){
+	//Edit
+	$(".edit").click(function(e){
+		$('#edit-address').modal('show');
+    	$.post("<?php echo $urlAddressData; ?>",
+        {
+            id: $(this).attr("value"),
+        },
+        function(data, status){
+            var dados = JSON.parse(data);
+            if(data!='error'){
+                $('#idAddress').val(dados["idAddress"]);
+                $('#customer_id').val(dados["customer_id"]);
+                $('#name').val(dados["name"]);
+                $('#street').val(dados["street"]);
+                $('#house_number').val(dados["house_number"]);
+                $('#complement').val(dados["complement"]);
+                $('#neighborhood').val(dados["neighborhood"]);
+                $('#zip_code').val(dados["zip_code"]);
+                $('#country_e').val(dados["country_id"]);
+                $.post("<?php echo $urlZones; ?>",
+                {
+                    id: dados["country_id"]
+                },
+                function(data, status){
+                    if(data!='error'){
+                    	$.each(JSON.parse(data),function(key, value) 
+                        {
+                            if(value.id==dados["zone_id"]){
+                                $("#zone_e").append('<option value=' + value.id + ' selected>' + value.name + '</option>');
+                            }else{
+                             	$("#zone_e").append('<option value=' + value.id + '>' + value.name + '</option>');
+                            }
+                        });
+        			    $("#zone_e").removeAttr("disabled");
+                    }else{
+            	        console.log("Ops, algo deu errado ao tentar carregar os Estados do País "+$("#country").val());
+                    }
+                });
+                $.post("<?php echo $urlCities; ?>",
+                {
+                    id: dados["zone_id"]
+                },
+                function(data, status){
+                    if(data!='error'){
+                        $('#city_e')
+                            .empty()
+                            .append('<option selected="selected" value="0">Selecione</option>')
+                        ;
+                    	$.each(JSON.parse(data),function(key, value) 
+                        {
+                    		if(value.id==dados["city_id"]){
+                                $("#city_e").append('<option value=' + value.id + ' selected>' + value.name + '</option>');
+                            }else{
+                             	$("#city_e").append('<option value=' + value.id + '>' + value.name + '</option>');
+                            }
+                        });
+        			    $("#city_e").removeAttr("disabled");
+                    }else{
+            	        console.log("Ops, algo deu errado ao tentar carregar as Cidades do Estado "+$("#zone").val());
+                    }
+                });
+            }else{
+    	        alert("Ops, algo deu errado");
+            }
+        });
+    });
+	//Remover
+    $(".delete").click(function(e){
+    	$.post("<?php echo $this->url("customer/address-delete", array("id"=>$customer->idCustomer))?>",
+        {
+            id: $(this).attr("value"),
+        },
+        function(data, status){
+            if(data=='success'){
+                $("#address-list").load("<?php  echo $this->url('customer/address-list', array("id"=>$customer->idCustomer)); ?>");
+            }else{
+    	        alert("Ops, algo deu errado");
+            }
+        });
+    });
+    //Carregar Estados
+    $("#country_e").change(function(e){
+    	$.post("<?php echo $urlZones; ?>",
+        {
+            id: $("#country_e").val()
+        },
+        function(data, status){
+            if(data!='error'){
+            	$.each(JSON.parse(data),function(key, value) 
+                {
+                    $("#zone_e").append('<option value=' + value.id + '>' + value.name + '</option>');
+                });
+			    
+			    $("#zone_e").removeAttr("disabled");
+            }else{
+    	        console.log("Ops, algo deu errado ao tentar carregar os Estados do País "+$("#country").val());
+            }
+        });
+    });
+    //Carregar Cidades
+    $("#zone_e").change(function(e){
+    	$.post("<?php echo $urlCities; ?>",
+        {
+            id: $("#zone_e").val()
+        },
+        function(data, status){
+            if(data!='error'){
+                $('#city_e')
+                    .empty()
+                    .append('<option selected="selected" value="0">Selecione</option>')
+                ;
+            	$.each(JSON.parse(data),function(key, value) 
+                {
+                    $("#city_e").append('<option value=' + value.id + '>' + value.name + '</option>');
+                });
+			    
+			    $("#city_e").removeAttr("disabled");
+            }else{
+    	        console.log("Ops, algo deu errado ao tentar carregar as Cidades do Estado "+$("#zone").val());
+            }
+        });
+    });
+    //Carregar Estados
+    $("#country").change(function(e){
+    	$.post("<?php echo $urlZones; ?>",
+        {
+            id: $("#country").val()
+        },
+        function(data, status){
+            if(data!='error'){
+            	$.each(JSON.parse(data),function(key, value) 
+                {
+                    $("#zone").append('<option value=' + value.id + '>' + value.name + '</option>');
+                });
+			    
+            }else{
+    	        console.log("Ops, algo deu errado ao tentar carregar os Estados do País "+$("#country").val());
+            }
+            $("#zone").removeAttr("disabled");
+        });
+    });
+    //Carregar Cidades
+    $("#zone").change(function(e){
+    	$.post("<?php echo $urlCities; ?>",
+        {
+            id: $("#zone").val()
+        },
+        function(data, status){
+            if(data!='error'){
+			    $("#city").removeAttr("disabled");
+            
+                $('#city')
+                    .empty()
+                    .append('<option selected="selected" value="0">Selecione</option>')
+                ;
+            	$.each(JSON.parse(data),function(key, value) 
+                {
+                    $("#city").append('<option value=' + value.id + '>' + value.name + '</option>');
+                });
+			    
+			    $("#city").removeAttr("disabled");
+            }else{
+    	        console.log("Ops, algo deu errado ao tentar carregar as Cidades do Estado "+$("#zone").val());
+            }
+        });
+    });
+    //Insert
+    $("#customerAddressAdd").submit(function(e){
+    	e.preventDefault();
+    	$.ajax({
+            url: "<?php echo $urlAddress; ?>",
+      type: "POST",
+      data:  new FormData(this),
+      contentType: false,
+            cache: false,
+      processData:false,
+      success: function(data){
+       if(data=='error')
+       {
+        alert("Houve um erro ao validar os dados. Tente novamente.");
+       }
+       else
+       {
+        $("#customerAddressAdd")[0].reset();
+        $('#add-address').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+        $("#address-list").load("<?php echo $urlAddress; ?>");
+       }
+     }         
+       });
+    });
+    //Update
+    $("#customerAddress").submit(function(e){
+    	e.preventDefault();
+    	$.ajax({
+            url: "<?php echo $urlAddressEdit; ?>",
+          type: "POST",
+          data:  new FormData(this),
+          contentType: false,
+                cache: false,
+          processData:false,
+          success: function(data){
+           if(data=='error')
+           {
+            alert("Houve um erro ao validar os dados. Tente novamente.");
+           }
+           else
+           {
+    	    $('#edit-address').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            $("#address-list").load("<?php echo $urlAddress; ?>");
+           }
+         },  
+       });
+    });
+});
+</script>
