@@ -1,0 +1,217 @@
+<?php
+use Application\Services\SystemFunctions;
+
+$this->headtitle($this->translate("Novo Produto"));
+$url = $this->url("images-database/images");
+$urlField = $this->basepath("files_database/" . $websiteId);
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("product")?>"><?php echo $this->translate("Produtos") ?></a></li>
+			<li class="active"><?php echo $this->translate("Novo") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+<?php 
+if($message["flag"]>0){
+    if($message["flag"]==1){
+        $class = "success";
+    }else{
+        $class = "danger";
+    }
+    ?>
+    <div class="alert alert-<?php echo $class; ?> alert-block fade in">
+    	<button data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>
+    	<p><?php echo $message["message"]?></p>
+    </div>
+    <?php
+}
+?>
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading tab-bg-dark-navy-blue ">
+                              <ul class="nav nav-tabs">
+                                  <li class="active">
+                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Detalhes do Produto")?></a>
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Estoque")?></a>
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Preços")?></a>
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Produtos Relacionados")?></a>
+                                  </li>
+                              </ul>
+                          </header>
+			<div class="panel-body">
+				<form class="form-horizontal tasi-form" method="post" id="products">
+				<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Idioma:")?></label>
+						<div class="col-sm-10">
+                        	<select name="language_id">
+                        		<?php foreach($languages as $language){ ?>
+                        			<option><?php echo $language->name; ?></option>
+                        		<?php } ?>
+                        	</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Título*")?></label>
+						<div class="col-sm-10">
+                        	<input type="text" class="form-control" name="title" id="title" maxlength="60" value="<?php echo $product->title; ?>" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Slug*")?></label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="slug" id="slug"
+								maxlength="150"
+								value="<?php echo ($product->slug) ? $product->slug : ""; ?>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Referência")?></label>
+						<div class="col-sm-10">
+                        	<input type="text" class="form-control" name="reference" id="reference" maxlength="45" value="<?php echo $product->reference; ?>" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição Curta")?></label>
+						<div class="col-sm-10">
+							<textarea rows="2" class="form-control" name="description"
+								id="description"><?php echo ($product->description) ? $product->description : $product->description; ?></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Conteúdo")?></label>
+						<div class="col-sm-10">
+							<textarea rows="10" class="form-control ckeditor" name="content"
+								id="content"><?php echo ($product->content) ? $product->content : ""; ?></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Preço Original")?></label>
+						<div class="col-sm-10">
+							<input type="text" placeholder="" name="price_original" id="price_original" class="form-control">
+                            <span class="help-inline"><?php echo $this->translate("Preço original do produto")?></span>						
+                        </div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Preço Atual")?></label>
+						<div class="col-sm-10">
+							<input type="text" placeholder="" name="price_actual" id="price_actual" class="form-control">
+                            <span class="help-inline"><?php echo $this->translate("Preço atual do produto. Se o preço atual for menor que o preço original, um informativo aparecerá para o cliente dizendo que o produto está em promoção.")?></span>						
+                        </div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Comentários Internos")?></label>
+						<div class="col-sm-10">
+							<textarea rows="5" class="wysihtml5 form-control" name="comments"
+								id="comments"><?php echo ($product->comments) ? $product->comments : ""; ?></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Categoria(s)")?></label>
+						<div class="col-sm-10">
+							<?php 
+							if(count($categories)>0){
+    							foreach ($categories as $category){
+    							    $selected = (in_array($category->idCategoryLanguage, $categoriesSelected)) ? true : false; 
+    							    ?>
+    							<div class="col-sm-2"><label><input type="checkbox" name="categories[]" value="<?php echo $category->idCategoryLanguage; ?>" <?php if($selected){?>checked<?php } ?>>&nbsp;<?php echo $category->title; ?></label></div>
+							<?php 
+    							} 
+							}else{
+							     echo $this->translate("Nenhuma categoria cadastrada.");
+							}?>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Ativo")?></label>
+						<div class="col-sm-10">
+								<input type="checkbox" name="active" value="1" <?php if($category->active){ ?>checked<?php } ?> data-toggle="switch" /> 
+						</div>
+					</div>
+					<div class="form-group">
+						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Cadastrar")?></button>
+						&nbsp;<a href="<?php echo $this->url("product/category")?>" class="btn btn-danger"><?php echo $this->translate("Voltar")?></a>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</div>
+<?php 
+$this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-datetimepicker/css/datetimepicker.css'));
+$this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css'));
+
+$this->headScript()->prependFile($this->basePath("js/validators/category.js"));
+$this->headScript()->prependFile($this->basePath('js/advanced-component-datetime.js'));
+$this->headScript()->prependFile($this->basePath('assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'));
+$this->headScript()->prependFile($this->basePath("assets/ckeditor/ckeditor.js"));
+$this->headScript()->prependFile($this->basePath("assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js"));
+$this->headScript()->prependFile($this->basePath("assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js"));
+//Documentation: http://plentz.github.io/jquery-maskmoney/
+$this->headScript()->prependFile($this->basePath("assets/maskmoney/src/jquery.maskMoney.js"));
+
+
+$this->inlinescript()->captureStart();
+echo <<<JS
+
+$(function() {
+    $('#price_original').maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $('#price_actual').maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    
+  })
+
+$("#title").keyup(function(){
+    var Text = $(this).val();
+    Text = Text.toLowerCase();
+    Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
+    $("#slug").val(Text);
+});
+
+$("#images-content").load('$url');
+			 
+var wrapper = $("#imagesSelected"); //Fields wrapper
+			 
+$("#addImage").click(function() {
+    var imagesSelected = [];
+			 
+    $("input:checkbox[name=image]:checked").each(function(){
+        imagesSelected.push($(this).val());
+	    var image = $(this).val();
+	    var dataImage = image.split(' | ');
+	    $(wrapper).append('<div class="col-lg-12"><div class="row"><div class="col-lg-12"><img width="100" src="$urlField/'+dataImage[1]+'"></div></div><br><div class="row"><div class="col-lg-2">Legenda</div><div class="col-lg-10"><input type="text" class="form-control input-sm m-bot15" name="imageLabel['+dataImage[0]+']" value="'+dataImage[2]+'"/></div></div><div class="row"><div class="col-lg-2">Texto alternativo</div><div class="col-lg-10"><input type="text" class="form-control input-sm m-bot15" name="imageAlt['+dataImage[0]+']" value="'+dataImage[2]+'"/></div></div>&nbsp;<button class="btn btn-danger remove_field">Excluir</button><hr></div>');
+    });
+    $('#images').modal('toggle');
+});
+			 
+$(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+    e.preventDefault(); $(this).parent('div').remove(); x--;
+});
+
+$('.wysihtml5').wysihtml5({
+	"font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
+	"emphasis": true, //Italics, bold, etc. Default true
+	"lists": false, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+	"html": false, //Button which allows you to edit the generated HTML. Default false
+	"link": true, //Button to insert a link. Default true
+	"image": false, //Button to insert an image. Default true,
+	"color": false //Button to change color of font
+});
+
+JS;
+$this->inlinescript()->captureEnd();
+?>

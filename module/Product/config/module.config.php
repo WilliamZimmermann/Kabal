@@ -26,6 +26,17 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'new' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            // Change this to something specific to your module
+                            'route'    => '/new',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Product\Controller',
+                                'action'        => 'new',
+                            ),
+                        ),
+                    ),
                     'category' => array(
                         'type'    => 'Literal',
                         'options' => array(
