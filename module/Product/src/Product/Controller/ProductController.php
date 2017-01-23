@@ -13,9 +13,24 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 class ProductController extends AbstractActionController
 {
+    protected $moduleId = 10;
+    
     public function indexAction()
     {
-        return array();
+        // Check if this user can access this page
+        $logedUser = $this->getServiceLocator()
+        ->get('user')
+        ->getUserSession();
+        $permission = $this->getServiceLocator()
+        ->get('permissions')
+        ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if ($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")) {
+            return array();
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
     }
+    
+    
 
 }

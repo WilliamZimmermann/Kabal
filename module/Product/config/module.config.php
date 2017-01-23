@@ -1,8 +1,12 @@
 <?php
+use Product\Services\ProductMessages;
+
 return array(
     'controllers' => array(
         'invokables' => array(
             'Product\Controller\Product' => 'Product\Controller\ProductController',
+            'Product\Controller\Category' => 'Product\Controller\CategoryController',
+            
         ),
     ),
     'router' => array(
@@ -22,19 +26,72 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    // This route is a sane default when developing a module;
-                    // as you solidify the routes for your module, however,
-                    // you may want to remove it and replace it with more
-                    // specific routes.
-                    'default' => array(
-                        'type'    => 'Segment',
+                    'category' => array(
+                        'type'    => 'Literal',
                         'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
+                            // Change this to something specific to your module
+                            'route'    => '/category',
                             'defaults' => array(
+                                '__NAMESPACE__' => 'Product\Controller',
+                                'controller'    => 'Category',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            // This route is a sane default when developing a module;
+                            // as you solidify the routes for your module, however,
+                            // you may want to remove it and replace it with more
+                            // specific routes.
+                            'new' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/new',
+                                    'defaults' => array(
+                                        'controller'    => 'Category',
+                                        'action'        => 'new',
+                                    ),
+                                ),
+                            ),
+                            'edit' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/edit/[:id]',
+                                    'constraints' => array(
+                                        'id' => '[0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller'    => 'Category',
+                                        'action'        => 'edit',
+                                    ),
+                                ),
+                            ),
+                            'edit-language' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/edit-language/:id/:idLanguage',
+                                    'constraints' => array(
+                                        'id' => '[0-9_-]*',
+                                        'idLanguage' => '[0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller'    => 'Category',
+                                        'action'        => 'editLanguage',
+                                    ),
+                                ),
+                            ),
+                            'delete' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/delete/[:id]',
+                                    'constraints' => array(
+                                        'id' => '[0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller'    => 'Category',
+                                        'action'        => 'delete',
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -46,5 +103,10 @@ return array(
         'template_path_stack' => array(
             'Product' => __DIR__ . '/../view',
         ),
+    ),
+    'service_manager' => array(
+        'invokables'=>[
+            'productMessages'=>ProductMessages::class,
+        ]
     ),
 );

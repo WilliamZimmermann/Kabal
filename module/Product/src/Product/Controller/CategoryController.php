@@ -10,16 +10,16 @@
 namespace Product\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Article\Model\Category;
-use Article\Model\CategoryLanguage;
-use Article\Model\ArticleHasCategory;
+use Product\Model\Category;
+use Product\Model\CategoryLanguage;
+use Product\Model\ProductHasCategory;
 
 class CategoryController extends AbstractActionController
 {
-    protected $moduleId = 8;
+    protected $moduleId = 10;
     protected $categoryTable;
     protected $categoryLanguageTable;
-    protected $articleHasCategoryTable;
+    protected $productHasCategoryTable;
     
     public function indexAction()
     {
@@ -36,7 +36,7 @@ class CategoryController extends AbstractActionController
 
     /**
      * Function to add a new page
-     * @return systemMessages[]|\Zend\Http\Response
+     * @return productMessages[]|\Zend\Http\Response
      */
     public function newAction()
     {
@@ -46,7 +46,7 @@ class CategoryController extends AbstractActionController
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $category = new Category();
             //If was a POST
-            $message = $this->getServiceLocator()->get('systemMessages');
+            $message = $this->getServiceLocator()->get('productMessages');
             $request = $this->getRequest();
             if($request->isPost()){
                 $category->exchangeArray($request->getPost());
@@ -55,7 +55,7 @@ class CategoryController extends AbstractActionController
                     $result = $this->getCategoryTable()->saveCategory($category);
                     $message->setCode($result);
                 }else{
-                    $message->setCode("ACAT003");
+                    $message->setCode("PCAT003");
                 }
                 //Save log
                 $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
@@ -68,7 +68,7 @@ class CategoryController extends AbstractActionController
     
     /**
      * Function to edit a category
-     * @return systemMessages[]|\Zend\Http\Response
+     * @return productMessages[]|\Zend\Http\Response
      */
     public function editAction()
     {
@@ -77,7 +77,7 @@ class CategoryController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $category = new Category();
-            $message = $this->getServiceLocator()->get('systemMessages');
+            $message = $this->getServiceLocator()->get('productMessages');
             
             //Get the Company ID
             $id = (int) $this->params()->fromRoute('id', 0);
@@ -97,7 +97,7 @@ class CategoryController extends AbstractActionController
                         //Get again the data, now updated
                         $categoryData = $this->getCategoryTable()->getCategory($id);
                     }else{
-                        $message->setCode("ACAT003");
+                        $message->setCode("PCAT003");
                     }
                     //Save log
                     $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
@@ -115,7 +115,7 @@ class CategoryController extends AbstractActionController
     
     /**
      * Function to add a new language for a page
-     * @return systemMessages[]|\Zend\Http\Response
+     * @return productMessages[]|\Zend\Http\Response
      */
     public function editLanguageAction()
     {
@@ -124,7 +124,7 @@ class CategoryController extends AbstractActionController
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")){
             $category = new CategoryLanguage();
-            $message = $this->getServiceLocator()->get('systemMessages');
+            $message = $this->getServiceLocator()->get('productMessages');
     
             //Get the Language and page id
             $id = (int) $this->params()->fromRoute('id', 0);
@@ -149,7 +149,7 @@ class CategoryController extends AbstractActionController
                         //Get again the data, now updated
                         $categoryData = $this->getCategoryTable()->getCategory($id);
                     }else{
-                        $message->setCode("ACATL003");
+                        $message->setCode("PCATL003");
                     }
                     //Save log
                     $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
@@ -190,20 +190,20 @@ class CategoryController extends AbstractActionController
                 return $this->redirect()->toRoute('category');
             }
     
-            $message = $this->getServiceLocator()->get('systemMessages');
+            $message = $this->getServiceLocator()->get('productMessages');
             
             //Before to delete language categories associated must to delete relationships between articles
             $categoriesLanguages = $this->getCategoryLanguageTable()->fetchAll($id);
-            $articleCategory = new ArticleHasCategory();
+            $productCategory = new ProductHasCategory();
             foreach($categoriesLanguages as $categoryLanguage){
                 //Delete any relationships that can exists between a category and an article
-                $articleCategory->language_idCategory = $categoryLanguage->idCategoryLanguage;
-                $this->getArticleHasCategoryTable()->deleteCategory($articleCategory);
+                $productCategory->product_idCategoryLanguage = $categoryLanguage->idCategoryLanguage;
+                $this->getProductHasCategoryTable()->deleteCategory($productCategory);
             }
             
             //Before to delete a category, if exist, will delete language categories associated
             $this->getCategoryLanguageTable()->deleteCategory(null, $id);
-            $message->setCode("ACATL009", array("id"=>$id));
+            $message->setCode("PCATL009", array("id"=>$id));
             $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
             
             //Delete category
@@ -222,7 +222,7 @@ class CategoryController extends AbstractActionController
     public function getCategoryTable(){
         if(!$this->categoryTable){
             $sm = $this->getServiceLocator();
-            $this->categoryTable = $sm->get('Article\Model\CategoryTable');
+            $this->categoryTable = $sm->get('Product\Model\CategoryTable');
         }
         return $this->categoryTable;
     }
@@ -230,16 +230,16 @@ class CategoryController extends AbstractActionController
     public function getCategoryLanguageTable(){
         if(!$this->categoryLanguageTable){
             $sm = $this->getServiceLocator();
-            $this->categoryLanguageTable = $sm->get('Article\Model\CategoryLanguageTable');
+            $this->categoryLanguageTable = $sm->get('Product\Model\CategoryLanguageTable');
         }
         return $this->categoryLanguageTable;
     }
     
-    public function getArticleHasCategoryTable(){
-        if(!$this->articleHasCategoryTable){
+    public function getProductHasCategoryTable(){
+        if(!$this->productHasCategoryTable){
             $sm = $this->getServiceLocator();
-            $this->articleHasCategoryTable = $sm->get('Article\Model\ArticleHasCategoryTable');
+            $this->productHasCategoryTable = $sm->get('Product\Model\ProductHasCategoryTable');
         }
-        return $this->articleHasCategoryTable;
+        return $this->productHasCategoryTable;
     }
 }

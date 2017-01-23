@@ -12,6 +12,14 @@ namespace Product;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Db\ResultSet\ResultSet;
+use Product\Model\CategoryTable;
+use Zend\Db\TableGateway\TableGateway;
+use Product\Model\Category;
+use Product\Model\CategoryLanguageTable;
+use Product\Model\CategoryLanguage;
+use Product\Model\ProductHasCategoryTable;
+use Product\Model\ProductHasCategory;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -42,5 +50,46 @@ class Module implements AutoloaderProviderInterface
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+    }
+    
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Product\Model\CategoryTable' => function ($sm) {
+                    $tableGateway = $sm->get('CategoryTableGateway');
+                    $table = new CategoryTable($tableGateway);
+                    return $table;
+                },
+                'CategoryTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Category());
+                    return new TableGateway('product_category', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Product\Model\CategoryLanguageTable' => function ($sm) {
+                    $tableGateway = $sm->get('CategoryLanguageTableGateway');
+                    $table = new CategoryLanguageTable($tableGateway);
+                    return $table;
+                },
+                'CategoryLanguageTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new CategoryLanguage());
+                    return new TableGateway('product_category_has_language', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Product\Model\ProductHasCategoryTable' => function ($sm) {
+                    $tableGateway = $sm->get('ProductHasCategoryTableGateway');
+                    $table = new ProductHasCategoryTable($tableGateway);
+                    return $table;
+                },
+                'ProductHasCategoryTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ProductHasCategory());
+                    return new TableGateway('product_has_category', $dbAdapter, null, $resultSetPrototype);
+                }
+            )
+        );
     }
 }
