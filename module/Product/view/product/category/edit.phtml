@@ -49,6 +49,23 @@ if($message["flag"]>0){
     		<div class="panel-body">
     			<form class="form-horizontal tasi-form" method="post" id="category">
     				<div class="form-group">
+						<label class="col-sm-2 control-label"><?php echo $this->translate("É uma subcategoria?")?></label>
+						<div class="col-sm-10">
+							<label><input type="radio" name="sub" class="sub" value="1" data-toggle="switch" <?php if($category->subcategory_id!=null){ ?>checked="checked"<?php } ?> /> <?php echo $this->translate("Sim")?></label>
+							<label><input type="radio" name="sub" class="sub" value="2" data-toggle="switch" <?php if($category->subcategory_id==null){ ?>checked="checked"<?php } ?>  /> <?php echo $this->translate("Não")?></label>
+						</div>
+					</div>
+					<div class="form-group" id="subcategory">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Categoria mãe")?></label>
+						<div class="col-sm-10">
+                        	<select name="subcategory_id" class="form-control">
+                        		<?php foreach($categories as $categoryMother){ ?>
+								<option value="<?php echo $categoryMother->idCategory; ?>" <?php if($category->subcategory_id==$categoryMother->idCategory){ echo "selected"; } ?>><?php echo $categoryMother->title;?></option>
+								<?php } ?>
+							</select>
+						</div>
+					</div>
+    				<div class="form-group">
     					<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Título*")?></label>
     					<div class="col-sm-10">
                         	<input type="text" class="form-control" name="title" id="title" maxlength="60" value="<?php echo $category->title; ?>" >
@@ -71,4 +88,31 @@ if($message["flag"]>0){
 </div>
 <?php 
 $this->headScript()->prependFile($this->basePath("js/validators/category.js"));
+$this->headscript()->captureStart();
+echo <<<JS
+$(document).ready(function(){
+    $('#subcategory').hide('true');
+    $('.sub').change(function(){
+        console.log("Subcategory");
+        $('#subcategory').hide('true');
+        if(this.value==1){
+            $('#subcategory').fadeIn('slow');
+        }else{
+            $('#subcategory').hide('true');
+	    }
+    });
+});
+JS;
+$this->headscript()->captureEnd();
+
+if($category->subcategory_id!=null){
+    $this->headscript()->captureStart();
+echo <<<JS
+$(document).ready(function(){
+    $('#subcategory').fadeIn('slow');
+});
+JS;
+    $this->headscript()->captureEnd();
+
+}
 ?>

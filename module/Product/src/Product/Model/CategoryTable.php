@@ -18,12 +18,19 @@ class CategoryTable
      */
     public function fetchAll($websiteId=null){
         if($websiteId){
-            $where = array("website_id"=>$websiteId);
+            $where = array("website_id"=>$websiteId, "subcategory_id"=>null);
         }else{
             $where = array();
         }
         $sqlSelect = $this->tableGateway->getSql()->select();
         $sqlSelect->where($where);
+        $sqlSelect->order('title');
+        return $this->tableGateway->selectWith($sqlSelect);
+    }
+    
+    public function fetchAllSubcategories($category_id){
+        $sqlSelect = $this->tableGateway->getSql()->select();
+        $sqlSelect->where(array("subcategory_id"=>$category_id));
         $sqlSelect->order('title');
         return $this->tableGateway->selectWith($sqlSelect);
     }
@@ -52,7 +59,7 @@ class CategoryTable
      * @throws \Exception
      */
     public function saveCategory(Category $category){
-        $data = array('website_id'=>$category->website_id, 'title'=>$category->title, 'active'=>$category->active);
+        $data = array('website_id'=>$category->website_id, 'subcategory_id'=>$category->subcategory_id, 'title'=>$category->title, 'active'=>$category->active);
         
         $id = (int)$category->idCategory;
         //If there is no Id, so, it's a new category

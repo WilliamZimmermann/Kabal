@@ -27,7 +27,16 @@ class CategoryController extends AbstractActionController
         $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
         $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
-            $categories = $this->getCategoryTable()->fetchAll($logedUser["idWebsite"]);
+            $l=0;
+            foreach($this->getCategoryTable()->fetchAll($logedUser["idWebsite"]) as $category){
+                $categories[$l]["category"] = $category;
+                $subcategories = null;
+                foreach($this->getCategoryTable()->fetchAllSubcategories($category->idCategory) as $subcategory){
+                    $subcategories[] = $subcategory;
+                }
+                $categories[$l]["subcategories"] = $subcategories;
+                $l++;
+            }
             return array("categories"=>$categories, "permission"=>$permission);
         }else{
             return $this->redirect()->toRoute("noPermission");
@@ -50,6 +59,9 @@ class CategoryController extends AbstractActionController
             $request = $this->getRequest();
             if($request->isPost()){
                 $category->exchangeArray($request->getPost());
+                if($_POST["sub"]==2){
+                    $category->subcategory_id = null;
+                }
                 $category->website_id = $logedUser["idWebsite"];
                 if($category->validation()){
                     $result = $this->getCategoryTable()->saveCategory($category);
@@ -60,7 +72,8 @@ class CategoryController extends AbstractActionController
                 //Save log
                 $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
             }
-            return array("message"=>$message->getMessage(), "category"=>$category);
+            $categories = $this->getCategoryTable()->fetchAll($logedUser["idWebsite"]);
+            return array("message"=>$message->getMessage(), "categories"=>$categories, "category"=>$category);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
@@ -89,6 +102,9 @@ class CategoryController extends AbstractActionController
                 $request = $this->getRequest();
                 if($request->isPost()){
                     $category->exchangeArray($request->getPost());
+                    if($_POST["sub"]==2){
+                        $category->subcategory_id = null;
+                    }
                     $category->idCategory = $id;
                     $category->website_id = $logedUser["idWebsite"];
                     if($category->validation()){
@@ -103,8 +119,8 @@ class CategoryController extends AbstractActionController
                     $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
                 }
                 $websiteLanguages = $this->getServiceLocator()->get("website_language")->fetchAll($logedUser["idWebsite"]);
-                
-                return array("message"=>$message->getMessage(), "category"=>$categoryData, "websiteLanguages"=>$websiteLanguages);
+                $categories = $this->getCategoryTable()->fetchAll($logedUser["idWebsite"]);
+                return array("message"=>$message->getMessage(), "categories"=>$categories,  "category"=>$categoryData, "websiteLanguages"=>$websiteLanguages);
             }else{
                 return $this->redirect()->toRoute("noPermission");
             }
