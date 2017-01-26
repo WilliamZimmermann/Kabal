@@ -1,0 +1,264 @@
+<?php
+use Application\Services\SystemFunctions;
+
+$this->headtitle($this->translate("Estoque"));
+$url = $this->url("images-database/images");
+$urlField = $this->basepath("files_database/" . $websiteId);
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("product")?>"><?php echo $this->translate("Produtos") ?></a></li>
+			<li class="active"><?php echo $this->translate("Estoque") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+<?php 
+if($message["flag"]>0){
+    if($message["flag"]==1){
+        $class = "success";
+    }else{
+        $class = "danger";
+    }
+    ?>
+    <div class="alert alert-<?php echo $class; ?> alert-block fade in">
+    	<button data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>
+    	<p><?php echo $message["message"]?></p>
+    </div>
+    <?php
+}
+?>
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading tab-bg-dark-navy-blue ">
+                              <ul class="nav nav-tabs">
+                                  <li>
+                                      <a><?php echo $this->translate("Detalhes do Produto")?></a>
+                                  </li>
+                                  <li class="active">
+                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Estoque")?></a>
+                                  </li>
+                                  <li class="">
+                                      <a><?php echo $this->translate("Produtos Relacionados")?></a>
+                                  </li>
+                              </ul>
+                          </header>
+			<div class="panel-body">
+				<form class="form-horizontal tasi-form" method="post" id="products">
+					
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Descrição*")?></label>
+						<div class="col-sm-10">
+                        	<input type="text" class="form-control" name="title" id="title" maxlength="60" value="<?php echo $product->title; ?>" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><?php echo $this->translate("Ativar cor")?></label>
+						<div class="col-sm-10">
+							<label><input type="radio" name="haveColor" class="haveColor" value="1" data-toggle="switch" /> <?php echo $this->translate("Sim")?></label>
+							<label><input type="radio" name="haveColor" class="haveColor" value="2" data-toggle="switch" checked="checked"  /> <?php echo $this->translate("Não")?></label>
+						</div>
+					</div>
+					<div class="form-group" hidden="true" id="color-box">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Cor")?></label>
+						<div class="col-sm-10">
+                              <input type="text" name="color" class="colorpicker-default form-control" value="" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><?php echo $this->translate("Possui tamanho?")?></label>
+						<div class="col-sm-10">
+							<label><input type="radio" name="haveSize" class="haveSize" value="1" data-toggle="switch" /> <?php echo $this->translate("Sim")?></label>
+							<label><input type="radio" name="haveSize" class="haveSize" value="2" data-toggle="switch" checked="checked"  /> <?php echo $this->translate("Não")?></label>
+						</div>
+					</div>
+					<div class="form-group" hidden="true" id="size-box">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Tamanho para:")?></label>
+						<div class="col-sm-10">
+                              <select class="form-control" name="size" id="size">
+                            	<option value="0"><?php echo $this->translate("Selecione")?></option>
+                              	<option value="1"><?php echo $this->translate("Vestuário")?></option>
+                              	<option value="2"><?php echo $this->translate("Bebidas")?></option>
+                              	<option value="3"><?php echo $this->translate("Metragem")?></option>
+                              	<option value="4"><?php echo $this->translate("Peso")?></option>
+                              	<option value="5"><?php echo $this->translate("Rodas e Pneus")?></option>
+                              </select>
+                          	<div class="form-group" hidden="true" id="vest-box">
+                          		<br>
+        						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Selecione")?></label>
+        						<div class="col-sm-10">
+                                      <select class="form-control" name="vest-size" id="vest-size">
+                                      	<option value="PP"><?php echo $this->translate("PP")?></option>
+                                      	<option value="P"><?php echo $this->translate("P")?></option>
+                                      	<option value="M"><?php echo $this->translate("M")?></option>
+                                      	<option value="G"><?php echo $this->translate("G")?></option>
+                                      	<option value="GG"><?php echo $this->translate("GG")?></option>
+                                      	<option value="XG"><?php echo $this->translate("XG")?></option>
+                                      	<option value="XX"><?php echo $this->translate("XX")?></option>
+                                      </select>
+    							</div>
+    						</div>
+    						<div class="form-group" hidden="true" id="drinks-box">
+                          		<br>
+        						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Aro")?></label>
+        						<div class="col-sm-10">
+                                      <select class="form-control" name="drinks-size" id="drinks-size">
+                                      	<option value="12"><?php echo $this->translate("12")?></option>
+                                      	<option value="13"><?php echo $this->translate("13")?></option>
+                                      	<option value="14"><?php echo $this->translate("14")?></option>
+                                      	<option value="15"><?php echo $this->translate("15")?></option>
+                                      	<option value="16"><?php echo $this->translate("16")?></option>
+                                      	<option value="17"><?php echo $this->translate("17")?></option>
+                                      	<option value="18"><?php echo $this->translate("18")?></option>
+                                      	<option value="19"><?php echo $this->translate("19")?></option>
+                                      	<option value="20"><?php echo $this->translate("20")?></option>
+                                      	<option value="21"><?php echo $this->translate("21")?></option>
+                                      	<option value="22"><?php echo $this->translate("22")?></option>
+                                      	<option value="24"><?php echo $this->translate("24")?></option>
+                                      	<option value="26"><?php echo $this->translate("26")?></option>
+                                      </select>
+    							</div>
+    						</div>
+    						<div class="form-group" hidden="true" id="weels-box">
+                          		<br>
+        						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Aro")?></label>
+        						<div class="col-sm-10">
+                                      <select class="form-control" name="weels-size" id="weels-size">
+                                      	<option value="12"><?php echo $this->translate("12")?></option>
+                                      	<option value="13"><?php echo $this->translate("13")?></option>
+                                      	<option value="14"><?php echo $this->translate("14")?></option>
+                                      	<option value="15"><?php echo $this->translate("15")?></option>
+                                      	<option value="16"><?php echo $this->translate("16")?></option>
+                                      	<option value="17"><?php echo $this->translate("17")?></option>
+                                      	<option value="18"><?php echo $this->translate("18")?></option>
+                                      	<option value="19"><?php echo $this->translate("19")?></option>
+                                      	<option value="20"><?php echo $this->translate("20")?></option>
+                                      	<option value="21"><?php echo $this->translate("21")?></option>
+                                      	<option value="22"><?php echo $this->translate("22")?></option>
+                                      	<option value="24"><?php echo $this->translate("24")?></option>
+                                      	<option value="26"><?php echo $this->translate("26")?></option>
+                                      </select>
+    							</div>
+    						</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Quantidade em estoque")?></label>
+						<div class="col-sm-10">
+								<input type="number" placeholder="0" name="stock" id="stock" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Preço")?></label>
+						<div class="col-sm-10">
+							<input type="text" placeholder="" name="price" id="price" class="form-control">
+                        </div>
+					</div>
+					
+					<div class="form-group">
+						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Adicionar")?></button>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</div>
+<?php 
+$this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-datetimepicker/css/datetimepicker.css'));
+$this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-colorpicker/css/colorpicker.css'));
+
+$this->headScript()->prependFile($this->basePath('js/advanced-component-datetime.js'));
+$this->headScript()->prependFile($this->basePath('assets/bootstrap-colorpicker/js/bootstrap-colorpicker.js'));
+$this->headScript()->prependFile($this->basePath('assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'));
+$this->headScript()->prependFile($this->basePath("assets/ckeditor/ckeditor.js"));
+//Documentation: http://plentz.github.io/jquery-maskmoney/
+$this->headScript()->prependFile($this->basePath("assets/maskmoney/src/jquery.maskMoney.js"));
+
+
+$this->inlinescript()->captureStart();
+echo <<<JS
+//colorpicker start
+
+$('.colorpicker-default').colorpicker({
+    format: 'hex'
+});
+
+//Cores
+$(document).ready(function(){
+    $('.haveColor').change(function(){
+        console.log("Color");
+        if(this.value==1){
+            console.log("Show");
+            $('#color-box').fadeIn('slow');
+        }else{
+            console.log("Hide");
+            $('#color-box').hide('true');
+	    }
+    });
+});
+//Tamanhos
+$(document).ready(function(){
+    $('.haveSize').change(function(){
+        console.log("Have Size");
+        if(this.value==1){
+            console.log("Show size");
+            $('#size-box').fadeIn('slow');
+        }else{
+            console.log("Hide size");
+            $('#size-box').hide('true');
+	    }
+    });
+});
+//Se possuir algum tipo de tamanho
+$(document).ready(function(){
+    $('#size').change(function(){
+        console.log("Tamanho selecionado");
+        if(this.value==1){
+            console.log("Show");
+            $('#weels-box').hide('true');
+            $('#vest-box').fadeIn('slow');
+        }
+        if(this.value==5){
+            console.log("Weels");
+            $('#vest-box').hide('true');
+            $('#weels-box').fadeIn('slow');
+	    }
+    });
+});
+
+$(function() {
+    $('#price').maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    
+  })
+
+$("#images-content").load('$url');
+			 
+var wrapper = $("#imagesSelected"); //Fields wrapper
+			 
+$("#addImage").click(function() {
+    var imagesSelected = [];
+			 
+    $("input:checkbox[name=image]:checked").each(function(){
+        imagesSelected.push($(this).val());
+	    var image = $(this).val();
+	    var dataImage = image.split(' | ');
+	    $(wrapper).append('<div class="col-lg-12"><div class="row"><div class="col-lg-12"><img width="100" src="$urlField/'+dataImage[1]+'"></div></div><br><div class="row"><div class="col-lg-2">Legenda</div><div class="col-lg-10"><input type="text" class="form-control input-sm m-bot15" name="imageLabel['+dataImage[0]+']" value="'+dataImage[2]+'"/></div></div><div class="row"><div class="col-lg-2">Texto alternativo</div><div class="col-lg-10"><input type="text" class="form-control input-sm m-bot15" name="imageAlt['+dataImage[0]+']" value="'+dataImage[2]+'"/></div></div>&nbsp;<button class="btn btn-danger remove_field">Excluir</button><hr></div>');
+    });
+    $('#images').modal('toggle');
+});
+			 
+$(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+    e.preventDefault(); $(this).parent('div').remove(); x--;
+});
+
+JS;
+$this->inlinescript()->captureEnd();
+?>

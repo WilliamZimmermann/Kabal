@@ -37,6 +37,17 @@ return array(
                             ),
                         ),
                     ),
+                    'stock' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            // Change this to something specific to your module
+                            'route'    => '/stock',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Product\Controller',
+                                'action'        => 'stock',
+                            ),
+                        ),
+                    ),
                     'category' => array(
                         'type'    => 'Literal',
                         'options' => array(

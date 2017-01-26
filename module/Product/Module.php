@@ -20,6 +20,8 @@ use Product\Model\CategoryLanguageTable;
 use Product\Model\CategoryLanguage;
 use Product\Model\ProductHasCategoryTable;
 use Product\Model\ProductHasCategory;
+use Product\Model\Product;
+use Product\Model\ProductTable;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -56,6 +58,17 @@ class Module implements AutoloaderProviderInterface
     {
         return array(
             'factories' => array(
+                'Product\Model\ProductTable' => function ($sm) {
+                    $tableGateway = $sm->get('ProductTableGateway');
+                    $table = new ProductTable($tableGateway);
+                    return $table;
+                },
+                'ProductTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Product());
+                    return new TableGateway('product', $dbAdapter, null, $resultSetPrototype);
+                },
                 'Product\Model\CategoryTable' => function ($sm) {
                     $tableGateway = $sm->get('CategoryTableGateway');
                     $table = new CategoryTable($tableGateway);

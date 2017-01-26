@@ -30,7 +30,7 @@ class ProductHasCategoryTable
      * @throws \Exception
      */
     public function saveCategory(ProductHasCategory $productCategory){
-        $data = array('product_idProduct'=>$productCategory->product_idProduct, 'product_idCategoryLanguage'=>$productCategory->product_idCategory);
+        $data = array('product_idProduct'=>$productCategory->product_idProduct, 'product_idCategory'=>$productCategory->product_idCategory);
         
         if($this->tableGateway->insert($data)){
             return true;
@@ -46,18 +46,18 @@ class ProductHasCategoryTable
      * @return string
      */
     public function deleteCategory(ProductHasCategory $productCategory){
-        if($productCategory->product_idProduct && $productCategory->product_idCategoryLanguage){
+        if($productCategory->product_idProduct && $productCategory->product_idCategory){
             $where = array(
                 'product_idProduct'=>$productCategory->product_idProduct, 
-                'product_idCategoryLanguage'=>$productCategory->product_idCategoryLanguage
+                'product_idCategory'=>$productCategory->product_idCategory
             );
         }else if($productCategory->product_idProduct){
             $where = array(
                 'product_idProduct'=>$productCategory->product_idProduct
             );
-        }else if($productCategory->product_idCategoryLanguage){
+        }else if($productCategory->product_idCategory){
             $where = array(
-                'product_idCategoryLanguage'=>$productCategory->product_idCategoryLanguage
+                'product_idCategory'=>$productCategory->product_idCategory
             );
         }
         //Here we must to put the recursive functions to delete all future content
