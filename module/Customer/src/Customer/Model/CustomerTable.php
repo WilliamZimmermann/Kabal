@@ -19,7 +19,7 @@ class CustomerTable
      * @param $companyId - Company Id to filter
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function fetchAll($companyId, $currentPage = 1, $countPerPage = 2){
+    public function fetchAll($companyId, $currentPage = 1, $countPerPage = 20){
         
         $sqlSelect = $this->tableGateway->getSql()->select();
         $sqlSelect->join('customer_person', 'customer.idCustomer = customer_person.customer_id', array("name"=>"name", "name2"=>last_name), 'left');

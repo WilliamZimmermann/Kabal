@@ -2279,3 +2279,13 @@
 2017-01-26T21:16:05+01:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
 2017-01-26T21:18:35+01:00 WARN (4): USER ID: 1. MESSAGE: Mensagem desconhecida.
 2017-01-26T21:19:30+01:00 NOTICE (5): USER ID: 1. MESSAGE: Produto cadastrado com sucesso. [PRO001]
+2017-01-27T20:40:11+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]
+2017-01-27T20:44:09+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]
+2017-01-27T20:44:51+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]
+2017-01-27T20:45:26+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]
+2017-01-27T20:45:44+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]
+2017-01-27T20:46:27+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]
+2017-01-27T20:46:41+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]
+2017-01-27T20:47:12+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]
+2017-01-27T20:57:31+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]
+2017-01-27T20:57:50+01:00 NOTICE (5): USER ID: 1. MESSAGE: Dados do produto alterados com sucesso. [PRO004]

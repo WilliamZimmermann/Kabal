@@ -37,11 +37,27 @@ return array(
                             ),
                         ),
                     ),
+                    'edit' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit/[:id]',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller'    => 'Product',
+                                'action'        => 'edit',
+                            ),
+                        ),
+                    ),
                     'stock' => array(
-                        'type'    => 'Literal',
+                        'type'    => 'Segment',
                         'options' => array(
                             // Change this to something specific to your module
-                            'route'    => '/stock',
+                            'route'    => '/stock/[:id]',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
                             'defaults' => array(
                                 '__NAMESPACE__' => 'Product\Controller',
                                 'action'        => 'stock',

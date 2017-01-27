@@ -2,6 +2,8 @@
 namespace Product\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 
 class ProductTable
 {
@@ -16,7 +18,7 @@ class ProductTable
      * @param $websiteId - Website Id to filter
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function fetchAll($websiteId=null){
+    public function fetchAll($websiteId=null, $currentPage = 1, $countPerPage = 20){
         if($websiteId){
             $where = array("website_id"=>$websiteId);
         }else{
@@ -24,8 +26,14 @@ class ProductTable
         }
         $sqlSelect = $this->tableGateway->getSql()->select();
         $sqlSelect->where($where);
-        $sqlSelect->order('title');
-        return $this->tableGateway->selectWith($sqlSelect);
+        $sqlSelect->order(array('language_id', 'title'));
+        
+        $adapter = new DbSelect($sqlSelect, $this->tableGateway->getAdapter(), $this->tableGateway->getResultSetPrototype());
+        
+        $paginator = new Paginator($adapter);
+        $paginator->setItemCountPerPage($countPerPage);
+        $paginator->setCurrentPageNumber($currentPage);
+        return $paginator;
     }
     
     
@@ -41,9 +49,6 @@ class ProductTable
         $data = array($param => $id);
         $rowset = $this->tableGateway->select($data);
         $row = $rowset->current();
-        if (!$row) {
-            throw new \Exception("Could not find row $id");
-        }
         return $row;
     }
 
@@ -55,8 +60,6 @@ class ProductTable
     public function saveProduct(Product $product){
         $data = array(
             'language_id'=>$product->language_id,
-            'website_id'=>$product->website_id,
-            'creationDate'=>$product->creationDate,
             'updatedDate'=>$product->updatedDate,
             'title'=>$product->title,
             'slug'=>$product->slug,
@@ -73,6 +76,8 @@ class ProductTable
         $id = (int)$product->idProduct;
         //If there is no Id, so, it's a new category
         if($id  == 0){
+            $data['website_id'] = $product->website_id;
+            $data['creationDate'] = $product->creationDate;
             if($this->tableGateway->insert($data)){
                 return $this->tableGateway->getLastInsertValue();
             }else{
@@ -80,7 +85,7 @@ class ProductTable
             }
         }else{
             //If this image already exists
-            if($this->getCategory($id)){
+            if($this->getProduct($id)){
                 if($this->tableGateway->update($data, array('idProduct'=>$id))){
                     return "PRO004";
                 }else{

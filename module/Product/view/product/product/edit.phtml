@@ -18,19 +18,21 @@ $urlField = $this->basepath("files_database/" . $websiteId);
 	</div>
 </div>
 
-<?php 
-if($message["flag"]>0){
-    if($message["flag"]==1){
+<?php
+if ($message["flag"] > 0) {
+    if ($message["flag"] == 1) {
         $class = "success";
-    }else{
+    } else {
         $class = "danger";
     }
     ?>
-    <div class="alert alert-<?php echo $class; ?> alert-block fade in">
-    	<button data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>
-    	<p><?php echo $message["message"]?></p>
-    </div>
-    <?php
+<div class="alert alert-<?php echo $class; ?> alert-block fade in">
+	<button data-dismiss="alert" class="close close-sm" type="button">
+		<i class="fa fa-times"></i>
+	</button>
+	<p><?php echo $message["message"]?></p>
+</div>
+<?php
 }
 ?>
 
@@ -38,26 +40,24 @@ if($message["flag"]>0){
 	<div class="col-lg-12">
 		<section class="panel">
 			<header class="panel-heading tab-bg-dark-navy-blue ">
-                              <ul class="nav nav-tabs">
-                                  <li class="active">
-                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Detalhes do Produto")?></a>
-                                  </li>
-                                  <li class="">
-                                      <a><?php echo $this->translate("Estoque")?></a>
-                                  </li>
-                                  <li class="">
-                                      <a><?php echo $this->translate("Produtos Relacionados")?></a>
-                                  </li>
-                              </ul>
-                          </header>
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab"><?php echo $this->translate("Detalhes do Produto")?></a>
+					</li>
+					<li class=""><a href="<?php echo $this->url("product/stock", array("id"=>$product->idProduct))?>"><?php echo $this->translate("Estoque")?></a>
+					</li>
+					<li class=""><a><?php echo $this->translate("Produtos Relacionados")?></a>
+					</li>
+				</ul>
+			</header>
 			<div class="panel-body">
 				<form class="form-horizontal tasi-form" method="post" id="products">
-				<div class="form-group">
+					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Idioma:")?></label>
 						<div class="col-sm-10">
-                        	<select name="language_id" class="form-control">
+							<select name="language_id" class="form-control">
                         		<?php foreach($languages as $language){ ?>
-                        			<option value="<?php echo $language->idLanguage;?>"><?php echo $language->name; ?></option>
+                        			<option
+									value="<?php echo $language->idLanguage;?>"><?php echo $language->name; ?></option>
                         		<?php } ?>
                         	</select>
 						</div>
@@ -65,7 +65,8 @@ if($message["flag"]>0){
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Título*")?></label>
 						<div class="col-sm-10">
-                        	<input type="text" class="form-control" name="title" id="title" maxlength="60" value="<?php echo $product->title; ?>" >
+							<input type="text" class="form-control" name="title" id="title"
+								maxlength="60" value="<?php echo $product->title; ?>">
 						</div>
 					</div>
 					<div class="form-group">
@@ -79,7 +80,9 @@ if($message["flag"]>0){
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Referência")?></label>
 						<div class="col-sm-10">
-                        	<input type="text" class="form-control" name="reference" id="reference" maxlength="45" value="<?php echo $product->reference; ?>" >
+							<input type="text" class="form-control" name="reference"
+								id="reference" maxlength="45"
+								value="<?php echo $product->reference; ?>">
 						</div>
 					</div>
 					<div class="form-group">
@@ -99,16 +102,20 @@ if($message["flag"]>0){
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Preço Original")?></label>
 						<div class="col-sm-10">
-							<input type="text" placeholder="" name="price_original" id="price_original" class="form-control">
-                            <span class="help-inline"><?php echo $this->translate("Preço original do produto")?></span>						
-                        </div>
+							<input type="text"
+								value="<?php echo number_format($product->price_original, 2, ",", "."); ?>"
+								placeholder="" name="price_original" id="price_original"
+								class="form-control"> <span class="help-inline"><?php echo $this->translate("Preço original do produto")?></span>
+						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Preço Atual")?></label>
 						<div class="col-sm-10">
-							<input type="text" placeholder="" name="price_actual" id="price_actual" class="form-control">
-                            <span class="help-inline"><?php echo $this->translate("Preço atual do produto. Se o preço atual for menor que o preço original, um informativo aparecerá para o cliente dizendo que o produto está em promoção.")?></span>						
-                        </div>
+							<input type="text"
+								value="<?php echo number_format($product->price_actual, 2, ',', '.'); ?>"
+								placeholder="" name="price_actual" id="price_actual"
+								class="form-control"> <span class="help-inline"><?php echo $this->translate("Preço atual do produto. Se o preço atual for menor que o preço original, um informativo aparecerá para o cliente dizendo que o produto está em promoção.")?></span>
+						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Comentários Internos")?></label>
@@ -120,57 +127,81 @@ if($message["flag"]>0){
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Categoria(s)")?></label>
 						<div class="col-sm-10">
-							<?php 
-							if(count($categories)>0){
-    							foreach ($categories as $category){
-    							    $subcategories = $category["subcategories"];
-    							    $category = $category["category"];
-    							    //$selected = (in_array($category->idCategoryLanguage, $categoriesSelected)) ? true : false; 
-    							    ?>
+							<?php
+    if (count($categories) > 0) {
+        foreach ($categories as $category) {
+            $subcategories = $category["subcategories"];
+            $category = $category["category"];
+		    $selected = (in_array($category->idCategory, $categoriesSelected)) ? true : false; 
+            ?>
     							<div class="col-sm-12">
-    								<label><input type="checkbox" name="categories[]" value="<?php echo $category->idCategory; ?>">&nbsp;<?php echo $category->title; ?></label>
-									<br>
-									<?php foreach($subcategories as $subcategory){ ?>
+								<label><input type="checkbox" name="categories[]"
+									value="<?php echo $category->idCategory; ?>" <?php if($selected){ ?>checked="checked"<?php } ?>>&nbsp;<?php echo $category->title; ?></label>
+								<br>
+									<?php foreach($subcategories as $subcategory){ 
+									    $selected = (in_array($subcategory->idCategory, $categoriesSelected)) ? true : false;
+									    ?>
 									<div class="col-sm-4">
-										<label><input type="checkbox" name="categories[]" value="<?php echo $subcategory->idCategory; ?>" <?php if(in_array($subcategory->idCategory, $categoriesSelected)){ ?>checked="checked"<?php } ?>>&nbsp;<?php echo $subcategory->title; ?></label>
-									</div>
+									<label><input type="checkbox" name="categories[]"
+										value="<?php echo $subcategory->idCategory; ?>" <?php if($selected){ ?>checked="checked"<?php } ?>>&nbsp;<?php echo $subcategory->title; ?></label>
+								</div>
 									<?php } ?>
 								</div>
-							<?php 
-    							} 
-							}else{
-							     echo $this->translate("Nenhuma categoria cadastrada.");
-							}?>
+							<?php
+        }
+    } else {
+        echo $this->translate("Nenhuma categoria cadastrada.");
+    }
+    ?>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Exibir no Site?")?></label>
 						<div class="col-sm-4">
-								<input type="checkbox" class="form-control" name="show_website" value="1" <?php if($product->show_website){ ?>checked<?php } ?> data-toggle="switch" /> 
+							<input type="checkbox" class="form-control" name="show_website"
+								value="1" <?php if($product->show_website){ ?> checked
+								<?php } ?> data-toggle="switch" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Exibir no sistema de Pedidos?")?></label>
 						<div class="col-sm-10">
-								<input type="checkbox" class="form-control" name="show_order" value="1" <?php if($product->show_order){ ?>checked<?php } ?> data-toggle="switch" /> 
+							<input type="checkbox" class="form-control" name="show_order"
+								value="1" <?php if($product->show_order){ ?> checked <?php } ?>
+								data-toggle="switch" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Ativo")?></label>
 						<div class="col-sm-10">
-								<input type="checkbox" class="form-control" name="active" value="1" <?php if($product->active){ ?>checked<?php } ?> data-toggle="switch" /> 
+							<input type="checkbox" class="form-control" name="active"
+								value="1" <?php if($product->active){ ?> checked <?php } ?>
+								data-toggle="switch" />
 						</div>
 					</div>
 					<div class="form-group">
-						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Cadastrar")?></button>
-						&nbsp;<a href="<?php echo $this->url("product")?>" class="btn btn-danger"><?php echo $this->translate("Voltar")?></a>
+						&nbsp;&nbsp;
+						<button type="submit" class="btn btn-info"><?php echo $this->translate("Salvar")?></button>
+						&nbsp;<a href="<?php echo $this->url("product")?>"
+							class="btn btn-danger"><?php echo $this->translate("Voltar")?></a>
 					</div>
 				</form>
 			</div>
 		</section>
 	</div>
 </div>
-<?php 
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<div class="panel-body">
+				<h4><?php echo $this->translate("Log")?></h4>
+				<textarea rows="5" class="form-control" name="description" readonly="readonly"
+								id="description"><?php echo $product->log; ?></textarea>
+			</div>
+		</section>
+	</div>
+</div>
+<?php
 $this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-datetimepicker/css/datetimepicker.css'));
 $this->headlink()->prependStylesheet($this->basePath('assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css'));
 
@@ -180,9 +211,8 @@ $this->headScript()->prependFile($this->basePath('assets/bootstrap-datetimepicke
 $this->headScript()->prependFile($this->basePath("assets/ckeditor/ckeditor.js"));
 $this->headScript()->prependFile($this->basePath("assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js"));
 $this->headScript()->prependFile($this->basePath("assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js"));
-//Documentation: http://plentz.github.io/jquery-maskmoney/
+// Documentation: http://plentz.github.io/jquery-maskmoney/
 $this->headScript()->prependFile($this->basePath("assets/maskmoney/src/jquery.maskMoney.js"));
-
 
 $this->inlinescript()->captureStart();
 echo <<<JS

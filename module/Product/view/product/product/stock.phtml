@@ -40,7 +40,7 @@ if($message["flag"]>0){
 			<header class="panel-heading tab-bg-dark-navy-blue ">
                               <ul class="nav nav-tabs">
                                   <li>
-                                      <a><?php echo $this->translate("Detalhes do Produto")?></a>
+                                      <a href="<?php echo $this->url("product/edit", array("id"=>$product->idProduct))?>"><?php echo $this->translate("Detalhes do Produto")?></a>
                                   </li>
                                   <li class="active">
                                       <a data-toggle="tab" href="#"><?php echo $this->translate("Estoque")?></a>
@@ -167,6 +167,44 @@ if($message["flag"]>0){
 						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Adicionar")?></button>
 					</div>
 				</form>
+			</div>
+		</section>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<div class="panel-body">
+				<h4><?php echo $this->translate("Itens em estoque")?></h4>
+				<table class="table table-striped table-advance table-hover">
+    				<thead>
+    					<tr>
+    						<th><i class="fa fa-file-text-o"></i> <?php echo $this->translate("Descrição")?></th>
+    						<th><i class="fa fa-line-chart"></i> <?php echo $this->translate("Quantidade")?></th>
+    						<th><i class="fa fa-money"></i> <?php echo $this->translate("Valor")?></th>
+    						<th><i class="fa fa-edit"></i> <?php echo $this->translate("Ações")?></th>
+    					</tr>
+    				</thead>
+    				<tbody>
+    					<tr>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+    					</tr>
+    				</tbody>
+				</table>
+			</div>
+		</section>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<div class="panel-body">
+				<h4><?php echo $this->translate("Log")?></h4>
+				<textarea rows="5" class="form-control" name="description" readonly="readonly"
+								id="description"><?php echo $product->log; ?></textarea>
 			</div>
 		</section>
 	</div>
