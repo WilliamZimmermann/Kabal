@@ -6,7 +6,7 @@ return array(
         'invokables' => array(
             'Product\Controller\Product' => 'Product\Controller\ProductController',
             'Product\Controller\Category' => 'Product\Controller\CategoryController',
-            
+            'Product\Controller\Color' => 'Product\Controller\ColorController',
         ),
     ),
     'router' => array(
@@ -127,6 +127,61 @@ return array(
                                     ),
                                     'defaults' => array(
                                         'controller'    => 'Category',
+                                        'action'        => 'delete',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'color' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            // Change this to something specific to your module
+                            'route'    => '/color',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Product\Controller',
+                                'controller'    => 'Color',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            // This route is a sane default when developing a module;
+                            // as you solidify the routes for your module, however,
+                            // you may want to remove it and replace it with more
+                            // specific routes.
+                            'new' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/new',
+                                    'defaults' => array(
+                                        'controller'    => 'Color',
+                                        'action'        => 'new',
+                                    ),
+                                ),
+                            ),
+                            'edit' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/edit/[:id]',
+                                    'constraints' => array(
+                                        'id' => '[0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller'    => 'Color',
+                                        'action'        => 'edit',
+                                    ),
+                                ),
+                            ),
+                            'delete' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/delete/[:id]',
+                                    'constraints' => array(
+                                        'id' => '[0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller'    => 'Color',
                                         'action'        => 'delete',
                                     ),
                                 ),

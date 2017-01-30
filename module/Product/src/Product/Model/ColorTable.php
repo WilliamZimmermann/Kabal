@@ -5,7 +5,7 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
 
-class ProductTable
+class ColorTable
 {
     protected $tableGateway;
     
@@ -26,89 +26,78 @@ class ProductTable
         }
         $sqlSelect = $this->tableGateway->getSql()->select();
         $sqlSelect->where($where);
-        $sqlSelect->order(array('language_id', 'title'));
-        
+        $sqlSelect->order(array('language_id', 'name'));
+    
         $adapter = new DbSelect($sqlSelect, $this->tableGateway->getAdapter(), $this->tableGateway->getResultSetPrototype());
-        
+    
         $paginator = new Paginator($adapter);
         $paginator->setItemCountPerPage($countPerPage);
         $paginator->setCurrentPageNumber($currentPage);
         return $paginator;
     }
     
-    
     /**
-     * This function get a specific product registred in our data base
+     * This function get a specific color registred in our data base
      * @param int $id
-     * @param string $param (name of some param to make the serc (idProduct by default)
+     * @param string $param (name of some param to make the serc (idColor by default)
      * @throws \Exception
      * @return ArrayObject|NULL
      */
-    public function getProduct($id, $param="idProduct"){
+    public function getColor($id, $param="idColor"){
         $id  = (int) $id;
         $data = array($param => $id);
         $rowset = $this->tableGateway->select($data);
         $row = $rowset->current();
         return $row;
     }
-
+    
     /**
-     * This function insert or edit a product in the database
-     * @param Category $product (if $product->idCategory have a valid id, will update, not insert)
+     * This function insert or edit a color in the database
+     * @param Category $color (if $color->idCategory have a valid id, will update, not insert)
      * @throws \Exception
      */
-    public function saveProduct(Product $product){
+    public function saveColor(Color $color){
         $data = array(
-            'language_id'=>$product->language_id,
-            'updatedDate'=>$product->updatedDate,
-            'title'=>$product->title,
-            'slug'=>$product->slug,
-            'reference'=>$product->reference,
-            'description'=>$product->description, 
-            'content'=>$product->content,
-            'price_original'=>$product->price_original,
-            'price_actual'=>$product->price_actual,
-            'comments'=>$product->comments,
-            'log'=>$product->log,
-            'show_website'=>$product->show_website,
-            'show_order'=>$product->show_order,
-            'active'=>$product->active);
-        $id = (int)$product->idProduct;
+            'language_id'=>$color->language_id,
+            'name'=>$color->name,
+            'hexa'=>$color->hexa,
+            'image'=>$color->image,
+            );
+        $id = (int)$color->idColor;
         //If there is no Id, so, it's a new category
         if($id  == 0){
-            $data['website_id'] = $product->website_id;
-            $data['creationDate'] = $product->creationDate;
+            $data['website_id'] = $color->website_id;
             if($this->tableGateway->insert($data)){
                 return $this->tableGateway->getLastInsertValue();
             }else{
-                return "PRO002";
+                return "PCOL002";
             }
         }else{
             //If this image already exists
-            if($this->getProduct($id)){
-                if($this->tableGateway->update($data, array('idProduct'=>$id))){
-                    return "PRO004";
+            if($this->getColor($id)){
+                if($this->tableGateway->update($data, array('idColor'=>$id))){
+                    return "PCOL004";
                 }else{
-                    return "PRO005";
+                    return "PCOL005";
                 }
             }else{ //This id was not found at the system, image does not exist
-                return "PRO007";
+                return "PCOL007";
             }
         }
     }
     
     
     /**
-     * This function will delete a specific product
-     * @param int $idProduct
+     * This function will delete a specific color
+     * @param int $idColor
      * @return number
      */
-    public function deleteProduct($idProduct){
+    public function deleteColor($idColor){
         //Here we must to put the recursive functions to delete all future content
-        if($this->tableGateway->delete(array('idProduct'=>(int)$idProduct))){
-            return "PRO007";
+        if($this->tableGateway->delete(array('idColor'=>(int)$idColor))){
+            return "PCOL007";
         }else{
-            return "PRO008";
+            return "PCOL008";
         }
     }
 }

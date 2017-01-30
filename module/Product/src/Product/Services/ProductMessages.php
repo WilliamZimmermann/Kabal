@@ -25,7 +25,47 @@ class ProductMessages
                     $message["message"] = "Você não tem acesso a essa página. [APPLICATION003]";
                     $this->logPriority = 6;
                     break;
-                    
+                // -- COLORS
+                case "PCOL001":
+                    $message["flag"] = 1;
+                    $message["message"] = "Cor cadastrada com sucesso. Deseja cadastrar outra cor? [PCOL001]";
+                    $this->logPriority = 5;
+                    break;
+                case "PCOL002":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar a cor. Por favor, tente novamente. [PCOL002]";
+                    $this->logPriority = 3;
+                    break;
+                case "PCOL003":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao cadastrar/alterar a cor. Um ou mais campos possuem dados inválidos. Tente novamente. [PCOL003]";
+                    $this->logPriority = 5;
+                    break;
+                case "PCOL004":
+                    $message["flag"] = 1;
+                    $message["message"] = "Cor alterada com sucesso. [PCOL004]";
+                    $this->logPriority = 5;
+                    break;
+                case "PCOL005":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar a cor. Tente novamente. [PCOL005]";
+                    $this->logPriority = 3;
+                    break;
+                case "PCOL006":
+                    $message["flag"] = 2;
+                    $message["message"] = "Não encontramos essa cor no sistema. [PCOL006]";
+                    $this->logPriority = 3;
+                    break;
+                case "PCOL007":
+                    $message["flag"] = 1;
+                    $message["message"] = "Cor (" . $this->params["id"] . ") excluída com sucesso. [PCOL007]";
+                    $this->logPriority = 5;
+                    break;
+                case "PCOL008":
+                    $message["flag"] = 2;
+                    $message["message"] = "Houve um erro ao tentar excluir a cor (" . $this->params["id"] . "). [PCOL008]";
+                    $this->logPriority = 3;
+                    break;
                 // -- CATEGORIES
                 case "PCAT001":
                     $message["flag"] = 1;

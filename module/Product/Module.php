@@ -22,6 +22,8 @@ use Product\Model\ProductHasCategoryTable;
 use Product\Model\ProductHasCategory;
 use Product\Model\Product;
 use Product\Model\ProductTable;
+use Product\Model\ColorTable;
+use Product\Model\Color;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -101,7 +103,18 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ProductHasCategory());
                     return new TableGateway('product_has_category', $dbAdapter, null, $resultSetPrototype);
-                }
+                },
+                'Product\Model\ColorTable' => function ($sm) {
+                    $tableGateway = $sm->get('ColorTableGateway');
+                    $table = new ColorTable($tableGateway);
+                    return $table;
+                },
+                'ColorTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Color());
+                    return new TableGateway('color', $dbAdapter, null, $resultSetPrototype);
+                },
             )
         );
     }

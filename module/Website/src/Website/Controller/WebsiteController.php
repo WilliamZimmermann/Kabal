@@ -87,7 +87,7 @@ class WebsiteController extends AbstractActionController
                         mkdir("public/files_database/".$lastId, 0777);
                     }
                     //Now, will create a new folder to put the files
-                    mkdir("public/files_database");
+                    //mkdir("public/files_database");
                     $message->setCode($result);
                 } else {
                     $message->setCode("WEBSITE004");
