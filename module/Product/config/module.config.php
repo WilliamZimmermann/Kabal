@@ -182,7 +182,20 @@ return array(
                                     ),
                                     'defaults' => array(
                                         'controller'    => 'Color',
-                                        'action'        => 'delete',
+                                        'action'        => 'deleteColor',
+                                    ),
+                                ),
+                            ),
+                            'delete-image' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/delete-image/[:id]',
+                                    'constraints' => array(
+                                        'id' => '[0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller'    => 'Color',
+                                        'action'        => 'deleteColorImage',
                                     ),
                                 ),
                             ),

@@ -86,6 +86,13 @@ class ColorTable
         }
     }
     
+    public function updateImageName($idColor, $newName){
+        if($this->tableGateway->update(array("image"=>$newName), array("idColor"=>$idColor))){
+            return "PCOL004";
+        }else{
+            return "PCOL005";
+        }
+    }
     
     /**
      * This function will delete a specific color

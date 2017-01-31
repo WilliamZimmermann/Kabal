@@ -9,7 +9,7 @@ $this->headtitle($this->translate("Nova Cor"));
 					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
 			<li><a href="<?php echo $this->url("product")?>"><?php echo $this->translate("Produtos") ?></a></li>
 			<li><a href="<?php echo $this->url("product/category")?>"><?php echo $this->translate("Cores") ?></a></li>
-			<li class="active"><?php echo $this->translate("Nova") ?></li>
+			<li class="active"><?php echo $this->translate("Editar") ?></li>
 		</ul>
 		<!--breadcrumbs end -->
 	</div>
@@ -37,7 +37,7 @@ if($message["flag"]>0){
 			<header class="panel-heading tab-bg-dark-navy-blue ">
                               <ul class="nav nav-tabs">
                                   <li class="active">
-                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Nova Cor")?></a>
+                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Editar Cor")?></a>
                                   </li>
                               </ul>
                           </header>
@@ -48,7 +48,7 @@ if($message["flag"]>0){
 						<div class="col-sm-10">
                         	<select name="language_id" class="form-control">
                         		<?php foreach($languages as $language){ ?>
-								<option value="<?php echo $language->idLanguage; ?>"><?php echo $language->name;?></option>
+								<option value="<?php echo $language->idLanguage; ?>" <?php if($color->language_id==$language->idLanguage){ ?>selected="selected"<?php } ?>><?php echo $language->name;?></option>
 								<?php } ?>
 							</select>
 						</div>
@@ -62,7 +62,7 @@ if($message["flag"]>0){
 					<div class="form-group">
 						<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Cor*")?></label>
 						<div class="col-sm-10">
-                              <input type="text" name="hexa" class="colorpicker-default form-control" value="" />
+                              <input type="text" name="hexa" class="colorpicker-default form-control" value="<?php echo $color->hexa; ?>" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -70,7 +70,7 @@ if($message["flag"]>0){
                           <div class="col-md-10">
                               <div class="fileupload fileupload-new" data-provides="fileupload">
                                   <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;">
-                                      <img src="http://www.placehold.it/100x100/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+                                      <img src="<?php if($color->image){ echo $this->basepath("files_database/".$idWebsite."/".$color->image); }else{ ?>http://www.placehold.it/100x100/EFEFEF/AAAAAA&amp;text=no+image<?php } ?>" alt="" id="image" />
                                   </div>
                                   <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 100px; max-height: 100px; line-height: 20px;"></div>
                                   <div>
@@ -79,7 +79,9 @@ if($message["flag"]>0){
                                    <span class="fileupload-exists"><i class="fa fa-undo"></i> <?php echo $this->translate("Mudar")?></span>
                                    <input type="file" class="default" name="image" />
                                    </span>
-                                      <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> <?php echo $this->translate("Remover")?></a>
+                                      <?php if($color->image){ ?>
+                                      <input type="button" class="btn btn-danger" id="imageDelete" value="<?php echo $this->translate("Remover")?>">
+                                      <?php } ?>
                                   </div>
                               </div>
                               <span class="label label-danger"><?php echo $this->translate("Nota")?></span>
@@ -89,7 +91,7 @@ if($message["flag"]>0){
                           </div>
 					</div>
 					<div class="form-group">
-						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Cadastrar")?></button>
+						&nbsp;&nbsp;<button type="submit" class="btn btn-info"><?php echo $this->translate("Salvar")?></button>
 						&nbsp;<a href="<?php echo $this->url("product/color")?>" class="btn btn-danger"><?php echo $this->translate("Voltar")?></a>
 					</div>
 				</form>
@@ -106,12 +108,34 @@ $this->headScript()->prependFile($this->basePath("js/validators/product-color.js
 $this->headScript()->prependFile($this->basePath('assets/bootstrap-colorpicker/js/bootstrap-colorpicker.js'));
 $this->headScript()->prependFile($this->basePath('assets/bootstrap-fileupload/bootstrap-fileupload.js'));
 
+$urlDeleteImage = $this->url("product/color/delete-image", array("id"=>$color->idColor));
 $this->headscript()->captureStart();
 echo <<<JS
 //colorpicker start
-
 $('.colorpicker-default').colorpicker({
     format: 'hex'
+});
+$("#imageDelete").click(function(e){
+    e.preventDefault();
+    $.ajax({
+          url: "$urlDeleteImage",
+          type: "POST",
+          data:  new FormData(this),
+          contentType: false,
+                cache: false,
+          processData:false,
+          success: function(data){
+           if(data=='success')
+           {
+    	        $("#image").attr("src", "http://www.placehold.it/100x100/EFEFEF/AAAAAA&amp;text=no+image");
+                alert("Imagem removida com sucesso.");
+           }
+           else
+           {
+                alert("Houve um erro ao tentar apagar a imagem.");
+           }
+	      }
+	});    
 });
 JS;
 $this->headscript()->captureEnd();
