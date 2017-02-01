@@ -36,6 +36,10 @@ class ColorTable
         return $paginator;
     }
     
+    public function fetchByLanguage($websiteId, $langaugeId){
+        return $this->tableGateway->select(array("website_id"=>$websiteId, "language_id"=>$langaugeId));
+    }
+    
     /**
      * This function get a specific color registred in our data base
      * @param int $id

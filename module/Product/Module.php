@@ -24,6 +24,8 @@ use Product\Model\Product;
 use Product\Model\ProductTable;
 use Product\Model\ColorTable;
 use Product\Model\Color;
+use Product\Model\ProductItem;
+use Product\Model\ProductItemTable;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -114,6 +116,17 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Color());
                     return new TableGateway('color', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Product\Model\ProductItemTable' => function ($sm) {
+                    $tableGateway = $sm->get('ProductItemTableGateway');
+                    $table = new ProductItemTable($tableGateway);
+                    return $table;
+                },
+                'ProductItemTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ProductItem());
+                    return new TableGateway('product_item', $dbAdapter, null, $resultSetPrototype);
                 },
             )
         );

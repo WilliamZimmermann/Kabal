@@ -25,6 +25,47 @@ class ProductMessages
                     $message["message"] = "Você não tem acesso a essa página. [APPLICATION003]";
                     $this->logPriority = 6;
                     break;
+                // -- PRODUCT ITEM
+                case "PROI001":
+                    $message["flag"] = 1;
+                    $message["message"] = "Item cadastrado com sucesso. Deseja cadastrar outra item? [PROI001]";
+                    $this->logPriority = 5;
+                    break;
+                case "PROI002":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar cadastrar o item. Por favor, tente novamente. [PROI002]";
+                    $this->logPriority = 3;
+                    break;
+                case "PROI003":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao cadastrar/alterar ao item. Um ou mais campos possuem dados inválidos. Tente novamente. [PROI003]";
+                    $this->logPriority = 5;
+                    break;
+                case "PROI004":
+                    $message["flag"] = 1;
+                    $message["message"] = "Item alterado com sucesso. [PROI004]";
+                    $this->logPriority = 5;
+                    break;
+                case "PROI005":
+                    $message["flag"] = 2;
+                    $message["message"] = "Falha ao tentar alterar o item. Tente novamente. [PROI005]";
+                    $this->logPriority = 3;
+                    break;
+                case "PROI006":
+                    $message["flag"] = 2;
+                    $message["message"] = "Não encontramos esse item no sistema. [PROI006]";
+                    $this->logPriority = 3;
+                    break;
+                case "PROI007":
+                    $message["flag"] = 1;
+                    $message["message"] = "Item (" . $this->params["id"] . ") excluído com sucesso. [PROI007]";
+                    $this->logPriority = 5;
+                    break;
+                case "PROI008":
+                    $message["flag"] = 2;
+                    $message["message"] = "Houve um erro ao tentar excluir o item (" . $this->params["id"] . "). [PROI008]";
+                    $this->logPriority = 3;
+                    break;
                 // -- COLORS
                 case "PCOL001":
                     $message["flag"] = 1;

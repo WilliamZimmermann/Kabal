@@ -54,9 +54,10 @@ return array(
                         'type'    => 'Segment',
                         'options' => array(
                             // Change this to something specific to your module
-                            'route'    => '/stock/[:id]',
+                            'route'    => '/stock/[:id[/:idItem]]',
                             'constraints' => array(
                                 'id' => '[0-9_-]*',
+                                'idItem' => '[0-9_-]*',
                             ),
                             'defaults' => array(
                                 '__NAMESPACE__' => 'Product\Controller',

@@ -12,6 +12,7 @@ namespace Product\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Product\Model\Product;
 use Product\Model\ProductHasCategory;
+use Product\Model\ProductItem;
 
 class ProductController extends AbstractActionController
 {
@@ -21,6 +22,9 @@ class ProductController extends AbstractActionController
     protected $categoryTable;
     protected $categoryLanguageTable;
     protected $productHasCategoryTable;
+    protected $productItemTable;
+    protected $colorTable;
+    
     
     public function indexAction()
     {
@@ -183,16 +187,82 @@ class ProductController extends AbstractActionController
         ->get('permissions')
         ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
         if ($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")) {
-            $message = $this->getServiceLocator()->get('systemMessages');
-    
             //Get the Language and product id
             $id = (int) $this->params()->fromRoute('id', 0);
             $product = $this->getProductTable()->getProduct($id);
             
-            return array("product"=>$product);
+            $message = $this->getServiceLocator()->get('productMessages');
+    
+            $request = $this->getRequest();
+            if($request->isPost()){
+                $data = $request->getPost();
+                if($data->idProductItem){ //Save edition
+                    if($data->idProductItem == $this->params()->fromRoute('idItem', 0)){
+                        $this->addItemToStock($id, $data);
+                    }else{ //Se usuário tentar alguma gracinha
+                        return $this->redirect()->toRoute("noPermission");
+                    }
+                }else{ //Insert New
+                    $result = $this->addItemToStock($id, $data);
+                    if($result!="PROI002" || $result!="PROI003" || $result!="PROI005"){
+                        $result = "PROI001";
+                    }
+                }
+               
+                $message->setCode($result);
+                $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+            }
+            if($this->params()->fromRoute('idItem', 0)){
+                $idItem = $this->params()->fromRoute('idItem', 0);   
+                $itemData = $this->getProductItemTable()->getItem($idItem);
+            }else{
+                $itemData = new ProductItem();
+            }
+            
+            
+            $itens = $this->getProductItemTable()->fetchAll($id);
+            $colors = $this->getColorTable()->fetchByLanguage($logedUser["idWebsite"], $product->language_id);
+            return array("product"=>$product, "itemData"=>$itemData, "itens"=>$itens, "colors"=>$colors, "message"=>$message->getMessage());
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
+    }
+    
+    public function addItemToStock($idProduct, $data){
+        $productItem = new ProductItem();
+        $productItem->exchangeArray($data);
+        $productItem->product_id = $idProduct;
+        switch($data["size_kind"]){
+            case 1:  //Vestuário
+                $productItem->size = $data["vest_size"];
+                break;
+            case 2: // Bebidas
+                $productItem->size = $data["drinks_size"];
+                break;
+            case 3: //Metragem
+                break;
+            case 4: //Peso
+                break;
+            case 5: //Rodas e Pneus
+                $productItem->size = $data["weels_size"];
+                break;
+            default:
+                break;
+        }
+        if($productItem->validation()){
+            $result = $this->getProductItemTable()->saveProductItem($productItem);
+            return $result;
+        }else{
+            return "PROI003";
+        }
+    }
+    
+    public function getProductItemTable(){
+        if(!$this->productItemTable){
+            $sm = $this->getServiceLocator();
+            $this->productItemTable = $sm->get('Product\Model\ProductItemTable');
+        }
+        return $this->productItemTable;
     }
     
     public function getProductTable(){
@@ -227,5 +297,12 @@ class ProductController extends AbstractActionController
         return $this->productHasCategoryTable;
     }
     
+    public function getColorTable(){
+        if(!$this->colorTable){
+            $sm = $this->getServiceLocator();
+            $this->colorTable = $sm->get('Product\Model\ColorTable');
+        }
+        return $this->colorTable;
+    }
 
 }
