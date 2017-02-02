@@ -84,7 +84,7 @@ class ProductTable
                 return "PRO002";
             }
         }else{
-            //If this image already exists
+            //If this product already exists
             if($this->getProduct($id)){
                 if($this->tableGateway->update($data, array('idProduct'=>$id))){
                     return "PRO004";
@@ -97,6 +97,25 @@ class ProductTable
         }
     }
     
+    //Save a log of any customer changes
+    public function saveLogChanges($idProduct, $message){
+        $product = $this->getProduct($idProduct);
+        if($product){
+            $log = $product->log;
+            $data = array(
+              "log"=>$log."\n".$message,
+              "updatedDate"=>date('Y-m-d H:i:s')
+            );
+            if($this->tableGateway->update($data, array('idProduct'=>$idProduct))){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+    
     
     /**
      * This function will delete a specific product
@@ -106,9 +125,9 @@ class ProductTable
     public function deleteProduct($idProduct){
         //Here we must to put the recursive functions to delete all future content
         if($this->tableGateway->delete(array('idProduct'=>(int)$idProduct))){
-            return "PRO007";
-        }else{
             return "PRO008";
+        }else{
+            return "PRO007";
         }
     }
 }

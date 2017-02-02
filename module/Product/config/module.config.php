@@ -26,6 +26,19 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'view' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/view/[:id]',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'action'=>'view',
+                                'controller'=>'Product'
+                            ),
+                        ),
+                    ),
                     'new' => array(
                         'type'    => 'Literal',
                         'options' => array(
@@ -50,11 +63,24 @@ return array(
                             ),
                         ),
                     ),
+                    'delete' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/delete/[:id]',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller'    => 'Product',
+                                'action'        => 'delete',
+                            ),
+                        ),
+                    ),
                     'stock' => array(
                         'type'    => 'Segment',
                         'options' => array(
                             // Change this to something specific to your module
-                            'route'    => '/stock/[:id[/:idItem]]',
+                            'route'    => '/:id/stock[/:idItem]',
                             'constraints' => array(
                                 'id' => '[0-9_-]*',
                                 'idItem' => '[0-9_-]*',
@@ -62,6 +88,23 @@ return array(
                             'defaults' => array(
                                 '__NAMESPACE__' => 'Product\Controller',
                                 'action'        => 'stock',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            // This route is a sane default when developing a module;
+                            // as you solidify the routes for your module, however,
+                            // you may want to remove it and replace it with more
+                            // specific routes.
+                            'delete' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/delete',
+                                    'defaults' => array(
+                                        'controller'    => 'Product',
+                                        'action'        => 'deleteItemFromStock',
+                                    ),
+                                ),
                             ),
                         ),
                     ),

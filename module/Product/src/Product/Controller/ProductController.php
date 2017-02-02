@@ -198,7 +198,9 @@ class ProductController extends AbstractActionController
                 $data = $request->getPost();
                 if($data->idProductItem){ //Save edition
                     if($data->idProductItem == $this->params()->fromRoute('idItem', 0)){
-                        $this->addItemToStock($id, $data);
+                        $result = $this->addItemToStock($id, $data);
+                        $msg = "Um item (".$data->idProductItem.") foi alterado no estoque do produto pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+                        $this->getProductTable()->saveLogChanges($id, $msg);
                     }else{ //Se usuário tentar alguma gracinha
                         return $this->redirect()->toRoute("noPermission");
                     }
@@ -206,6 +208,8 @@ class ProductController extends AbstractActionController
                     $result = $this->addItemToStock($id, $data);
                     if($result!="PROI002" || $result!="PROI003" || $result!="PROI005"){
                         $result = "PROI001";
+                        $msg = "Um item foi adicionado ao estoque do produto pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+                        $this->getProductTable()->saveLogChanges($id, $msg);
                     }
                 }
                
@@ -254,6 +258,92 @@ class ProductController extends AbstractActionController
             return $result;
         }else{
             return "PROI003";
+        }
+    }
+    
+    public function deleteAction(){
+        // Check if this user can access this page
+        $logedUser = $this->getServiceLocator()
+        ->get('user')
+        ->getUserSession();
+        $permission = $this->getServiceLocator()
+        ->get('permissions')
+        ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if ($this->getServiceLocator()->get('user')->checkPermission($permission, "delete")) {
+            $message = $this->getServiceLocator()->get('productMessages');
+            
+            //Get the product id
+            $idProduct = (int) $this->params()->fromRoute('id', 0);
+            $result = $this->getProductItemTable()->deleteAll($idProduct);
+            $message->setCode($result);
+            $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+            
+            if($result=="PROI007"){//Se deletou todos os itens
+                //Tem que deletar agora todas as categorias relacionadas
+                $productHasCategory = new ProductHasCategory();
+                $productHasCategory->product_idProduct = $idProduct;
+                $result = $this->getProductHasCategoryTable()->deleteCategory($productHasCategory);
+                if($result){ //Se deletou o relacionamento com as categorias
+                    $result = $this->getProductTable()->deleteProduct($idProduct);
+                    $message->setCode($result);
+                    $msg = $message->getMessage();
+                    $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+                    //echo "<script>window.alert('".$msg["message"]."')</script>";
+                }else{
+                    //echo "<script>window.alert('Houve um erro ao tentar o relacionamento com as categorias. Tente novamente.')</script>";
+                }
+            }else{
+                //echo "<script>window.alert('Houve um erro ao tentar remover os itens do estoque do produto.')</script>";
+            }
+            return $this->redirect()->toRoute("product");
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
+    public function deleteItemFromStockAction(){
+        // Check if this user can access this page
+        $logedUser = $this->getServiceLocator()
+        ->get('user')
+        ->getUserSession();
+        $permission = $this->getServiceLocator()
+        ->get('permissions')
+        ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if ($this->getServiceLocator()->get('user')->checkPermission($permission, "delete")) {
+            //Get the Language and product id
+            $id = (int) $this->params()->fromRoute('id', 0);
+            $idProductItem = (int) $this->params()->fromRoute('idItem', 0);
+            $product = $this->getProductTable()->getProduct($id);
+            $message = $this->getServiceLocator()->get('productMessages');
+            $result = $this->getProductItemTable()->deleteProductItem($idProductItem);
+            $message->setCode($result);
+            $this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+            $msg = "Um item foi apagado do estoque de produtos pelo usuário ".$logedUser["name"]." (".$logedUser["idUser"].") em ".date("d/m/Y H:i:s").".";
+            $this->getProductTable()->saveLogChanges($id, $msg);
+            
+            return $this->redirect()->toRoute("product/stock", array("id"=>$id));
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
+    public function viewAction(){
+        //Check if this user can access this address
+        $logedUser = $this->getServiceLocator()->get('user')->getUserSession();
+        $permission = $this->getServiceLocator()->get('permissions')->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if($this->getServiceLocator()->get('user')->checkPermission($permission, "insert")){
+            // Get Customer ID
+            $id = (int) $this->params()->fromRoute('id', 0);
+            //First of all, check if this customer is from this company
+            $product = $this->getProductTable()->getProduct($id);
+            $itens = $this->getProductItemTable()->fetchAll($id);
+            $this->layout("layout/layout_blank");
+            return array(
+                "product"=>$product,
+                "itens"=>$itens,
+            );
+        }else{
+            return $this->redirect()->toRoute("noPermission");
         }
     }
     

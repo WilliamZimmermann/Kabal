@@ -75,7 +75,7 @@ class ProductItemTable
         }else{
             //If this item already exists
             if($this->getItem($id)){
-                if($this->tableGateway->update($data, array('idProduct'=>$id))){
+                if($this->tableGateway->update($data, array('idProductItem'=>$id))){
                     return "PROI004";
                 }else{
                     return "PROI005";
@@ -92,12 +92,31 @@ class ProductItemTable
      * @param int $idProduct
      * @return number
      */
-    public function deleteProduct($idProduct){
+    public function deleteProductItem($idProductItem){
         //Here we must to put the recursive functions to delete all future content
-        if($this->tableGateway->delete(array('idProduct'=>(int)$idProduct))){
+        if($this->tableGateway->delete(array('idProductItem'=>(int)$idProductItem))){
             return "PROI007";
         }else{
             return "PROI008";
+        }
+    }
+    
+    /**
+     * This function delete all itens related with one product
+     * @param int $idProduct
+     * @return string
+     */
+    public function deleteAll($idProduct){
+        //Verifica primeiro se tem algum item para ser removido
+        if(count($this->fetchAll($idProduct))>0){
+            //Here we must to put the recursive functions to delete all future content
+            if($this->tableGateway->delete(array('product_id'=>(int)$idProduct))){
+                return "PROI007";
+            }else{
+                return "PROI008";
+            }
+        }else{
+            return "PROI007";
         }
     }
 }
