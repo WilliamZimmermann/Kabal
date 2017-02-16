@@ -38,18 +38,21 @@ if($message["flag"]>0){
 	<div class="col-lg-12">
 		<section class="panel">
 			<header class="panel-heading tab-bg-dark-navy-blue ">
-                              <ul class="nav nav-tabs">
-                                  <li>
-                                      <a href="<?php echo $this->url("product/edit", array("id"=>$product->idProduct))?>"><?php echo $this->translate("Detalhes do Produto")?></a>
-                                  </li>
-                                  <li class="active">
-                                      <a data-toggle="tab" href="#"><?php echo $this->translate("Estoque")?></a>
-                                  </li>
-                                  <li class="">
-                                      <a><?php echo $this->translate("Produtos Relacionados")?></a>
-                                  </li>
-                              </ul>
-                          </header>
+                  <ul class="nav nav-tabs">
+                      <li>
+                          <a href="<?php echo $this->url("product/edit", array("id"=>$product->idProduct))?>"><?php echo $this->translate("Detalhes do Produto")?></a>
+                      </li>
+                      <li class="active">
+                          <a data-toggle="tab" href="#"><?php echo $this->translate("Estoque")?></a>
+                      </li>
+                      <li class="">
+                          <a href="<?php echo $this->url("product/images", array("id"=>$product->idProduct))?>"><?php echo $this->translate("Imagens")?></a>
+                      </li>
+                      <li class="">
+                          <a><?php echo $this->translate("Produtos Relacionados")?></a>
+                      </li>
+                  </ul>
+              </header>
 			<div class="panel-body">
 				<form class="form-horizontal tasi-form" method="post" id="products">
 					

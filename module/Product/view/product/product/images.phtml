@@ -1,0 +1,170 @@
+<?php
+$this->headtitle($this->translate("Imagens"));
+$url = $this->url("images-database/images");
+$urlField = $this->basepath("files_database/" . $websiteId);
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("product")?>"><?php echo $this->translate("Produtos") ?></a></li>
+			<li class="active"><?php echo $this->translate("Imagens") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+<?php
+if ($message["flag"] > 0) {
+    if ($message["flag"] == 1) {
+        $class = "success";
+    } else {
+        $class = "danger";
+    }
+    ?>
+<div class="alert alert-<?php echo $class; ?> alert-block fade in">
+	<button data-dismiss="alert" class="close close-sm" type="button">
+		<i class="fa fa-times"></i>
+	</button>
+	<p><?php echo $message["message"]?></p>
+</div>
+<?php
+}
+?>
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading tab-bg-dark-navy-blue ">
+				<ul class="nav nav-tabs">
+					<li><a
+						href="<?php echo $this->url("product/edit", array("id"=>$product->idProduct))?>"><?php echo $this->translate("Detalhes do Produto")?></a>
+					</li>
+					<li><a
+						href="<?php echo $this->url("product/stock", array("id"=>$product->idProduct)); ?>"><?php echo $this->translate("Estoque")?></a>
+					</li>
+					<li class="active"><a data-toggle="tab" href="#"><?php echo $this->translate("Imagens")?></a>
+					</li>
+					<li class=""><a><?php echo $this->translate("Produtos Relacionados")?></a>
+					</li>
+				</ul>
+			</header>
+			<div class="panel-body">
+				<div class="panel-body">
+					<form class="form-horizontal tasi-form" method="post" id="page">
+						<div class="form-group">
+							<label class="col-sm-2 col-sm-2 control-label"><?php echo $this->translate("Imagens")?></label>
+							<div class="col-sm-10">
+								<a data-toggle="modal" href="#images" class="btn btn-warning"><?php echo $this->translate("Adicionar Imagens")?></a>
+								<hr>
+								<div class="col-sm-12" id="imagesSelected">
+                    			<?php
+                                if (count($images) > 0) {
+                                    foreach ($images as $image) {
+                                        ?>
+                                			<div class="col-lg-12">
+            										<div class="row">
+            											<div class="col-lg-12">
+            												<img width="100"
+            													src="<?php echo $urlField."/".$image->name.".".$image->extension; ?>">
+            											</div>
+            										</div>
+            										<br>
+            										<div class="row">
+            											<div class="col-lg-2">Legenda</div>
+            											<div class="col-lg-10">
+            												<input type="text" class="form-control input-sm m-bot15"
+            													name="imageLabel[<?php echo $image->image_idImage; ?>]"
+            													value="<?php echo $image->label; ?>" />
+            											</div>
+            										</div>
+            										<div class="row">
+            											<div class="col-lg-2">Texto alternativo</div>
+            											<div class="col-lg-10">
+            												<input type="text" class="form-control input-sm m-bot15"
+            													name="imageAlt[<?php echo $image->image_idImage; ?>]"
+            													value="<?php echo $image->alt; ?>" />
+            											</div>
+            										</div>
+            										&nbsp;
+            										<button class="btn btn-danger remove_field">Excluir</button>
+            										<hr>
+            									</div>
+                                			<?php
+                                    }
+                                }
+                                ?>
+                    		</div>
+							<div class="form-group">
+								&nbsp;&nbsp;
+								<button type="submit" class="btn btn-info"><?php echo $this->translate("Salvar")?></button>
+								&nbsp;<a href="#"
+									class="btn btn-danger"><?php echo $this->translate("Cancelar")?></a>
+							</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<div class="panel-body">
+				<h4><?php echo $this->translate("Log")?></h4>
+				<textarea rows="5" class="form-control" name="description"
+					readonly="readonly" id="description"><?php echo $product->log; ?></textarea>
+			</div>
+		</section>
+	</div>
+</div>
+
+<!-- MODAL SELECIONE AS IMAGENS -->
+<div class="modal fade" id="images" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title"><?php echo $this->translate("Selecione as imagens desejadas")?></h4>
+			</div>
+			<div class="modal-body" id="images-content"></div>
+			<div class="modal-footer">
+				<button data-dismiss="modal" class="btn btn-default" type="button"><?php echo $this->translate("Cancelar")?></button>
+				<button id="addImage" class="btn btn-danger" type="button"><?php echo $this->translate("Adicionar")?></button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- FIM MODAL IMAGENS -->
+<?php
+$this->inlinescript()->captureStart();
+echo <<<JS
+$("#images-content").load('$url');
+			    
+var wrapper = $("#imagesSelected"); //Fields wrapper
+			    
+$("#addImage").click(function() {	
+    var imagesSelected = [];
+			    
+    $("input:checkbox[name=image]:checked").each(function(){
+        imagesSelected.push($(this).val());
+	    var image = $(this).val();
+	    var dataImage = image.split(' | ');
+	    $(wrapper).append('<div class="col-lg-12"><div class="row"><div class="col-lg-12"><img width="100" src="$urlField/'+dataImage[1]+'"></div></div><br><div class="row"><div class="col-lg-2">Legenda</div><div class="col-lg-10"><input type="text" class="form-control input-sm m-bot15" name="imageLabel['+dataImage[0]+']" value="'+dataImage[2]+'"/></div></div><div class="row"><div class="col-lg-2">Texto alternativo</div><div class="col-lg-10"><input type="text" class="form-control input-sm m-bot15" name="imageAlt['+dataImage[0]+']" value="'+dataImage[2]+'"/></div></div>&nbsp;<button class="btn btn-danger remove_field">Excluir</button><hr></div>');
+    });
+    $('#images').modal('toggle');
+});
+			    
+$(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+    e.preventDefault(); $(this).parent('div').remove(); x--;
+});
+JS;
+$this->inlinescript()->captureEnd();
+?>

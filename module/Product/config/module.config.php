@@ -108,6 +108,33 @@ return array(
                             ),
                         ),
                     ),
+                    'images' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/:id/images',
+                            'constraints' => array(
+                                'id' => '[0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Product\Controller',
+                                'action'        => 'images',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            // specific routes.
+                            'delete' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/delete',
+                                    'defaults' => array(
+                                        'controller'    => 'Product',
+                                        'action'        => 'deleteItemFromStock',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
                     'category' => array(
                         'type'    => 'Literal',
                         'options' => array(

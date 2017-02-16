@@ -13,6 +13,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Product\Model\Product;
 use Product\Model\ProductHasCategory;
 use Product\Model\ProductItem;
+use ImagesDatabase\Model\ModuleImage;
 
 class ProductController extends AbstractActionController
 {
@@ -172,6 +173,57 @@ class ProductController extends AbstractActionController
             }
     
             return array("product"=>$product, "categories"=>$categories, "categoriesSelected"=>$categoriesSelected, "languages"=>$languageData,  "message"=>$message->getMessage());
+        }else{
+            return $this->redirect()->toRoute("noPermission");
+        }
+    }
+    
+    /**
+     * Página de imagens do produto
+     */
+    public function imagesAction(){
+        // Check if this user can access this page
+        $logedUser = $this->getServiceLocator()
+        ->get('user')
+        ->getUserSession();
+        $permission = $this->getServiceLocator()
+        ->get('permissions')
+        ->havePermission($logedUser["idUser"], $logedUser["idWebsite"], $this->moduleId);
+        if ($this->getServiceLocator()->get('user')->checkPermission($permission, "edit")) {
+            $message = $this->getServiceLocator()->get('productMessages');
+        
+            //Get the Language and product id
+            $id = (int) $this->params()->fromRoute('id', 0);
+            $product = $this->getProductTable()->getProduct($id);
+            $oldLog = $product->log;
+            
+            //If was a POST
+            $request = $this->getRequest();
+            if($request->isPost()){
+                $data = $request->getPost();
+                $this->getServiceLocator()->get('moduleImages')->deleteImage($this->moduleId, null, $id);
+                if($data->imageLabel){
+                    $images = array_keys($data->imageLabel);
+                    $labels = $data->imageLabel;
+                    $alts = $data->imageAlt;
+                    $imageModule = new ModuleImage();
+                    foreach($images as $image){
+                        $data["system_module_idModule"] = $this->moduleId; //Id do módulo de Páginas
+                        $data["image_idImage"] = $image;
+                        $data["id_item"] = $id;
+                        $data["label"] = $labels[$image];
+                        $data["alt"] = $alts[$image];
+                        $imageModule->exchangeArray($data);
+                        $this->getServiceLocator()->get('moduleImages')->saveImage($imageModule);
+                    }
+                }
+                //Save log
+                //$this->getServiceLocator()->get('systemLog')->addLog(0, $message->getMessage(), $message->getLogPriority());
+            }
+            
+            $imagesSelected = $this->getServiceLocator()->get('moduleImages')->fetchAll($this->moduleId, $id);
+            
+            return array("product"=>$product, "images"=>$imagesSelected, "websiteId" => $logedUser["idWebsite"],);
         }else{
             return $this->redirect()->toRoute("noPermission");
         }
