@@ -45,6 +45,16 @@ $this->headtitle($this->translate("Webservices - REST"));
 						<td>GET</td>
 						<td><?php echo $this->url("webservices", array("apiKey"=>$website->apiKey))?>/page/get/[langauge]/[param]/[value]</td>
 					</tr>
+					<tr>
+						<td><a href="#"><?php echo $this->translate("Produtos"); ?></a></td>
+						<td>GET</td>
+						<td><?php echo $this->url("webservices", array("apiKey"=>$website->apiKey))?>/product/[langauge]/get/[param]/[value]</td>
+					</tr>
+					<tr>
+						<td><a href="#">- <?php echo $this->translate("Categorias"); ?></a></td>
+						<td>GET</td>
+						<td><?php echo $this->url("webservices", array("apiKey"=>$website->apiKey))?>/product/[langauge]/categories/get/[param]/[value]</td>
+					</tr>
 				</tbody>
 			</table>
 		</section>
