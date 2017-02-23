@@ -1,0 +1,95 @@
+<?php
+$this->headtitle($this->translate("Cores para os Produtos"));
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li><a href="<?php echo $this->url("product")?>"><?php echo $this->translate("Produtos") ?></a></li>
+			<li class="active"><?php echo $this->translate("Cores") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+<?php if($permission->editP){ ?>
+<div class="row">
+	<div class="col-lg-10"></div>
+	<div class="col-lg-2">
+		<a href="<?php echo $this->url("product/color/new")?>"
+			class="btn btn-primary"><i class="fa fa-tint"></i> <?php echo $this->translate("Nova Cor")?></a>
+	</div>
+</div>
+<?php } ?>
+<br>
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading"> <?php echo $this->translate("Cores")?></header>
+			<table class="table table-striped table-advance table-hover">
+				<thead>
+					<tr>
+						<th><i class="fa fa-tint"></i> <?php echo $this->translate("Cor")?></th>
+						<th><i class="fa fa-hashtag"></i> <?php echo $this->translate("Hexa")?></th>
+						<th><i class="fa fa-eye"></i> <?php echo $this->translate("Amostra")?></th>
+						<th><i class="fa fa-edit"></i> <?php echo $this->translate("Ações")?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php
+    
+    foreach ($colors as $color) {
+        ?>
+					<tr>
+						<td><?php echo $color->name; ?></td>
+						<td><?php echo $color->hexa; ?></td>
+						<td>
+						<?php if($color->image){ ?>
+						<img src="<?php echo $this->basepath("files_database/".$idWebsite."/".$color->image); ?>" width="30px">
+						<?php }else{ ?>
+							<input class="form-control"  type="color" value="<?php echo $color->hexa; ?>" disabled="disabled">
+						<?php } ?>
+						</td>
+						<td>
+						<?php if($permission->editP){ ?>
+							<a
+							href="<?php echo $this->url("product/color/edit", array("id"=>$color->idColor))?>"
+							class="btn btn-primary btn-xs"> <i class="fa fa-pencil"></i>
+						</a>
+						<?php } ?>
+							<?php if($permission->deleteP){ ?>
+							<button data-toggle="modal" href="#delete-<?php echo $color->idColor; ?>"
+								class="btn btn-danger btn-xs">
+								<i class="fa fa-trash-o "></i>
+							</button>
+							<?php } ?>
+						</td>
+					</tr>
+					<!-- EXCLUSION MODAL -->
+					<div class="modal fade" id="delete-<?php echo $color->idColor; ?>" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title"><?php echo $this->translate("Desejas realmente excluir?")?></h4>
+								</div>
+								<div class="modal-body"><?php echo $this->translate("Você realmente deseja excluir a cor <strong>".$color->name."</strong> e todo o conteúdo relacionado com ela?")?></div>
+								<div class="modal-footer">
+									<button data-dismiss="modal" class="btn btn-default"
+										type="button"><?php echo $this->translate("Cancelar")?></button>
+									<a href="<?php echo $this->url("product/color/delete", array("id"=>$color->idColor))?>" class="btn btn-danger" type="button"><?php echo $this->translate("Excluir")?></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php } ?>
+				</tbody>
+			</table>
+		</section>
+		<?php echo $this->paginationControl($colors, 'Sliding', 'layout/partials/pagination');?>
+	</div>
+</div>

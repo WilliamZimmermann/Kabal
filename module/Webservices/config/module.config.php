@@ -3,6 +3,8 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Webservices\Controller\Page' => 'Webservices\Controller\PageController',
+            'Webservices\Controller\Product' => 'Webservices\Controller\ProductController',
+            
         ),
     ),
     'router' => array(
@@ -37,6 +39,51 @@ return array(
                             'defaults' => array(
                                 'controller'    => 'Page',
                                 'action'        => 'get',
+                            ),
+                        ),
+                    ),
+                    'product' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/product/:language',
+                            'constraints' => array(
+                                'language' => '[a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller'    => 'Product',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'get' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/get[/:param/:value]',
+                                    'constraints' => array(
+                                        'param' => '[a-zA-Z0-9_-]*',
+                                        'value' => '[a-zA-Z0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller'    => 'Product',
+                                        'action'        => 'get',
+                                    ),
+                                ),
+                            ),
+                            'categories' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/categories/:method[/:param/:value]',
+                                    'constraints' => array(
+                                        'method' => '[a-zA-Z0-9_-]*',
+                                        'param' => '[a-zA-Z0-9_-]*',
+                                        'value' => '[a-zA-Z0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller'    => 'Product',
+                                        'action'        => 'categories',
+                                    ),
+                                ),
                             ),
                         ),
                     ),

@@ -2,7 +2,7 @@
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
-        'Application','Website','Company','User','ImagesDatabase','Page','Conversor','Webservices', 'Article','Customer','Pipeline'
+        'Application','Website','Company','User','ImagesDatabase','Page','Conversor','Webservices', 'Article','Customer','Pipeline','Product','Order'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
@@ -12,7 +12,7 @@ return array(
         // namespace, the value of that key the specific path to that module's
         // Module class.
         'module_paths' => array(
-            './vendor','./module','./module'
+            './vendor','./module','./module','./module','./module'
         ),
 
         // An array of paths from which to glob configuration files after

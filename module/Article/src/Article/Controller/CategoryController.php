@@ -7,7 +7,7 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Article\Controller;
+namespace Product\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Article\Model\Category;

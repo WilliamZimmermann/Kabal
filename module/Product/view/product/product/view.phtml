@@ -1,0 +1,65 @@
+<?php
+use Application\Services\SystemFunctions;
+?>
+<table class="table table-striped table-advance table-hover">
+	<tbody>
+		<tr style="background-color: white"><td colspan=2><h4><?php echo $this->translate("Informações sobre o produto")?></h4>
+		</td></tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Data de Cadastro: ")?></strong></td>
+			<td><?php echo SystemFunctions::dateInvert($product->creationDate, 'brazilian', true); ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Data de Atualização: ")?></strong></td>
+			<td><?php echo SystemFunctions::dateInvert($product->updatedDate, 'brazilian', true); ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Nome: ")?></strong></td>
+			<td><?php echo $product->title; ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Referência: ")?></strong></td>
+			<td><?php echo $product->reference; ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Descrição: ")?></strong></td>
+			<td><?php echo nl2br($product->description); ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Conteúdo: ")?></strong></td>
+			<td><?php echo nl2br($product->content); ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Preço original: ")?></strong></td>
+			<td><?php echo number_format($product->price_original, 2, ",", "."); ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo $this->translate("Preço atual: ")?></strong></td>
+			<td><?php echo number_format($product->price_actual, 2, ",", "."); ?></td>
+		</tr>
+		<?php if(count($itens)>0){ ?>
+		<tr style="background-color: white"><td colspan=2><h4><?php echo $this->translate("Estoque")?></h4></td></tr>
+			<?php foreach($itens as $item){ 
+			     $stockTotal += $item->stock;
+			    ?>
+    		<tr>
+    			<td><strong><?php echo $this->translate("Descrição: ")?></strong></td>
+    			<td><?php echo $item->description; ?></td>
+    		</tr>
+    		<tr>
+    			<td><strong><?php echo $this->translate("Estoque: ")?></strong></td>
+    			<td><?php echo $item->stock; ?></td>
+    		</tr>
+    		<tr>
+    			<td><strong><?php echo $this->translate("Valor: ")?></strong></td>
+    			<td><?php echo number_format($item->price, 2, ",", "."); ?></td>
+    		</tr>
+    		<tr><td></td><td></td></tr>
+    		<?php } ?>
+    		<tr>
+    		<td><strong><?php echo $this->translate("Total em estoque: ")?></strong></td>
+    		<td><?php echo $stockTotal; ?></td>
+    		</tr>
+		<?php } ?>
+	</tbody>
+</table>

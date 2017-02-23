@@ -1,0 +1,192 @@
+<?php
+use Application\Services\SystemFunctions;
+
+$this->headtitle($this->translate("Produtos"));
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<!--breadcrumbs start -->
+		<ul class="breadcrumb">
+			<li><a href="<?php echo $this->url("application"); ?>"><i
+					class="fa fa-home"></i> <?php echo $this->translate("Home") ?></a></li>
+			<li class="active"><?php echo $this->translate("Produtos") ?></li>
+		</ul>
+		<!--breadcrumbs end -->
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-8">
+		<div class="input-group m-bot15">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input type="text" class="form-control" placeholder="<?php echo $this->translate("Pesquisar")?>">
+      </div>
+	</div>
+	<div class="col-lg-2">
+		
+		<button class="btn btn-default"><?php echo $this->translate("Procurar")?></button>
+	</div>
+	<?php if($permission->editP){?>
+	<div class="col-lg-2">
+		<a href="<?php echo $this->url("product/new")?>"
+			class="btn btn-primary"><i class="fa fa-cube"></i> <?php echo $this->translate("Novo Produto")?></a>
+	</div>
+	<?php } ?>
+</div>
+<br>
+<div class="row">
+	<div class="col-lg-12">
+		<section class="panel">
+			<header class="panel-heading"> <?php echo $this->translate("Produtos")?></header>
+			<table class="table table-striped table-advance table-hover">
+				<thead>
+					<tr>
+						<th><i class="fa fa-language"></i> <?php echo $this->translate("Idioma")?></th>
+						<th><i class="fa fa-cube"></i> <?php echo $this->translate("Nome")?></th>
+						<th><i class="fa fa-hashtag"></i> <?php echo $this->translate("Referência")?></th>
+						<th><i class="fa fa-money"></i> <?php echo $this->translate("Preço Atual")?></th>
+						<th><i class="fa fa-clock-o"></i> <?php echo $this->translate("Atualizado em")?></th>
+						<th><i class="fa fa-circle-thin"></i> <?php echo $this->translate("Site")?></th>
+						<th><i class="fa fa-circle-thin"></i> <?php echo $this->translate("Sistema")?></th>
+						<th><i class="fa fa-circle-thin"></i> <?php echo $this->translate("Status")?></th>
+						<th><i class="fa fa-edit"></i> <?php echo $this->translate("Ações")?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php
+    
+    foreach ($products as $product) {
+        if ($product->active) {
+            $status = $this->translate("Ativo");
+            $statusClass = "success";
+        } else {
+            $status = $this->translate("Inativo");
+            $statusClass = "danger";
+        }
+        if($product->show_website){
+            $show_website = $this->translate("Sim");
+            $show_website_class = "success";
+        } else {
+            $show_website = $this->translate("Não");
+            $show_website_class = "danger";
+        }
+        if($product->show_order){
+            $show_order = $this->translate("Sim");
+            $show_order_class = "success";
+        } else {
+            $show_order = $this->translate("Não");
+            $show_order_class = "danger";
+        }
+        ?>
+					<tr>
+						<td>
+						<?php switch($product->language_id){
+						    case 1:
+						      echo "Português";
+						      break;
+						    case 2:
+						        echo "Inglês";
+						        break;
+						    case 3:
+						        echo "Francês";
+						        break;
+						    default:
+						        echo "Indefinido";
+						        break;
+						}
+					      ?>
+						</td>
+						<td>
+						<?php 
+						echo $product->title;
+                        ?>
+						</td>
+						<td><?php echo $product->reference; ?></td>
+						<td>R$ <?php echo number_format($product->price_actual, 2, ",", "."); ?></td>
+						<td><?php echo SystemFunctions::dateInvert($product->updatedDate, "brazilian"); ?></td>
+						<td><span
+							class="label label-<?php echo $show_website_class; ?> label-mini"><?php echo $show_website; ?></span></td>
+						<td><span
+							class="label label-<?php echo $show_order_class; ?> label-mini"><?php echo $show_order; ?></span></td>
+						<td><span
+							class="label label-<?php echo $statusClass; ?> label-mini"><?php echo $status; ?></span></td>
+						<td>
+							<button
+							class="btn btn-default btn-xs showProduct" data-id="<?php echo $product->idProduct; ?>"> <i class="fa fa-eye"></i></button>
+							<?php if($permission->editP){ ?>
+							<a
+							href="<?php echo $this->url("product/edit", array("id"=>$product->idProduct))?>"
+							class="btn btn-primary btn-xs"> <i class="fa fa-pencil"></i>
+						</a>
+						<?php } ?>
+						<?php if($permission->deleteP){ ?>
+							<button data-toggle="modal" href="#delete-<?php echo $product->idProduct; ?>"
+								class="btn btn-danger btn-xs">
+								<i class="fa fa-trash-o "></i>
+							</button>
+							<?php } ?>
+						</td>
+					</tr>
+					<!-- EXCLUSION MODAL -->
+					<div class="modal fade" id="delete-<?php echo $product->idProduct; ?>" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title"><?php echo $this->translate("Desejas realmente excluir?")?></h4>
+								</div>
+								<div class="modal-body"><?php echo $this->translate("Você realmente deseja excluir o produto <strong>".$product->title."</strong>?")?></div>
+								<div class="modal-footer">
+									<button data-dismiss="modal" class="btn btn-default"
+										type="button"><?php echo $this->translate("Cancelar")?></button>
+									<a href="<?php echo $this->url("product/delete", array("id"=>$product->idProduct))?>" class="btn btn-danger" type="button"><?php echo $this->translate("Excluir")?></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END OF EXCLUSION MODAL -->
+					<?php } ?>
+				</tbody>
+			</table>
+		</section>
+		<?php echo $this->paginationControl($products, 'Sliding', 'layout/partials/pagination');?>
+	</div>
+</div>
+
+<!-- SHOW PRODUCT DATA MODAL -->
+<div class="modal fade" id="viewProduct" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title"><?php echo $this->translate("Dados do Produto")?></h4>
+			</div>
+			<div class="modal-body" id="productView">
+			
+			</div>
+			<div class="modal-footer">
+				<button data-dismiss="modal" class="btn btn-default"
+					type="button"><?php echo $this->translate("Fechar")?></button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END OF SHOW CUSTOMER DATA -->
+<?php 
+$productUrl = $this->url("product/view");
+$this->headscript()->captureStart();
+echo <<<JS
+$(document).ready(function() {
+  $(".showProduct").click(function() {
+    var id = $(this).attr("data-id");
+    $('#viewProduct').modal('show');
+    $("#productView").load('$productUrl'+id);
+  });
+});
+JS;
+$this->headscript()->captureEnd();
+?>

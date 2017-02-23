@@ -145,14 +145,14 @@ class PageController extends AbstractActionController
                     if($page->validation()){
                         $result = $this->getPageLanguageTable()->savePage($page);
                         //Delete all relationships
-                        $this->getServiceLocator()->get('moduleImages')->deleteImage(5, null, $id);
+                        $this->getServiceLocator()->get('moduleImages')->deleteImage($this->moduleId, null, $id);
                         if($data->imageLabel){
                             $images = array_keys($data->imageLabel);
                             $labels = $data->imageLabel;
                             $alts = $data->imageAlt;
                             $imageModule = new ModuleImage();
                             foreach($images as $image){
-                                $data["system_module_idModule"] = 5; //Id do módulo de Páginas
+                                $data["system_module_idModule"] = $this->moduleId; //Id do módulo de Páginas
                                 $data["image_idImage"] = $image;
                                 $data["id_item"] = $id;
                                 $data["label"] = $labels[$image];
@@ -174,7 +174,7 @@ class PageController extends AbstractActionController
                 
                 $langaugePageData = $this->getPageLanguageTable()->getPage($id, $idLanguage);
                 
-                $imagesSelected = $this->getServiceLocator()->get('moduleImages')->fetchAll(5, $id);
+                $imagesSelected = $this->getServiceLocator()->get('moduleImages')->fetchAll($this->moduleId, $id);
                 
                 return array(
                     "message"=>$message->getMessage(), 
