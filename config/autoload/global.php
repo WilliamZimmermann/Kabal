@@ -14,7 +14,7 @@
 return array(
      'db' => array(
         'driver'         => 'Pdo',
-        'dsn'            => 'mysql:dbname=kabal;host=mysql857.umbler.com:41890',
+        'dsn'            => 'mysql:dbname=kabal;host=mysql857.umbler.com',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
