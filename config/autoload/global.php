@@ -14,12 +14,12 @@
 return array(
      'db' => array(
         'driver'         => 'Pdo',
-        'dsn'            => 'mysql:dbname=tekmanager;host=localhost:8889',
+        'dsn'            => 'mysql:dbname=kabal;host=mysql857.umbler.com:41890',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
-         'username' => 'root',
-         'password' => 'root',
+         'username' => 'kabal',
+         'password' => '6Ui4M|p[xS',
     ),
     'service_manager' => array(
         'factories' => array(

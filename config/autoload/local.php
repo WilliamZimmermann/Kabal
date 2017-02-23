@@ -13,7 +13,12 @@
 
 return array(
  	'db' => array(
-        'username' => 'root',
-        'password' => 'root',
+        'driver'         => 'Pdo',
+        'dsn'            => 'mysql:dbname=tekmanager;host=localhost:8889',
+        'driver_options' => array(
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+        ),
+         'username' => 'root',
+         'password' => 'root',
     ),
 );
